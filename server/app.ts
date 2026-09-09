@@ -9,6 +9,7 @@ import { Mailer } from './mailer.js';
 import { AdminController, AuthController } from './auth.controller.js';
 import { AuthRateGuard, OriginGuard, SessionGuard } from './security.js';
 import { getConfig } from './config.js';
+import { ProfileController } from './profile.controller.js';
 
 @Controller('health')
 class HealthController {
@@ -16,7 +17,7 @@ class HealthController {
 }
 
 @Module({
-  controllers: [AuthController, AdminController, HealthController],
+  controllers: [AuthController, AdminController, HealthController, ProfileController],
   providers: [Database, AuthService, Mailer, SessionGuard, AuthRateGuard, { provide: APP_GUARD, useClass: OriginGuard }],
 })
 class AppModule {}

@@ -38,6 +38,7 @@ jobs:
       - run: pnpm db:generate
       - run: pnpm db:deploy
       - run: pnpm typecheck
+      - run: pnpm test:i18n
       - run: pnpm server:build
       - run: pnpm test:server
       - run: pnpm build

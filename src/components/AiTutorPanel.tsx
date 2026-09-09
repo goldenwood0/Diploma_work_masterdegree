@@ -1,6 +1,8 @@
+import { useLanguage } from '../i18n/LanguageProvider';
 import { Play, ChevronRight, Sparkles } from 'lucide-react';
 
 export default function AiTutorPanel({ onClose }: { onClose: () => void }) {
+  const { t } = useLanguage();
   return (
     <>
       {/* Backdrop */}
@@ -16,8 +18,8 @@ export default function AiTutorPanel({ onClose }: { onClose: () => void }) {
               <Sparkles size={20} />
             </div>
             <div>
-              <h2 className="font-bold text-lg leading-tight">Помощник ZhPath</h2>
-              <p className="text-xs text-primary font-medium">HSK 1 • В сети</p>
+              <h2 className="font-bold text-lg leading-tight">{t("Помощник ZhPath")}</h2>
+              <p className="text-xs text-primary font-medium">{t("HSK 1 • В сети")}</p>
             </div>
           </div>
           <button onClick={onClose} className="p-2 text-muted-foreground hover:text-foreground hover:bg-secondary rounded-full transition-colors">
@@ -27,7 +29,7 @@ export default function AiTutorPanel({ onClose }: { onClose: () => void }) {
 
         <div className="flex-1 overflow-y-auto p-4 space-y-4">
           <div className="flex justify-center my-4">
-            <span className="text-xs font-bold text-muted-foreground uppercase tracking-widest bg-secondary px-3 py-1 rounded-full">Сегодня</span>
+            <span className="text-xs font-bold text-muted-foreground uppercase tracking-widest bg-secondary px-3 py-1 rounded-full">{t("Сегодня")}</span>
           </div>
 
           {/* AI Message */}
@@ -36,28 +38,22 @@ export default function AiTutorPanel({ onClose }: { onClose: () => void }) {
               <Sparkles size={14} className="text-accent-foreground" />
             </div>
             <div className="bg-white border border-border rounded-2xl rounded-tl-sm p-4 shadow-sm text-sm">
-              <p className="mb-2">你好 (Nǐ hǎo)! Я твой AI-наставник.</p>
-              <p>Отлично справляешься с первым уроком. Помочь с грамматикой или попрактикуем диалог?</p>
+              <p className="mb-2">{t("你好 (Nǐ hǎo)! Я твой AI-наставник.")}</p>
+              <p>{t("Отлично справляешься с первым уроком. Помочь с грамматикой или попрактикуем диалог?")}</p>
             </div>
           </div>
         </div>
 
         <div className="p-4 border-t border-border bg-white">
           <div className="flex flex-wrap gap-2 mb-4">
-            <button className="text-xs font-medium bg-sage hover:bg-primary/10 text-dark-green px-3 py-2 rounded-xl transition-colors border border-border">
-              Объясни правило
-            </button>
-            <button className="text-xs font-medium bg-sage hover:bg-primary/10 text-dark-green px-3 py-2 rounded-xl transition-colors border border-border">
-              Проверь мою фразу
-            </button>
-            <button className="text-xs font-medium bg-sage hover:bg-primary/10 text-dark-green px-3 py-2 rounded-xl transition-colors border border-border">
-              Начать диалог
-            </button>
+            <button className="text-xs font-medium bg-sage hover:bg-primary/10 text-dark-green px-3 py-2 rounded-xl transition-colors border border-border"> {t("Объясни правило")} </button>
+            <button className="text-xs font-medium bg-sage hover:bg-primary/10 text-dark-green px-3 py-2 rounded-xl transition-colors border border-border"> {t("Проверь мою фразу")} </button>
+            <button className="text-xs font-medium bg-sage hover:bg-primary/10 text-dark-green px-3 py-2 rounded-xl transition-colors border border-border"> {t("Начать диалог")} </button>
           </div>
           <div className="relative">
             <input 
               type="text" 
-              placeholder="Спроси о чем угодно..." 
+              placeholder={t("Спроси о чем угодно...")} 
               className="w-full bg-secondary border border-border rounded-2xl py-3 pl-4 pr-12 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all placeholder:text-muted-foreground"
             />
             <button className="absolute right-2 top-1/2 -translate-y-1/2 p-2 bg-primary text-primary-foreground rounded-xl hover:bg-primary/90 transition-colors">

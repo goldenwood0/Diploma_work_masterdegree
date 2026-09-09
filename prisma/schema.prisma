@@ -38,6 +38,11 @@ model UserSettings {
   explanationLanguage String @default("ru")
   timezone            String @default("UTC")
   dailyGoalMinutes    Int    @default(20)
+  experience          String @default("beginner")
+  goal                String @default("communication")
+  startLevel          Int    @default(1)
+  remindersEnabled    Boolean @default(false)
+  onboardingCompletedAt DateTime?
 }
 
 model Session {

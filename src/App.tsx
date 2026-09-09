@@ -1,3 +1,5 @@
+import { useLanguage } from './i18n/LanguageProvider';
+import ProfileForm from './components/ProfileForm';
 import { Home, BookOpen, RefreshCw, User, Sparkles } from 'lucide-react';
 import { useState } from 'react';
 import useRoute from './app/useRoute';
@@ -14,14 +16,17 @@ import Auth, { isAuthScreen } from './pages/Auth';
 import useAccount from './app/useAccount';
 
 export default function App() {
+  const { t } = useLanguage();
   const [currentScreen, setCurrentScreen] = useRoute();
   const [isAiTutorOpen, setIsAiTutorOpen] = useState(false);
-  const { account, loading, error, refresh } = useAccount();
+  const { account, loading, error, refresh, accept } = useAccount();
 
-  if (loading) return <main className="p-12 text-center" role="status">Загрузка аккаунта…</main>;
+  if (loading) return <main className="p-12 text-center" role="status">{t("Загрузка аккаунта…")}</main>;
   if (isAuthScreen(currentScreen)) return <Auth key={currentScreen} mode={currentScreen} onNavigate={setCurrentScreen} onSignedIn={refresh} />;
-  if (error) return <main className="p-12 text-center space-y-4"><p role="alert">{error}</p><button className="text-primary underline" onClick={() => void refresh()}>Повторить</button></main>;
+  if (error) return <main className="p-12 text-center space-y-4"><p role="alert">{t(error)}</p><button className="text-primary underline" onClick={() => void refresh()}>{t("Повторить")}</button></main>;
   if (!account) return <Auth key="login" mode="login" onNavigate={setCurrentScreen} onSignedIn={refresh} />;
+
+  if (!account.settings?.onboardingCompletedAt) return <main className="max-w-2xl mx-auto px-4 py-10"><ProfileForm account={account} onboarding onSaved={user => { accept(user); setCurrentScreen('dashboard'); }} /></main>;
 
   return (
     <div className="flex flex-col min-h-screen bg-background relative overflow-x-hidden font-sans">
@@ -39,25 +44,25 @@ export default function App() {
             <div className="hidden md:flex space-x-1">
               <NavButton 
                 icon={<Home size={18} />} 
-                label="Главная" 
+                label={t("Главная")} 
                 active={currentScreen === 'dashboard'} 
                 onClick={() => setCurrentScreen('dashboard')} 
               />
               <NavButton 
                 icon={<BookOpen size={18} />} 
-                label="Курсы" 
+                label={t("Курсы")} 
                 active={currentScreen === 'catalog' || currentScreen === 'lesson'} 
                 onClick={() => setCurrentScreen('catalog')} 
               />
               <NavButton 
                 icon={<RefreshCw size={18} />} 
-                label="Повторение" 
+                label={t("Повторение")} 
                 active={currentScreen === 'reviews'} 
                 onClick={() => setCurrentScreen('reviews')} 
               />
               <NavButton 
                 icon={<User size={18} />} 
-                label="Профиль" 
+                label={t("Профиль")} 
                 active={currentScreen === 'profile'} 
                 onClick={() => setCurrentScreen('profile')} 
               />
@@ -65,7 +70,7 @@ export default function App() {
 
             <div className="md:hidden flex items-center">
                <button 
-                aria-label="Профиль"
+                aria-label={t("Профиль")}
                 onClick={() => setCurrentScreen('profile')}
                 className="p-2 text-foreground/70 hover:text-foreground hover:bg-secondary rounded-full transition-colors"
                >
@@ -81,7 +86,7 @@ export default function App() {
         {currentScreen === 'dashboard' && <Dashboard name={account.name} onNavigate={setCurrentScreen} />}
         {currentScreen === 'catalog' && <Catalog onNavigate={setCurrentScreen} />}
         {currentScreen === 'lesson' && <Lesson onNavigate={setCurrentScreen} openAiTutor={() => setIsAiTutorOpen(true)} />}
-        {currentScreen === 'profile' && <Profile account={account} onSignedOut={refresh} />}
+        {currentScreen === 'profile' && <Profile account={account} onSignedOut={refresh} onSaved={accept} />}
         {currentScreen === 'reviews' && <Reviews />}
         {currentScreen === 'not-found' && <NotFound />} 
       </main>
@@ -89,7 +94,7 @@ export default function App() {
       {/* Floating AI Tutor Button (Hidden in lesson because lesson has it inline) */}
       {currentScreen !== 'lesson' && (
         <button 
-          aria-label="Открыть ИИ-помощника"
+          aria-label={t("Открыть ИИ-помощника")}
           onClick={() => setIsAiTutorOpen(true)}
           className="fixed bottom-6 right-6 sm:bottom-8 sm:right-8 bg-accent text-accent-foreground p-4 rounded-full shadow-sm hover:shadow-md transition-all hover:scale-105 focus:outline-none focus:ring-4 focus:ring-accent/30 z-40 group flex items-center justify-center"
         >
@@ -104,9 +109,9 @@ export default function App() {
 
       {/* Mobile Bottom Nav */}
       <div className="md:hidden sticky bottom-0 w-full bg-background border-t border-border flex justify-around p-3 z-30">
-        <MobileNavButton label="Главная" icon={<Home size={24} />} active={currentScreen === 'dashboard'} onClick={() => setCurrentScreen('dashboard')} />
-        <MobileNavButton label="Курсы" icon={<BookOpen size={24} />} active={currentScreen === 'catalog'} onClick={() => setCurrentScreen('catalog')} />
-        <MobileNavButton label="Повторение" icon={<RefreshCw size={24} />} active={currentScreen === 'reviews'} onClick={() => setCurrentScreen('reviews')} />
+        <MobileNavButton label={t("Главная")} icon={<Home size={24} />} active={currentScreen === 'dashboard'} onClick={() => setCurrentScreen('dashboard')} />
+        <MobileNavButton label={t("Курсы")} icon={<BookOpen size={24} />} active={currentScreen === 'catalog'} onClick={() => setCurrentScreen('catalog')} />
+        <MobileNavButton label={t("Повторение")} icon={<RefreshCw size={24} />} active={currentScreen === 'reviews'} onClick={() => setCurrentScreen('reviews')} />
       </div>
     </div>
   );

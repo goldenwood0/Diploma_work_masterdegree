@@ -1,5 +1,5 @@
 import 'reflect-metadata';
-import { after, before, test } from 'node:test';
+import { afterEach, beforeEach, test } from 'node:test';
 import assert from 'node:assert/strict';
 import { randomUUID } from 'node:crypto';
 import supertest from 'supertest';
@@ -20,12 +20,12 @@ const newEmail = () => { const email = `test-${randomUUID()}@example.test`; emai
 const post = (path: string, body = {}) => api.post(`/api/auth/${path}`).set('Origin', origin).set('X-ZhPath-Request', '1').send(body);
 const cookie = (response: { headers: Record<string, unknown> }) => (response.headers['set-cookie'] as string[])[0].split(';')[0];
 
-before(async () => {
+beforeEach(async () => {
   if (process.env.NODE_ENV === 'production') throw new Error('Tests must not run in production');
   app = await createApp(); db = app.get(Database); api = supertest(app.getHttpServer());
   app.get(Mailer).send = async (email, purpose, token) => { messages.push({ email, purpose, token }); };
 });
-after(async () => {
+afterEach(async () => {
   if (db) await db.user.deleteMany({ where: { email: { in: emails } } });
   if (app) await app.close();
 });
@@ -123,6 +123,49 @@ test('concurrent confirmation requests cannot consume the same token twice', asy
   const { token } = await registered();
   const responses = await Promise.all([post('verify-email', { token }), post('verify-email', { token })]);
   assert.deepEqual(responses.map(r => r.status).sort(), [200, 400]);
+});
+
+
+const profileInput = { name: 'Learner', uiLanguage: 'kk', explanationLanguage: 'en', timezone: 'Asia/Almaty', dailyGoalMinutes: 30, experience: 'some', goal: 'exam', startLevel: 3, remindersEnabled: true };
+const patchProfile = (session: string, body: object) => api.patch('/api/profile').set('Origin', origin).set('X-ZhPath-Request', '1').set('Cookie', session).send(body);
+
+test('profile and onboarding persist across sessions without changing another account', async () => {
+  const first = await signedIn(); const second = await signedIn();
+  const original = await api.get('/api/auth/me').set('Cookie', second.session).expect(200);
+  assert.equal(original.body.user.settings.onboardingCompletedAt, null);
+  const result = await patchProfile(first.session, { ...profileInput, completeOnboarding: true }).expect(200);
+  assert.ok(result.body.user.settings.onboardingCompletedAt);
+  const fresh = cookie(await post('login', { email: first.email, password }).expect(200));
+  const me = await api.get('/api/auth/me').set('Cookie', fresh).expect(200);
+  assert.equal(me.body.user.name, profileInput.name);
+  for (const [key, value] of Object.entries(profileInput)) if (key !== 'name') assert.equal(me.body.user.settings[key], value);
+  const again = await patchProfile(first.session, { ...profileInput, uiLanguage: 'en', explanationLanguage: 'ru', completeOnboarding: false }).expect(200);
+  assert.equal(again.body.user.settings.onboardingCompletedAt, result.body.user.settings.onboardingCompletedAt);
+  const unchanged = await api.get('/api/auth/me').set('Cookie', second.session).expect(200);
+  assert.deepEqual(unchanged.body.user, original.body.user);
+});
+
+test('profile rejects unauthorized writes, invalid settings and privilege escalation', async () => {
+  const { session } = await signedIn();
+  await patchProfile('', profileInput).expect(401);
+  for (const change of [{ uiLanguage: 'de' }, { explanationLanguage: 'zh' }, { startLevel: 7 }, { timezone: 'Not/AZone' }, { dailyGoalMinutes: 7 }, { name: ' ' }, { goal: 'invalid' }, { experience: 'invalid' }, { remindersEnabled: 'true' }, { role: 'ADMIN' }, { userId: 'another-account' }]) {
+    await patchProfile(session, { ...profileInput, ...change }).expect(400);
+  }
+  await api.patch('/api/profile').set('Cookie', session).send(profileInput).expect(403);
+  const me = await api.get('/api/auth/me').set('Cookie', session).expect(200);
+  assert.equal(me.body.user.role, 'STUDENT');
+  assert.equal(me.body.user.settings.onboardingCompletedAt, null);
+});
+
+test('registration persists each supported UI language and keeps onboarding incomplete', async () => {
+  for (const uiLanguage of ['ru', 'kk', 'en']) {
+    const email = newEmail();
+    await post('register', { email, password, name: 'Language test', uiLanguage }).expect(201);
+    const user = await db.user.findUniqueOrThrow({ where: { email }, include: { settings: true } });
+    assert.equal(user.settings!.uiLanguage, uiLanguage);
+    assert.equal(user.settings!.explanationLanguage, uiLanguage);
+    assert.equal(user.settings!.onboardingCompletedAt, null);
+  }
 });
 
 test('repeated attempts are rate limited', async () => {

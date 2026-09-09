@@ -1,8 +1,10 @@
+import { useLanguage } from '../i18n/LanguageProvider';
 import { BookOpen, User, Volume2, Sparkles, ChevronLeft } from 'lucide-react';
 import type { Screen } from '../app/routes';
 import WordCard from '../components/WordCard';
 
 export default function Lesson({ onNavigate, openAiTutor }: { onNavigate: (screen: Screen) => void, openAiTutor: () => void }) {
+  const { t, explain } = useLanguage();
   return (
     <div className="max-w-4xl mx-auto animate-in fade-in zoom-in-95 duration-500 pb-24">
       {/* Lesson Header */}
@@ -12,7 +14,7 @@ export default function Lesson({ onNavigate, openAiTutor }: { onNavigate: (scree
           className="text-muted-foreground hover:text-foreground flex items-center gap-1 font-medium transition-colors"
         >
           <ChevronLeft size={20} />
-          <span>Назад</span>
+          <span>{t("Назад")}</span>
         </button>
         <div className="flex items-center gap-4">
            <span className="text-sm font-bold text-muted-foreground uppercase tracking-widest hidden sm:inline-block">HSK 1</span>
@@ -24,16 +26,14 @@ export default function Lesson({ onNavigate, openAiTutor }: { onNavigate: (scree
       </div>
 
       <div className="text-center mb-10">
-        <h1 className="text-3xl font-bold text-dark-green mb-3">你好 — первое приветствие</h1>
-        <p className="text-muted-foreground">Цель: научиться здороваться и называть себя.</p>
+        <h1 className="text-3xl font-bold text-dark-green mb-3">{t("你好 — первое приветствие")}</h1>
+        <p className="text-muted-foreground">{explain("Цель: научиться здороваться и называть себя.")}</p>
       </div>
 
       <div className="space-y-8">
         {/* Flashcards */}
         <section>
-          <h2 className="text-lg font-bold text-dark-green mb-4 flex items-center gap-2">
-            Новые слова
-          </h2>
+          <h2 className="text-lg font-bold text-dark-green mb-4 flex items-center gap-2"> {t("Новые слова")} </h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             <WordCard hz="你" py="nǐ" ru="ты" />
             <WordCard hz="好" py="hǎo" ru="хорошо, хороший" />
@@ -49,18 +49,15 @@ export default function Lesson({ onNavigate, openAiTutor }: { onNavigate: (scree
                <BookOpen size={24} />
              </div>
              <div>
-               <h3 className="text-xl font-bold text-dark-green mb-2">Грамматика: Приветствие</h3>
-               <p className="text-foreground/80 leading-relaxed">
-                 В китайском языке самое распространенное приветствие <strong>你好 (nǐ hǎo)</strong> буквально переводится как «ты хороший». 
-                 Когда два третьих тона (nǐ и hǎo) идут подряд, первый слог читается вторым тоном.
-               </p>
+               <h3 className="text-xl font-bold text-dark-green mb-2">{t("Грамматика: Приветствие")}</h3>
+               <p className="text-foreground/80 leading-relaxed"> {explain("В китайском языке самое распространенное приветствие")} <strong>你好 (nǐ hǎo)</strong> {explain("буквально переводится как «ты хороший». Когда два третьих тона (nǐ и hǎo) идут подряд, первый слог читается вторым тоном.")} </p>
              </div>
           </div>
         </section>
 
         {/* Mini Dialogue */}
         <section>
-          <h2 className="text-lg font-bold text-dark-green mb-4">Диалог</h2>
+          <h2 className="text-lg font-bold text-dark-green mb-4">{t("Диалог")}</h2>
           <div className="bg-white border border-border rounded-3xl p-6 sm:p-8 space-y-6 shadow-sm">
             
             {/* Message 1 */}
@@ -76,7 +73,7 @@ export default function Lesson({ onNavigate, openAiTutor }: { onNavigate: (scree
                   </button>
                 </div>
                 <div className="text-primary font-medium mb-1 tracking-wide text-sm sm:text-base">Nǐ hǎo!</div>
-                <div className="text-foreground/80 text-sm sm:text-base">Привет!</div>
+                <div className="text-foreground/80 text-sm sm:text-base">{explain("Привет!")}</div>
               </div>
             </div>
 
@@ -93,7 +90,7 @@ export default function Lesson({ onNavigate, openAiTutor }: { onNavigate: (scree
                   </button>
                 </div>
                 <div className="text-primary-foreground/80 font-medium mb-1 tracking-wide text-sm sm:text-base text-right">Nǐ hǎo! Wǒ jiào Aidana.</div>
-                <div className="text-primary-foreground/90 text-sm sm:text-base text-right">Привет! Меня зовут Айдана.</div>
+                <div className="text-primary-foreground/90 text-sm sm:text-base text-right">{explain("Привет! Меня зовут Айдана.")}</div>
               </div>
             </div>
 
@@ -107,14 +104,12 @@ export default function Lesson({ onNavigate, openAiTutor }: { onNavigate: (scree
           className="px-6 py-4 rounded-2xl font-bold transition-all shadow-sm flex items-center gap-2 bg-white border border-border text-foreground hover:bg-secondary active:scale-95"
         >
           <Sparkles size={20} className="text-accent-foreground" />
-          <span className="hidden sm:inline">Спросить AI</span>
+          <span className="hidden sm:inline">{t("Спросить AI")}</span>
         </button>
         <button 
           onClick={() => onNavigate('catalog')}
           className="w-full max-w-sm bg-primary text-primary-foreground hover:bg-primary/90 px-8 py-4 rounded-2xl font-bold text-lg transition-all shadow-sm active:scale-95"
-        >
-          Завершить урок
-        </button>
+        > {t("Завершить урок")} </button>
       </div>
     </div>
   );

@@ -21,11 +21,11 @@ export class AuthService {
     }
   }
 
-  async register(input: { email: string; password: string; name: string }) {
+  async register(input: { email: string; password: string; name: string; uiLanguage?: string }) {
     const passwordHash = await hashPassword(input.password);
     let user;
     try {
-      user = await this.db.user.create({ data: { email: input.email, name: input.name, passwordHash, settings: { create: {} } } });
+      user = await this.db.user.create({ data: { email: input.email, name: input.name, passwordHash, settings: { create: { uiLanguage: input.uiLanguage ?? 'ru', explanationLanguage: input.uiLanguage ?? 'ru' } } } });
     } catch (error) {
       if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2002') return genericMessage;
       throw error;
