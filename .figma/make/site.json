@@ -1,0 +1,10 @@
+{
+  "description": "This interactive platform offers Russian, Kazakh, and English speakers a user-friendly environment to learn Chinese through HSK levels 1-6, focusing on daily practice and progress tracking.",
+  "robots": {
+    "index": false
+  },
+  "accessibility": {
+    "addBypassLinks": false,
+    "ignoreReducedMotion": false
+  }
+}
