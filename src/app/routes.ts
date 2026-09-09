@@ -4,6 +4,12 @@ export const routes = {
   lesson: '/lessons/hsk1-greetings',
   profile: '/profile',
   reviews: '/reviews',
+  login: '/login',
+  register: '/register',
+  forgotPassword: '/forgot-password',
+  resetPassword: '/reset-password',
+  verifyEmail: '/verify-email',
+  resendVerification: '/resend-verification',
 } as const;
 
 export type Screen = keyof typeof routes;

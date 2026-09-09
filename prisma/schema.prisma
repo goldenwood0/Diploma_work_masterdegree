@@ -1,0 +1,65 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  STUDENT
+  EDITOR
+  ADMIN
+}
+
+enum TokenPurpose {
+  VERIFY_EMAIL
+  RESET_PASSWORD
+}
+
+model User {
+  id              String    @id @default(uuid())
+  email           String    @unique
+  name            String
+  passwordHash    String
+  role            Role      @default(STUDENT)
+  emailVerifiedAt DateTime?
+  createdAt       DateTime  @default(now())
+  settings        UserSettings?
+  sessions        Session[]
+  tokens          AccountToken[]
+}
+
+model UserSettings {
+  userId              String @id
+  user                User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  uiLanguage          String @default("ru")
+  explanationLanguage String @default("ru")
+  timezone            String @default("UTC")
+  dailyGoalMinutes    Int    @default(20)
+}
+
+model Session {
+  id        String   @id @default(uuid())
+  tokenHash String   @unique
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+  @@index([userId])
+  @@index([expiresAt])
+}
+
+model AccountToken {
+  id        String       @id @default(uuid())
+  tokenHash String       @unique
+  purpose   TokenPurpose
+  userId    String
+  user      User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expiresAt DateTime
+  usedAt    DateTime?
+  createdAt DateTime     @default(now())
+  @@index([userId, purpose])
+  @@index([expiresAt])
+}

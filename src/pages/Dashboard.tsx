@@ -1,11 +1,12 @@
 import { RefreshCw, Play, CheckCircle2, ChevronRight } from 'lucide-react';
 import type { Screen } from '../app/routes';
 
-export default function Dashboard({ onNavigate }: { onNavigate: (screen: Screen) => void }) {
+export default function Dashboard({ onNavigate, name }: { onNavigate: (screen: Screen) => void; name: string }) {
   return (
     <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
       <header>
-        <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-dark-green">你好, Айдана!</h1>
+        <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-dark-green">你好, {name}!</h1>
+        <p className="mt-2 text-sm text-muted-foreground">Учебные показатели и материалы ниже пока демонстрационные.</p>
         <p className="text-muted-foreground mt-2 font-medium">Отличный день для новых иероглифов.</p>
       </header>
 

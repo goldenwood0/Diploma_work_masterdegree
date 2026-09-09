@@ -1,22 +1,41 @@
+import { useState } from 'react';
+import { authAction, type Account } from '../api/auth';
 import { Settings, Bell } from 'lucide-react';
 
-export default function Profile() {
+export default function Profile({ account, onSignedOut }: { account: Account; onSignedOut: () => Promise<void> }) {
+  const [error, setError] = useState('');
+  const [busy, setBusy] = useState(false);
+  async function logout(all: boolean) {
+    setBusy(true); setError('');
+    try { await authAction(all ? 'logout-all' : 'logout'); await onSignedOut(); }
+    catch { setError('Не удалось выйти. Попробуйте ещё раз.'); }
+    finally { setBusy(false); }
+  }
   return (
     <div className="max-w-2xl mx-auto space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500 pb-20">
       <header className="flex items-center gap-6 bg-white p-6 sm:p-8 rounded-3xl border border-border shadow-sm">
         <div className="size-20 sm:size-24 rounded-full bg-coral text-white flex items-center justify-center text-3xl font-bold uppercase">
-          А
+          {account.name.charAt(0)}
         </div>
         <div>
-          <h1 className="text-2xl sm:text-3xl font-bold text-dark-green">Айдана</h1>
-          <p className="text-muted-foreground font-medium mt-1">aidana.student@example.com</p>
+          <h1 className="text-2xl sm:text-3xl font-bold text-dark-green">{account.name}</h1>
+          <p className="text-muted-foreground font-medium mt-1">{account.email}</p>
           <div className="mt-3 inline-flex items-center gap-2 bg-accent/20 text-accent-foreground px-3 py-1 rounded-lg text-sm font-bold border border-accent/30">
-            🔥 4 дня подряд
+            Email подтверждён
           </div>
         </div>
       </header>
 
-      <div className="bg-white rounded-3xl border border-border shadow-sm overflow-hidden">
+      <section className="bg-white rounded-3xl border border-border p-6 space-y-4">
+        <h2 className="font-bold text-xl">Безопасность аккаунта</h2>
+        {error && <p role="alert">{error}</p>}
+        <div className="flex flex-wrap gap-4">
+          <button disabled={busy} className="text-primary underline disabled:opacity-50" onClick={() => void logout(false)}>Выйти</button>
+          <button disabled={busy} className="text-primary underline disabled:opacity-50" onClick={() => void logout(true)}>Выйти со всех устройств</button>
+        </div>
+      </section>
+      <p className="text-sm text-muted-foreground">Настройки обучения появятся на следующем этапе.</p>
+      <fieldset disabled className="bg-white rounded-3xl border border-border shadow-sm overflow-hidden opacity-60">
         <div className="p-6 sm:p-8 border-b border-border">
           <h2 className="text-xl font-bold text-dark-green flex items-center gap-2 mb-6">
             <Settings size={20} className="text-primary" /> Настройки обучения
@@ -68,7 +87,7 @@ export default function Profile() {
              </div>
            </div>
         </div>
-      </div>
+      </fieldset>
     </div>
   );
 }

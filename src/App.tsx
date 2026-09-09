@@ -10,10 +10,18 @@ import AiTutorPanel from './components/AiTutorPanel';
 import Profile from './pages/Profile';
 import Reviews from './pages/Reviews';
 import NotFound from './pages/NotFound';
+import Auth, { isAuthScreen } from './pages/Auth';
+import useAccount from './app/useAccount';
 
 export default function App() {
   const [currentScreen, setCurrentScreen] = useRoute();
   const [isAiTutorOpen, setIsAiTutorOpen] = useState(false);
+  const { account, loading, error, refresh } = useAccount();
+
+  if (loading) return <main className="p-12 text-center" role="status">Загрузка аккаунта…</main>;
+  if (isAuthScreen(currentScreen)) return <Auth key={currentScreen} mode={currentScreen} onNavigate={setCurrentScreen} onSignedIn={refresh} />;
+  if (error) return <main className="p-12 text-center space-y-4"><p role="alert">{error}</p><button className="text-primary underline" onClick={() => void refresh()}>Повторить</button></main>;
+  if (!account) return <Auth key="login" mode="login" onNavigate={setCurrentScreen} onSignedIn={refresh} />;
 
   return (
     <div className="flex flex-col min-h-screen bg-background relative overflow-x-hidden font-sans">
@@ -70,10 +78,10 @@ export default function App() {
 
       {/* Main Content Area */}
       <main className="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-6 lg:p-8 pt-6 sm:pt-10 transition-all duration-300">
-        {currentScreen === 'dashboard' && <Dashboard onNavigate={setCurrentScreen} />}
+        {currentScreen === 'dashboard' && <Dashboard name={account.name} onNavigate={setCurrentScreen} />}
         {currentScreen === 'catalog' && <Catalog onNavigate={setCurrentScreen} />}
         {currentScreen === 'lesson' && <Lesson onNavigate={setCurrentScreen} openAiTutor={() => setIsAiTutorOpen(true)} />}
-        {currentScreen === 'profile' && <Profile />}
+        {currentScreen === 'profile' && <Profile account={account} onSignedOut={refresh} />}
         {currentScreen === 'reviews' && <Reviews />}
         {currentScreen === 'not-found' && <NotFound />} 
       </main>

@@ -1,0 +1,43 @@
+name: Project checks
+on:
+  push:
+    branches: [main]
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:17-alpine
+        env:
+          POSTGRES_USER: zhpath
+          POSTGRES_PASSWORD: ci-only-password
+          POSTGRES_DB: zhpath_test
+        ports: ['5432:5432']
+        options: >-
+          --health-cmd "pg_isready -U zhpath -d zhpath_test"
+          --health-interval 5s --health-timeout 5s --health-retries 10
+    env:
+      DATABASE_URL: postgresql://zhpath:ci-only-password@127.0.0.1:5432/zhpath_test
+      APP_ORIGIN: http://127.0.0.1:8443
+      SMTP_HOST: 127.0.0.1
+      NODE_ENV: test
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10.34.3
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: cp .env.example .env
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm db:generate
+      - run: pnpm db:deploy
+      - run: pnpm typecheck
+      - run: pnpm server:build
+      - run: pnpm test:server
+      - run: pnpm build

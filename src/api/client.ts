@@ -5,7 +5,7 @@ export class ApiError extends Error {
   }
 }
 
-// Future API modules use a same-origin /api prefix. No server is connected yet.
+// Same-origin API, proxied to Nest by Vite in development.
 // Return unknown so domain modules must validate responses before using them.
 export async function request(path: string, options: RequestInit = {}): Promise<unknown> {
   if (!path.startsWith('/') || path.startsWith('//')) {
@@ -16,16 +16,16 @@ export async function request(path: string, options: RequestInit = {}): Promise<
     response = await fetch(`/api${path}`, {
       ...options,
       credentials: 'same-origin',
-      headers: { Accept: 'application/json', ...Object.fromEntries(new Headers(options.headers)) },
+      headers: { Accept: 'application/json', 'X-ZhPath-Request': '1', ...Object.fromEntries(new Headers(options.headers)) },
     });
   } catch (error) {
     if (options.signal?.aborted) throw error;
     throw new ApiError(0, 'Нет связи с сервером. Попробуйте ещё раз.');
   }
   if (!response.ok) {
-    throw new ApiError(response.status, response.status === 401
-      ? 'Необходимо войти в аккаунт.'
-      : 'Не удалось выполнить запрос. Попробуйте ещё раз.');
+    const error = await response.json().catch(() => null);
+    throw new ApiError(response.status, typeof error?.message === 'string' && response.status < 500
+      ? error.message : 'Сервис временно недоступен. Попробуйте ещё раз.');
   }
   if (response.status === 204) return undefined;
   try {
