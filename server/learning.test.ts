@@ -7,6 +7,7 @@ import type { INestApplication } from "@nestjs/common"
 import { createApp } from "./app.js"
 import { Database } from "./database.js"
 import { digest, newToken } from "./passwords.js"
+import { schedule } from './review.service.js';
 
 let app: INestApplication
 let db: Database
@@ -273,4 +274,62 @@ test('quiz submissions are idempotent, reject altered retries and retain histori
   assert.equal((await submitAttempt(body).expect(200)).body.id, replay.body.id);
   const history = (await get(`lessons/${first}/quiz`).expect(200)).body;
   assert.equal(history.questions[0].id, 'q2'); assert.equal(history.attempts[0].result.items[0].expected, '你好');
+});
+
+const reviews = (cookie = session) => api.get('/api/reviews').set('Cookie', cookie);
+const rating = (id: string, body: object, cookie = session) => api.post(`/api/reviews/${id}/rate`).set('Cookie', cookie).set('Origin', process.env.APP_ORIGIN!).set('X-ZhPath-Request', '1').send(body);
+const newCard = (key: string) => db.reviewCard.create({ data: { userId: users[0], wordKey: key, content: { hanzi: key, pinyin: 'nǐ', translation: title } } });
+test('review import is additive, isolated and only includes completed lesson vocabulary', async () => {
+  const lesson = await db.lesson.findUniqueOrThrow({ where: { slug: first } });
+  await db.lessonBlock.update({ where: { id: blocks[0] }, data: { kind: 'vocabulary', content: { words: [{ hanzi: '你好', pinyin: 'nǐ hǎo', translation: title }] } } });
+  const sync = (cookie = session) => api.post('/api/reviews/sync').set('Cookie', cookie).set('Origin', process.env.APP_ORIGIN!).set('X-ZhPath-Request', '1');
+  await sync().expect(200); assert.equal((await reviews().expect(200)).body.cards.length, 0);
+  await db.lessonProgress.create({ data: { userId: users[0], lessonId: lesson.id, revision: lesson.revision, nextBlock: 3, completedAt: new Date() } });
+  await sync().expect(200); await sync().expect(200); await sync(other).expect(200);
+  const card = (await reviews().expect(200)).body.cards[0]; assert.equal((await reviews().expect(200)).body.cards.length, 1);
+  assert.equal((await reviews(other).expect(200)).body.cards.length, 0);
+  const patch = (cookie: string, body: object) => api.patch(`/api/reviews/${card.id}`).set('Cookie', cookie).set('Origin', process.env.APP_ORIGIN!).set('X-ZhPath-Request', '1').send(body);
+  await patch(other, { note: 'Intrusion' }).expect(404);
+  await patch(session, { note: 'Remember tones', favorite: true }).expect(200);
+  await patch(session, { userId: users[1] }).expect(400);
+  assert.equal((await reviews().expect(200)).body.cards[0].note, 'Remember tones');
+});
+test('review scheduling rejects early and stale writes and repeats idempotently', async () => {
+  const card = await newCard('你好');
+  const body = { requestId: randomUUID(), version: 0, rating: 'good' };
+  await rating(card.id, body, other).expect(404);
+  const results = await Promise.all([rating(card.id, body), rating(card.id, body)]);
+  assert.ok(results.some(r => r.status === 200)); assert.ok(results.every(r => [200, 409].includes(r.status)));
+  const result = (await rating(card.id, body).expect(200)).body;
+  assert.equal(result.interval, 1); assert.equal(result.version, 1);
+  assert.equal(await db.reviewEvent.count({ where: { cardId: card.id } }), 1);
+  await rating(card.id, { ...body, rating: 'easy' }).expect(409);
+  await rating(card.id, { ...body, requestId: randomUUID(), version: 1 }).expect(409);
+  const queue = (await reviews().expect(200)).body;
+  assert.equal(queue.queue.length, 0); assert.equal(queue.reviewedToday, 1); assert.equal(queue.remainingNew, 9);
+  assert.equal(queue.history[0].result.dueAt, result.dueAt);
+});
+test('daily new-card limit is enforced by the server and accounts for profile timezone', async () => {
+  await db.userSettings.create({ data: { userId: users[0], timezone: 'Asia/Qyzylorda' } });
+  const cards = [];
+  for (let i = 0; i < 11; i++) cards.push(await newCard(`word-${i}`));
+  const initial = (await reviews().expect(200)).body;
+  assert.equal(initial.queue.length, 10); assert.equal(initial.timezone, 'Asia/Qyzylorda');
+  for (const card of cards.slice(0, 10)) await rating(card.id, { requestId: randomUUID(), version: 0, rating: 'easy' }).expect(200);
+  await rating(cards[10].id, { requestId: randomUUID(), version: 0, rating: 'good' }).expect(409);
+  assert.equal((await reviews().expect(200)).body.remainingNew, 0);
+  // Move fixture history two days back: a new local calendar day admits new cards.
+  await db.reviewEvent.updateMany({ where: { userId: users[0] }, data: { createdAt: new Date(Date.now() - 48 * 3600000) } });
+  assert.equal((await reviews().expect(200)).body.remainingNew, 10);
+  await rating(cards[10].id, { requestId: randomUUID(), version: 0, rating: 'good' }).expect(200);
+});
+test('review intervals have stable UTC durations, reset on again and remain bounded', () => {
+  const now = new Date('2026-03-08T06:59:00Z');
+  assert.equal(schedule(10, 3, 'again', now).dueAt.getTime() - now.getTime(), 600000);
+  assert.equal(schedule(10, 3, 'again', now).repetitions, 0);
+  assert.equal(schedule(10, 3, 'hard', now).interval, 12);
+  assert.equal(schedule(10, 3, 'good', now).interval, 20);
+  assert.equal(schedule(0, 0, 'easy', now).interval, 4);
+  assert.equal(schedule(365, 100, 'easy', now).interval, 365);
+  assert.equal(schedule(1, 1, 'good', now).dueAt.getTime() - now.getTime(), 2 * 86400000);
 });

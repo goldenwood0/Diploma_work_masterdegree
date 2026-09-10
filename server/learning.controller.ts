@@ -19,6 +19,7 @@ import { SessionGuard, type AuthRequest } from "./security.js"
 import { parse } from "./validation.js"
 import { grade, publicQuestion, questionsSchema, submissionSchema } from './quiz.js'
 import { digest } from './passwords.js'
+import { collectWords } from './review.service.js'
 
 const checkpoint = z
   .object({
@@ -229,7 +230,10 @@ export class LearningController {
         const attempt = await db.quizAttempt.create({ data: { userId, quizId: quiz.id, requestId: input.requestId, requestHash,
           quizRevision: quiz.revision, lessonRevision: lesson.revision, snapshot: { questions, passPercent: quiz.passPercent, kind: quiz.kind },
           answers: input.answers, result, score: result.score, total: result.total, passed: result.passed } });
-        if (result.passed && !progress.completedAt) await db.lessonProgress.update({ where, data: { completedAt: new Date() } });
+        if (result.passed && !progress.completedAt) {
+          await db.lessonProgress.update({ where, data: { completedAt: new Date() } });
+          await collectWords(db, userId);
+        }
         return { id: attempt.id, createdAt: attempt.createdAt, quizRevision: attempt.quizRevision, lessonRevision: attempt.lessonRevision, result: attempt.result };
       }, { isolationLevel: Prisma.TransactionIsolationLevel.Serializable });
     } catch (error) {

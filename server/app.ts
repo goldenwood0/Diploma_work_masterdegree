@@ -11,6 +11,7 @@ import { AuthRateGuard, OriginGuard, SessionGuard } from './security.js';
 import { getConfig } from './config.js';
 import { ProfileController } from './profile.controller.js';
 import { LearningController } from './learning.controller.js';
+import { ReviewController } from './review.controller.js';
 
 @Controller('health')
 class HealthController {
@@ -18,7 +19,7 @@ class HealthController {
 }
 
 @Module({
-  controllers: [AuthController, AdminController, HealthController, ProfileController, LearningController],
+  controllers: [AuthController, AdminController, HealthController, ProfileController, LearningController, ReviewController],
   providers: [Database, AuthService, Mailer, SessionGuard, AuthRateGuard, { provide: APP_GUARD, useClass: OriginGuard }],
 })
 class AppModule {}

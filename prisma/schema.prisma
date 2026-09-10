@@ -31,6 +31,8 @@ model User {
   tokens          AccountToken[]
   lessonProgress  LessonProgress[]
   quizAttempts    QuizAttempt[]
+  cards           ReviewCard[]
+  reviews         ReviewEvent[]
 }
 
 model Curriculum {
@@ -96,6 +98,39 @@ model Quiz {
   kind        String @default("lesson")
   questions   Json
   attempts    QuizAttempt[]
+}
+
+model ReviewCard {
+  id         String @id @default(uuid())
+  userId     String
+  user       User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  wordKey    String
+  content    Json
+  favorite   Boolean @default(false)
+  note       String @default("")
+  dueAt      DateTime @default(now())
+  interval   Int @default(0)
+  repetitions Int @default(0)
+  version    Int @default(0)
+  createdAt  DateTime @default(now())
+  events     ReviewEvent[]
+  @@unique([userId, wordKey])
+  @@index([userId, dueAt])
+}
+
+model ReviewEvent {
+  id        String @id @default(uuid())
+  userId    String
+  user      User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  cardId    String
+  card      ReviewCard @relation(fields: [cardId], references: [id], onDelete: Cascade)
+  requestId String
+  requestHash String
+  rating    String
+  result    Json
+  createdAt DateTime @default(now())
+  @@unique([userId, requestId])
+  @@index([userId, createdAt])
 }
 
 model QuizAttempt {
