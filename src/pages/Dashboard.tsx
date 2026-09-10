@@ -1,108 +1,24 @@
-import { useLanguage } from '../i18n/LanguageProvider';
-import { RefreshCw, Play, CheckCircle2, ChevronRight } from 'lucide-react';
+import { ArrowRight, BookOpen, CheckCircle2 } from 'lucide-react';
 import type { Screen } from '../app/routes';
+import useCatalog from '../app/useCatalog';
+import { useLanguage } from '../i18n/LanguageProvider';
 
-export default function Dashboard({ onNavigate, name }: { onNavigate: (screen: Screen) => void; name: string }) {
-  const { t } = useLanguage();
-  return (
-    <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
-      <header>
-        <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-dark-green">你好, {name}!</h1>
-        <p className="mt-2 text-sm text-muted-foreground">{t("Учебные показатели и материалы ниже пока демонстрационные.")}</p>
-        <p className="text-muted-foreground mt-2 font-medium">{t("Отличный день для новых иероглифов.")}</p>
-      </header>
-
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        {/* Main Action Card */}
-        <div className="md:col-span-2 bg-sage rounded-3xl p-6 sm:p-8 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-6 border border-border/50">
-          <div>
-            <div className="flex items-center gap-2 mb-2">
-              <span className="bg-primary/10 text-primary px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider">HSK 1</span>
-              <span className="text-muted-foreground text-sm font-medium">{t("Урок 4")}</span>
-            </div>
-            <h2 className="text-2xl font-bold mb-1">{t("Приветствия и знакомство")}</h2>
-            <p className="text-foreground/70 mb-4 max-w-sm">{t("Продолжим изучать базовые фразы для первого разговора.")}</p>
-            <button 
-              onClick={() => onNavigate('lesson')}
-              className="bg-primary text-primary-foreground hover:bg-primary/90 px-6 py-3 rounded-2xl font-semibold flex items-center gap-2 transition-all hover:scale-[1.02] active:scale-95 shadow-sm"
-            >
-              <Play size={18} fill="currentColor" /> {t("Продолжить урок")} </button>
-          </div>
-          
-          {/* Progress Circular indicator mock */}
-          <div className="relative size-32 shrink-0 flex items-center justify-center self-center sm:self-auto">
-            <svg className="size-full -rotate-90" viewBox="0 0 100 100">
-              <circle cx="50" cy="50" r="40" className="stroke-background" strokeWidth="8" fill="none" />
-              <circle cx="50" cy="50" r="40" className="stroke-accent" strokeWidth="8" fill="none" strokeDasharray="251.2" strokeDashoffset={251.2 * (1 - 0.61)} strokeLinecap="round" />
-            </svg>
-            <div className="absolute inset-0 flex flex-col items-center justify-center text-center">
-              <span className="text-2xl font-bold">61%</span>
-              <span className="text-[10px] uppercase font-bold text-muted-foreground tracking-wider">{t("Курса")}</span>
-            </div>
-          </div>
-        </div>
-
-        {/* Stats & Daily Goal */}
-        <div className="flex flex-col gap-6">
-          <div className="bg-white rounded-3xl p-6 border border-border flex items-center justify-between shadow-sm">
-            <div>
-              <p className="text-sm font-medium text-muted-foreground mb-1">{t("Дневная цель")}</p>
-              <p className="text-2xl font-bold text-dark-green"><span className="text-primary">12</span> {t("/ 20 мин")}</p>
-            </div>
-            <div className="size-12 rounded-full bg-sage flex items-center justify-center text-primary">
-              <CheckCircle2 size={24} />
-            </div>
-          </div>
-          <div className="bg-white rounded-3xl p-6 border border-border flex items-center justify-between shadow-sm">
-            <div>
-              <p className="text-sm font-medium text-muted-foreground mb-1">{t("Ударный режим (Streak)")}</p>
-              <p className="text-2xl font-bold text-coral flex items-center gap-1"> {t("4 дня")} <span className="text-xl">🔥</span>
-              </p>
-            </div>
-          </div>
-        </div>
+export default function Dashboard({ name, onNavigate }: { name: string; onNavigate: (screen: Screen, slug?: string) => void }) {
+  const { t, language } = useLanguage();
+  const { data, error, retry } = useCatalog();
+  const lessons = data?.curricula.flatMap(c => c.levels.flatMap(l => l.units.flatMap(u => u.lessons))) ?? [];
+  const completed = lessons.filter(l => l.progress.completedAt).length;
+  const available = lessons.filter(l => !l.locked && !l.progress.completedAt);
+  const next = available.find(l => l.progress.nextBlock > 0) ?? available[0];
+  return <section className="max-w-4xl mx-auto space-y-8">
+    <header><h1 className="text-3xl font-bold text-dark-green">{t('Здравствуйте')}, {name}!</h1><p className="mt-3 text-foreground/65">{t('Продолжайте изучать китайский шаг за шагом.')}</p></header>
+    {error ? <div role="alert"><p>{t('Не удалось загрузить учебные данные.')}</p><button className="underline" onClick={retry}>{t('Повторить')}</button></div> : !data ? <p role="status">{t('Загрузка…')}</p> : <>
+      <div className="grid sm:grid-cols-2 gap-4"><div className="bg-card border border-border rounded-2xl p-6"><BookOpen className="text-primary mb-3" /><p>{t('Опубликовано уроков')}</p><strong className="text-3xl">{lessons.length}</strong></div>
+        <div className="bg-card border border-border rounded-2xl p-6"><CheckCircle2 className="text-primary mb-3" /><p>{t('Завершено')}</p><strong className="text-3xl">{completed} / {lessons.length}</strong></div></div>
+      <div className="bg-secondary rounded-2xl p-6 sm:p-8 space-y-4"><h2 className="text-xl font-semibold">{next ? next.title[language] : t(lessons.length ? 'Все опубликованные уроки завершены.' : 'Материалы готовятся.')}</h2>
+        {next && <p>{next.progress.nextBlock}/{next.blockCount} {t('блоков')}</p>}
+        <button onClick={() => next ? onNavigate('lesson', next.slug) : onNavigate('catalog')} className="inline-flex items-center gap-3 rounded-xl bg-primary text-primary-foreground px-6 py-3 font-semibold">{t(next ? next.progress.nextBlock ? 'Продолжить' : 'Начать урок' : 'Курсы')}<ArrowRight size={18} /></button>
       </div>
-
-      {/* Next Up / Spaced Repetition */}
-      <section>
-        <div className="flex justify-between items-center mb-4">
-          <h3 className="text-xl font-bold text-dark-green">{t("Повторение")}</h3>
-        </div>
-        <div className="bg-coral text-white rounded-3xl p-6 sm:p-8 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-6 shadow-sm relative overflow-hidden">
-          <div className="absolute top-0 right-0 p-8 opacity-10">
-            <RefreshCw size={120} />
-          </div>
-          <div className="relative z-10">
-            <h4 className="text-xl font-bold mb-2">{t("24 карточки ждут вас")}</h4>
-            <p className="text-white/80 max-w-sm mb-4">{t("Интервальное повторение — ключ к запоминанию иероглифов.")}</p>
-            <button onClick={() => onNavigate('reviews')} className="bg-white text-coral hover:bg-white/90 px-5 py-2.5 rounded-xl font-bold transition-all shadow-sm active:scale-95"> {t("Начать повторение")} </button>
-          </div>
-        </div>
-      </section>
-
-      {/* Courses block */}
-      <section>
-        <div className="flex justify-between items-center mb-4">
-          <h3 className="text-xl font-bold text-dark-green">{t("Ваши курсы")}</h3>
-          <button onClick={() => onNavigate('catalog')} className="text-primary font-medium hover:underline text-sm flex items-center"> {t("Все курсы")} <ChevronRight size={16} />
-          </button>
-        </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <div className="group cursor-pointer bg-white rounded-2xl p-4 sm:p-5 border border-border hover:border-primary/30 transition-all hover:shadow-sm">
-            <div className="flex items-center gap-4">
-              <div className="size-14 rounded-2xl bg-sage flex items-center justify-center font-bold text-xl text-primary">
-                1
-              </div>
-              <div className="flex-1">
-                <h4 className="font-bold text-lg group-hover:text-primary transition-colors">{t("HSK 1: Базовый")}</h4>
-                <div className="w-full bg-secondary h-2 rounded-full mt-2 overflow-hidden">
-                  <div className="bg-primary h-full w-[61%] rounded-full"></div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-    </div>
-  );
+    </>}
+  </section>;
 }

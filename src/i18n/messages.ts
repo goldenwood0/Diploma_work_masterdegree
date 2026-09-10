@@ -1,5 +1,7 @@
 // Russian source strings are stable keys; missing translations fall back to Russian.
+import { learningMessages } from './learningMessages';
 export const messages: Record<string, { en: string; kk: string }> = {
+  ...learningMessages,
   "Загрузка аккаунта…": {
     "en": "Loading account…",
     "kk": "Аккаунт жүктелуде…"

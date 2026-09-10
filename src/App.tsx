@@ -17,7 +17,7 @@ import useAccount from './app/useAccount';
 
 export default function App() {
   const { t } = useLanguage();
-  const [currentScreen, setCurrentScreen] = useRoute();
+  const [currentScreen, setCurrentScreen, lessonSlug] = useRoute();
   const [isAiTutorOpen, setIsAiTutorOpen] = useState(false);
   const { account, loading, error, refresh, accept } = useAccount();
 
@@ -85,7 +85,7 @@ export default function App() {
       <main className="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-6 lg:p-8 pt-6 sm:pt-10 transition-all duration-300">
         {currentScreen === 'dashboard' && <Dashboard name={account.name} onNavigate={setCurrentScreen} />}
         {currentScreen === 'catalog' && <Catalog onNavigate={setCurrentScreen} />}
-        {currentScreen === 'lesson' && <Lesson onNavigate={setCurrentScreen} openAiTutor={() => setIsAiTutorOpen(true)} />}
+        {currentScreen === 'lesson' && <Lesson key={lessonSlug} slug={lessonSlug} onNavigate={setCurrentScreen} />}
         {currentScreen === 'profile' && <Profile account={account} onSignedOut={refresh} onSaved={accept} />}
         {currentScreen === 'reviews' && <Reviews />}
         {currentScreen === 'not-found' && <NotFound />} 

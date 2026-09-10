@@ -1,116 +1,58 @@
-import { useLanguage } from '../i18n/LanguageProvider';
-import { BookOpen, User, Volume2, Sparkles, ChevronLeft } from 'lucide-react';
+import { useEffect, useRef, useState } from 'react';
+import { ArrowLeft, CheckCircle2 } from 'lucide-react';
+import { completeBlock, getLesson, type LessonData } from '../api/learning';
+import { ApiError } from '../api/client';
 import type { Screen } from '../app/routes';
-import WordCard from '../components/WordCard';
+import { useLanguage } from '../i18n/LanguageProvider';
+import LessonAudio from '../components/LessonAudio';
 
-export default function Lesson({ onNavigate, openAiTutor }: { onNavigate: (screen: Screen) => void, openAiTutor: () => void }) {
-  const { t, explain } = useLanguage();
-  return (
-    <div className="max-w-4xl mx-auto animate-in fade-in zoom-in-95 duration-500 pb-24">
-      {/* Lesson Header */}
-      <div className="flex items-center justify-between mb-8">
-        <button 
-          onClick={() => onNavigate('catalog')}
-          className="text-muted-foreground hover:text-foreground flex items-center gap-1 font-medium transition-colors"
-        >
-          <ChevronLeft size={20} />
-          <span>{t("Назад")}</span>
-        </button>
-        <div className="flex items-center gap-4">
-           <span className="text-sm font-bold text-muted-foreground uppercase tracking-widest hidden sm:inline-block">HSK 1</span>
-           <div className="w-32 sm:w-48 bg-secondary h-2.5 rounded-full overflow-hidden">
-             <div className="bg-accent h-full w-1/3 rounded-full"></div>
-           </div>
-           <span className="text-sm font-bold text-dark-green">1/3</span>
-        </div>
+export default function Lesson({ slug, onNavigate }: { slug: string; onNavigate: (screen: Screen) => void }) {
+  const { t, language, explanationLanguage } = useLanguage();
+  const [lesson, setLesson] = useState<LessonData | null>(null);
+  const [index, setIndex] = useState(0);
+  const [error, setError] = useState('');
+  const [saving, setSaving] = useState(false);
+  const [attempt, setAttempt] = useState(0);
+  const lifetime = useRef<AbortController | null>(null);
+  const pending = useRef(false);
+  useEffect(() => {
+    const controller = new AbortController(); lifetime.current = controller;
+    setLesson(null); setError(''); setSaving(false); pending.current = false;
+    getLesson(slug, controller.signal).then(value => { if (!controller.signal.aborted) { setLesson(value); setIndex(Math.min(value.progress.nextBlock, value.blocks.length - 1)); } })
+      .catch(err => { if (!controller.signal.aborted) setError(err instanceof ApiError ? err.message : 'Не удалось загрузить учебные данные.'); });
+    return () => controller.abort();
+  }, [slug, attempt]);
+  async function advance() {
+    if (!lesson || pending.current || !lifetime.current) return;
+    const signal = lifetime.current.signal;
+    if (index < lesson.progress.nextBlock) { setIndex(i => Math.min(i + 1, lesson.blocks.length - 1)); return; }
+    pending.current = true; setSaving(true); setError('');
+    try {
+      const progress = await completeBlock(lesson, lesson.blocks[index].id, signal);
+      if (!signal.aborted) { setLesson({ ...lesson, progress }); setIndex(Math.min(progress.nextBlock, lesson.blocks.length - 1)); }
+    } catch (err) {
+      if (!signal.aborted) setError(err instanceof ApiError ? err.message : 'Не удалось сохранить прогресс.');
+    } finally { if (!signal.aborted) { pending.current = false; setSaving(false); } }
+  }
+  const block = lesson?.blocks[index];
+  return <section className="max-w-3xl mx-auto space-y-6">
+    <button className="flex items-center gap-2 text-primary" onClick={() => onNavigate('catalog')}><ArrowLeft size={18} />{t('Курсы')}</button>
+    {error && <div role="alert" className="rounded-xl border border-border p-4 space-y-2"><p>{t(error)}</p><button disabled={saving} className="underline" onClick={() => setAttempt(a => a + 1)}>{t('Обновить урок')}</button></div>}
+    {!lesson && !error && <p role="status">{t('Загрузка…')}</p>}
+    {lesson && block && <>
+      <h1 className="text-3xl font-bold text-dark-green">{lesson.title[language]}</h1>
+      <div><div className="flex justify-between text-sm mb-2"><span>{t('Прогресс сохранён в аккаунте')}</span><span>{lesson.progress.nextBlock}/{lesson.blocks.length}</span></div><progress aria-label={t('Прогресс урока')} value={lesson.progress.nextBlock} max={lesson.blocks.length} className="w-full h-2 accent-primary" /></div>
+      {lesson.progress.completedAt && <p role="status" className="flex items-center gap-2 text-primary"><CheckCircle2 size={22} />{t('Урок завершён. Можно повторить материал.')}</p>}
+      <div role="group" aria-label={t('Блоки урока')} className="flex flex-wrap gap-2">{lesson.blocks.map((b, i) => <button key={b.id} aria-current={i === index ? 'step' : undefined} disabled={saving || i > lesson.progress.nextBlock} onClick={() => setIndex(i)} className={`size-10 rounded-full border border-border disabled:opacity-40 ${index === i ? 'bg-primary text-primary-foreground' : 'bg-card'}`}>{i + 1}</button>)}</div>
+      <article className="bg-card border border-border rounded-2xl p-5 sm:p-8 space-y-6" key={block.id}>
+        <h2 className="text-xl font-bold">{block.content.title[explanationLanguage]}</h2>
+        {block.kind === 'vocabulary' && <div className="grid sm:grid-cols-2 gap-4">{block.content.words.map(word => <div key={word.hanzi} className="bg-secondary rounded-xl p-5"><p lang="zh-CN" className="text-4xl sc-text">{word.hanzi}</p><p className="text-primary text-lg my-2">{word.pinyin}</p><p>{word.translation[explanationLanguage]}</p></div>)}</div>}
+        {block.kind === 'reading' && <><p className="leading-relaxed">{block.content.text[explanationLanguage]}</p><div className="bg-secondary rounded-xl p-5 space-y-3"><p lang="zh-CN" className="text-3xl sc-text whitespace-pre-line leading-relaxed">{block.content.hanzi}</p><p className="text-primary whitespace-pre-line">{block.content.pinyin}</p><p className="whitespace-pre-line">{block.content.translation[explanationLanguage]}</p></div></>}
+        {block.kind === 'audio' && <LessonAudio content={block.content} />}
+      </article>
+      <div className="flex justify-between gap-3"><button disabled={index === 0 || saving} className="px-4 py-3 rounded-xl border border-border disabled:opacity-40" onClick={() => setIndex(i => i - 1)}>{t('Назад')}</button>
+        {lesson.progress.completedAt && index === lesson.blocks.length - 1 ? <button className="bg-primary text-primary-foreground rounded-xl px-5 py-3" onClick={() => onNavigate('catalog')}>{t('Курсы')}</button> : <button disabled={saving} className="bg-primary text-primary-foreground rounded-xl px-5 py-3 disabled:opacity-50" onClick={() => void advance()}>{t(saving ? 'Сохранение…' : index === lesson.blocks.length - 1 ? 'Завершить урок' : 'Продолжить')}</button>}
       </div>
-
-      <div className="text-center mb-10">
-        <h1 className="text-3xl font-bold text-dark-green mb-3">{t("你好 — первое приветствие")}</h1>
-        <p className="text-muted-foreground">{explain("Цель: научиться здороваться и называть себя.")}</p>
-      </div>
-
-      <div className="space-y-8">
-        {/* Flashcards */}
-        <section>
-          <h2 className="text-lg font-bold text-dark-green mb-4 flex items-center gap-2"> {t("Новые слова")} </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            <WordCard hz="你" py="nǐ" ru="ты" />
-            <WordCard hz="好" py="hǎo" ru="хорошо, хороший" />
-            <WordCard hz="我" py="wǒ" ru="я" />
-            <WordCard hz="叫" py="jiào" ru="звать, называться" />
-          </div>
-        </section>
-
-        {/* Grammar highlight */}
-        <section className="bg-sage/50 border border-border rounded-3xl p-6 sm:p-8">
-          <div className="flex items-start gap-4">
-             <div className="bg-white p-3 rounded-2xl shadow-sm text-primary shrink-0">
-               <BookOpen size={24} />
-             </div>
-             <div>
-               <h3 className="text-xl font-bold text-dark-green mb-2">{t("Грамматика: Приветствие")}</h3>
-               <p className="text-foreground/80 leading-relaxed"> {explain("В китайском языке самое распространенное приветствие")} <strong>你好 (nǐ hǎo)</strong> {explain("буквально переводится как «ты хороший». Когда два третьих тона (nǐ и hǎo) идут подряд, первый слог читается вторым тоном.")} </p>
-             </div>
-          </div>
-        </section>
-
-        {/* Mini Dialogue */}
-        <section>
-          <h2 className="text-lg font-bold text-dark-green mb-4">{t("Диалог")}</h2>
-          <div className="bg-white border border-border rounded-3xl p-6 sm:p-8 space-y-6 shadow-sm">
-            
-            {/* Message 1 */}
-            <div className="flex gap-4 max-w-2xl">
-              <div className="size-10 sm:size-12 rounded-full bg-secondary shrink-0 overflow-hidden flex items-center justify-center">
-                <User size={24} className="text-muted-foreground" />
-              </div>
-              <div className="bg-secondary rounded-2xl rounded-tl-sm p-4 sm:p-5">
-                <div className="flex items-center justify-between gap-4 mb-2">
-                  <div className="sc-text text-2xl sm:text-3xl font-bold">你好！</div>
-                  <button className="text-primary hover:bg-white p-2 rounded-full transition-colors shrink-0">
-                    <Volume2 size={20} />
-                  </button>
-                </div>
-                <div className="text-primary font-medium mb-1 tracking-wide text-sm sm:text-base">Nǐ hǎo!</div>
-                <div className="text-foreground/80 text-sm sm:text-base">{explain("Привет!")}</div>
-              </div>
-            </div>
-
-            {/* Message 2 */}
-            <div className="flex gap-4 max-w-2xl ml-auto flex-row-reverse">
-              <div className="size-10 sm:size-12 rounded-full bg-primary/20 shrink-0 overflow-hidden flex items-center justify-center">
-                <User size={24} className="text-primary" />
-              </div>
-              <div className="bg-primary text-primary-foreground rounded-2xl rounded-tr-sm p-4 sm:p-5">
-                <div className="flex items-center justify-between gap-4 mb-2 flex-row-reverse">
-                  <div className="sc-text text-2xl sm:text-3xl font-bold">你好！我叫 Айдана。</div>
-                  <button className="text-white hover:bg-white/20 p-2 rounded-full transition-colors shrink-0">
-                    <Volume2 size={20} />
-                  </button>
-                </div>
-                <div className="text-primary-foreground/80 font-medium mb-1 tracking-wide text-sm sm:text-base text-right">Nǐ hǎo! Wǒ jiào Aidana.</div>
-                <div className="text-primary-foreground/90 text-sm sm:text-base text-right">{explain("Привет! Меня зовут Айдана.")}</div>
-              </div>
-            </div>
-
-          </div>
-        </section>
-      </div>
-
-      <div className="fixed bottom-0 left-0 right-0 bg-background/90 backdrop-blur-md border-t border-border p-4 z-20 flex justify-center gap-4">
-        <button 
-          onClick={openAiTutor}
-          className="px-6 py-4 rounded-2xl font-bold transition-all shadow-sm flex items-center gap-2 bg-white border border-border text-foreground hover:bg-secondary active:scale-95"
-        >
-          <Sparkles size={20} className="text-accent-foreground" />
-          <span className="hidden sm:inline">{t("Спросить AI")}</span>
-        </button>
-        <button 
-          onClick={() => onNavigate('catalog')}
-          className="w-full max-w-sm bg-primary text-primary-foreground hover:bg-primary/90 px-8 py-4 rounded-2xl font-bold text-lg transition-all shadow-sm active:scale-95"
-        > {t("Завершить урок")} </button>
-      </div>
-    </div>
-  );
+    </>}
+  </section>;
 }

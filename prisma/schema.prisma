@@ -29,6 +29,72 @@ model User {
   settings        UserSettings?
   sessions        Session[]
   tokens          AccountToken[]
+  lessonProgress  LessonProgress[]
+}
+
+model Curriculum {
+  id     String @id
+  title  Json
+  levels CourseLevel[]
+}
+
+model CourseLevel {
+  id           String @id
+  curriculumId String
+  curriculum   Curriculum @relation(fields: [curriculumId], references: [id], onDelete: Cascade)
+  number       Int
+  units        CourseUnit[]
+  @@unique([curriculumId, number])
+}
+
+model CourseUnit {
+  id      String @id
+  levelId String
+  level   CourseLevel @relation(fields: [levelId], references: [id], onDelete: Cascade)
+  position Int
+  title   Json
+  lessons Lesson[]
+  @@unique([levelId, position])
+}
+
+model Lesson {
+  id             String @id @default(uuid())
+  slug           String @unique
+  unitId         String
+  unit           CourseUnit @relation(fields: [unitId], references: [id], onDelete: Cascade)
+  position       Int
+  title          Json
+  minutes        Int @default(10)
+  published      Boolean @default(false)
+  revision       Int @default(1)
+  prerequisiteId String?
+  prerequisite   Lesson? @relation("Unlock", fields: [prerequisiteId], references: [id], onDelete: Restrict)
+  successors     Lesson[] @relation("Unlock")
+  blocks         LessonBlock[]
+  progress       LessonProgress[]
+  @@unique([unitId, position])
+}
+
+model LessonBlock {
+  id       String @id @default(uuid())
+  lessonId String
+  lesson   Lesson @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+  position Int
+  kind     String
+  content  Json
+  @@unique([lessonId, position])
+}
+
+model LessonProgress {
+  userId      String
+  user        User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  lessonId    String
+  lesson      Lesson @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+  nextBlock   Int @default(0)
+  revision    Int
+  completedAt DateTime?
+  updatedAt   DateTime @updatedAt
+  @@id([userId, lessonId])
 }
 
 model UserSettings {

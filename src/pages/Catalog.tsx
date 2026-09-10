@@ -1,100 +1,27 @@
+import { BookOpen, CheckCircle2, Lock } from 'lucide-react';
 import { useLanguage } from '../i18n/LanguageProvider';
-import { Play, Lock, ChevronRight } from 'lucide-react';
+import useCatalog from '../app/useCatalog';
 import type { Screen } from '../app/routes';
 
-export default function Catalog({ onNavigate }: { onNavigate: (screen: Screen) => void }) {
-  const { t } = useLanguage();
-  return (
-    <div className="max-w-3xl mx-auto space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500 pb-20">
-      <header className="mb-8">
-        <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-dark-green">{t("Каталог курсов")}</h1>
-        <p className="text-muted-foreground mt-2 font-medium">{t("Ваш путь от новичка до свободного владения.")}</p>
-      </header>
-
-      <div className="relative pl-6 sm:pl-10 space-y-8">
-        {/* Vertical Line */}
-        <div className="absolute top-4 bottom-4 left-7 sm:left-11 w-0.5 bg-border -z-10"></div>
-
-        {/* HSK 1 - Active */}
-        <div className="relative">
-          <div className="absolute -left-6 sm:-left-10 bg-primary text-primary-foreground size-8 rounded-full flex items-center justify-center font-bold text-sm ring-4 ring-background">
-            1
-          </div>
-          <div className="bg-white rounded-3xl p-6 border-2 border-primary/20 shadow-sm transition-all hover:shadow-md">
-            <div className="flex justify-between items-start mb-4">
-              <div>
-                <span className="text-primary font-bold text-sm tracking-wider uppercase">{t("В процессе")}</span>
-                <h3 className="text-2xl font-bold mt-1 text-dark-green">{t("HSK 1: Базовый")}</h3>
-              </div>
-              <span className="bg-secondary text-primary px-3 py-1 text-xs font-bold rounded-lg">{t("150 слов")}</span>
-            </div>
-            <p className="text-muted-foreground mb-6">{t("Основы фонетики (пиньинь), простая грамматика и самые необходимые фразы для выживания.")}</p>
-            
-            <div className="space-y-3">
-              <h4 className="font-bold text-sm text-dark-green uppercase tracking-wider mb-2">{t("Раздел 1: Первые фразы")}</h4>
-              <div 
-                onClick={() => onNavigate('lesson')}
-                className="group flex items-center justify-between p-4 bg-sage rounded-2xl cursor-pointer hover:bg-primary/5 transition-colors"
-              >
-                <div className="flex items-center gap-4">
-                  <div className="size-10 rounded-xl bg-white flex items-center justify-center shadow-sm text-primary">
-                    <Play size={16} fill="currentColor" />
-                  </div>
-                  <div>
-                    <h5 className="font-bold text-dark-green group-hover:text-primary transition-colors">{t("你好 — первое приветствие")}</h5>
-                    <p className="text-xs text-muted-foreground mt-0.5">{t("12 мин • Урок 1")}</p>
-                  </div>
-                </div>
-                <ChevronRight className="text-muted-foreground group-hover:text-primary transition-colors" />
-              </div>
-              
-              <div className="flex items-center justify-between p-4 bg-secondary/50 rounded-2xl opacity-70">
-                <div className="flex items-center gap-4">
-                  <div className="size-10 rounded-xl bg-background flex items-center justify-center border border-border text-muted-foreground">
-                    <Lock size={16} />
-                  </div>
-                  <div>
-                    <h5 className="font-bold text-muted-foreground">{t("Меня зовут...")}</h5>
-                    <p className="text-xs text-muted-foreground/70 mt-0.5">{t("15 мин • Урок 2")}</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* HSK 2 - Locked */}
-        <div className="relative opacity-60 hover:opacity-100 transition-opacity">
-          <div className="absolute -left-6 sm:-left-10 bg-secondary text-muted-foreground size-8 rounded-full flex items-center justify-center font-bold text-sm ring-4 ring-background border border-border">
-            2
-          </div>
-          <div className="bg-white rounded-3xl p-6 border border-border shadow-sm">
-             <div className="flex justify-between items-start mb-2">
-              <div>
-                <div className="flex items-center gap-2 text-muted-foreground font-bold text-sm tracking-wider uppercase">
-                  <Lock size={14} /> {t("Заблокировано")} </div>
-                <h3 className="text-2xl font-bold mt-1 text-dark-green">{t("HSK 2: Элементарный")}</h3>
-              </div>
-              <span className="bg-secondary text-muted-foreground px-3 py-1 text-xs font-bold rounded-lg">{t("+150 слов")}</span>
-            </div>
-            <p className="text-muted-foreground">{t("Продолжение базового уровня. Больше тем для общения на повседневные темы.")}</p>
-          </div>
-        </div>
-        
-        {/* HSK 3 - Locked */}
-        <div className="relative opacity-50">
-          <div className="absolute -left-6 sm:-left-10 bg-secondary text-muted-foreground size-8 rounded-full flex items-center justify-center font-bold text-sm ring-4 ring-background border border-border">
-            3
-          </div>
-          <div className="bg-white rounded-3xl p-6 border border-border shadow-sm flex justify-between items-center">
-            <div>
-              <h3 className="text-xl font-bold text-dark-green">{t("HSK 3: Средний")}</h3>
-              <p className="text-sm text-muted-foreground mt-1">{t("+300 слов")}</p>
-            </div>
-            <Lock className="text-muted-foreground" size={20} />
-          </div>
-        </div>
-      </div>
-    </div>
-  );
+export default function Catalog({ onNavigate }: { onNavigate: (screen: Screen, slug?: string) => void }) {
+  const { t, language } = useLanguage();
+  const { data, error, retry } = useCatalog();
+  return <section className="max-w-4xl mx-auto space-y-6">
+    <h1 className="text-3xl font-bold text-dark-green">{t('Курсы')}</h1>
+    <p className="text-foreground/65">{t('Пилотный модуль HSK 1. Материалы проходят методическую проверку.')}</p>
+    {error ? <div role="alert"><p>{t('Не удалось загрузить учебные данные.')}</p><button className="underline" onClick={retry}>{t('Повторить')}</button></div> : !data ? <p role="status">{t('Загрузка…')}</p> : data.curricula.length === 0 ? <p>{t('Материалы готовятся.')}</p> : data.curricula.map(curriculum => <div key={curriculum.id} className="space-y-5">
+      <h2 className="text-xl font-semibold">{curriculum.title[language]}</h2>
+      {curriculum.levels.map(level => <section key={level.id} className="bg-card rounded-2xl border border-border p-5 sm:p-7 space-y-4">
+        <h3 className="text-2xl font-bold">HSK {level.number}</h3>
+        {!level.units.some(unit => unit.lessons.length > 0) && <p className="text-foreground/60">{t('Материалы готовятся.')}</p>}
+        {level.units.map(unit => <div key={unit.id} className="space-y-3"><h4 className="font-semibold">{unit.title[language]}</h4>
+          {unit.lessons.map(lesson => <button key={lesson.id} disabled={lesson.locked} onClick={() => onNavigate('lesson', lesson.slug)} className="w-full flex items-center gap-4 text-left rounded-xl border border-border p-4 hover:bg-secondary disabled:opacity-60 disabled:cursor-not-allowed">
+            {lesson.locked ? <Lock size={22} className="shrink-0" /> : lesson.progress.completedAt ? <CheckCircle2 size={22} className="text-primary shrink-0" /> : <BookOpen size={22} className="text-primary shrink-0" />}
+            <span className="flex-1"><span className="block font-semibold">{lesson.title[language]}</span><span className="text-sm text-foreground/65">{lesson.minutes} {t('мин')} · {lesson.progress.nextBlock}/{lesson.blockCount} {t('блоков')}</span>
+              <span className="block text-sm">{t(lesson.locked ? 'Сначала завершите предыдущий урок.' : lesson.progress.completedAt ? 'Завершено' : lesson.progress.nextBlock ? 'Продолжить' : 'Начать урок')}</span></span>
+          </button>)}
+        </div>)}
+      </section>)}
+    </div>)}
+  </section>;
 }
