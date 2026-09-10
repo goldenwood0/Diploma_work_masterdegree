@@ -9,7 +9,7 @@ function load(file, dependencies = {}) {
   vm.runInNewContext(source, scope);
   return scope.exports;
 }
-const dictionary = load('src/i18n/messages.ts');
+const dictionary = load('src/i18n/messages.ts', { './learningMessages': load('src/i18n/learningMessages.ts') });
 const { translate } = load('src/i18n/translate.ts', { './messages': dictionary });
 assert.equal(translate('Главная', 'ru'), 'Главная');
 assert.equal(translate('Главная', 'en'), 'Home');
