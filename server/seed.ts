@@ -1,4 +1,5 @@
 import { PrismaClient, type Prisma } from "@prisma/client"
+import { seedQuizzes } from './seed-quizzes.js'
 
 const db = new PrismaClient()
 const l = (ru: string, kk: string, en: string) => ({ ru, kk, en })
@@ -238,9 +239,10 @@ try {
       })
       prerequisiteId = stored.id
     }
+    await seedQuizzes(tx)
   })
   console.log(
-    "Pilot curriculum ready: HSK 1–6, four HSK 1 lessons. Editorial review pending.",
+    "Pilot curriculum ready: HSK 1–6, four lessons and a module test. Editorial review pending.",
   )
 } finally {
   await db.$disconnect()

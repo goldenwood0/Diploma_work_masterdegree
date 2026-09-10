@@ -1,5 +1,9 @@
 # Архитектура на старте
 
+Спринт 4: `Quiz` и `QuizAttempt`, серверный модуль проверки `server/quiz.ts`,
+форма `QuizPanel` с шестью типами заданий. Урок с тестом завершается только при
+зачёте. Контракт и правила версий: [SPRINT_4.md](SPRINT_4.md).
+
 Спринт 3: каталог и блоки уроков в PostgreSQL, `LearningController`, прогресс
 по пользователю/уроку, проверка зависимостей и версии содержания. API:
 `GET /api/learning/catalog`, `GET /api/learning/lessons/:slug`,

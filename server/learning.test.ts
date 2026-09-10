@@ -122,6 +122,7 @@ beforeEach(async () => {
 })
 afterEach(async () => {
   if (db) {
+    await db.quizAttempt.deleteMany({ where: { userId: { in: users ?? [] } } })
     await db.user.deleteMany({ where: { id: { in: users ?? [] } } })
     await db.lesson.updateMany({
       where: { unitId: fixture },
@@ -225,3 +226,51 @@ test("content revision rejects stale writes and restarts the new block sequence"
     1,
   )
 })
+
+const submitAttempt = (body: object, cookie = session) => api.post(`/api/learning/lessons/${first}/attempts`).set('Cookie', cookie).set('Origin', process.env.APP_ORIGIN!).set('X-ZhPath-Request', '1').send(body);
+async function prepareQuiz() {
+  const lesson = await db.lesson.findUniqueOrThrow({ where: { slug: first } });
+  return db.quiz.create({ data: { lessonId: lesson.id, questions: [{ id: 'q1', kind: 'input', prompt: title, explanation: title, accepted: ['你好'] }] } });
+}
+const attemptBody = (value = '你好') => ({ requestId: randomUUID(), quizRevision: 1, lessonRevision: 1, answers: [{ questionId: 'q1', value }] });
+
+test('quiz gates completion, keeps answer keys private and persists failed and passed attempts', async () => {
+  const quiz = await prepareQuiz();
+  await get(`lessons/${first}/quiz`).expect(403);
+  await submitAttempt(attemptBody()).expect(403);
+  for (const blockId of blocks) await put(first, { blockId, revision: 1 }).expect(200);
+  assert.equal((await get(`lessons/${first}`).expect(200)).body.progress.completedAt, null);
+  const view = (await get(`lessons/${first}/quiz`).expect(200)).body;
+  assert.equal(view.questions[0].accepted, undefined); assert.equal(view.questions[0].explanation, undefined);
+  const failed = await submitAttempt(attemptBody('谢谢')).expect(200);
+  assert.equal(failed.body.result.passed, false);
+  await get(`lessons/${second}`).expect(403);
+  const passed = await submitAttempt(attemptBody()).expect(200);
+  assert.equal(passed.body.result.passed, true);
+  await get(`lessons/${second}`).expect(200);
+  const anotherDevice = await device(users[0]);
+  const history = (await get(`lessons/${first}/quiz`, anotherDevice).expect(200)).body.attempts;
+  assert.equal(history.length, 2); assert.equal(history[0].id, passed.body.id);
+  await get(`lessons/${first}/quiz`, other).expect(403);
+  const stored = await db.quizAttempt.findUniqueOrThrow({ where: { id: passed.body.id } });
+  assert.ok(stored.snapshot); assert.equal(stored.quizId, quiz.id);
+  await submitAttempt(attemptBody('错')).expect(200);
+  await get(`lessons/${second}`).expect(200);
+});
+
+test('quiz submissions are idempotent, reject altered retries and retain historical snapshots', async () => {
+  const quiz = await prepareQuiz();
+  for (const blockId of blocks) await put(first, { blockId, revision: 1 }).expect(200);
+  const body = attemptBody();
+  const responses = await Promise.all([submitAttempt(body), submitAttempt(body)]);
+  assert.ok(responses.some(r => r.status === 200)); assert.ok(responses.every(r => [200, 409].includes(r.status)));
+  const replay = await submitAttempt(body).expect(200);
+  assert.equal(await db.quizAttempt.count({ where: { quizId: quiz.id } }), 1);
+  await submitAttempt({ ...body, answers: [{ questionId: 'q1', value: 'changed' }] }).expect(409);
+  await submitAttempt({ ...attemptBody(), score: 100 }).expect(400);
+  await db.quiz.update({ where: { id: quiz.id }, data: { revision: 2, questions: [{ id: 'q2', kind: 'input', prompt: title, explanation: title, accepted: ['再见'] }] } });
+  await submitAttempt(attemptBody()).expect(409);
+  assert.equal((await submitAttempt(body).expect(200)).body.id, replay.body.id);
+  const history = (await get(`lessons/${first}/quiz`).expect(200)).body;
+  assert.equal(history.questions[0].id, 'q2'); assert.equal(history.attempts[0].result.items[0].expected, '你好');
+});

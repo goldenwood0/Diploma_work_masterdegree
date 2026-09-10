@@ -5,6 +5,7 @@ import { ApiError } from "../api/client"
 import type { Screen } from "../app/routes"
 import { useLanguage } from "../i18n/LanguageProvider"
 import LessonAudio from "../components/LessonAudio"
+import QuizPanel from '../components/QuizPanel'
 
 export default function Lesson({
   slug,
@@ -192,6 +193,7 @@ export default function Lesson({
             )}
             {block.kind === "audio" && <LessonAudio content={block.content} />}
           </article>
+          {lesson.quiz && lesson.progress.nextBlock === lesson.blocks.length && index === lesson.blocks.length - 1 && <QuizPanel key={`${lesson.id}-${lesson.revision}`} slug={slug} onPassed={at => setLesson(current => current ? { ...current, progress: { ...current.progress, completedAt: current.progress.completedAt ?? at } } : current)} />}
           <div className="flex justify-between gap-3">
             <button
               disabled={index === 0 || saving}
@@ -200,7 +202,7 @@ export default function Lesson({
             >
               {t("Назад")}
             </button>
-            {lesson.progress.completedAt &&
+            {(lesson.progress.completedAt || (lesson.quiz && lesson.progress.nextBlock === lesson.blocks.length)) &&
             index === lesson.blocks.length - 1 ? (
               <button
                 className="bg-primary text-primary-foreground rounded-xl px-5 py-3"
@@ -218,7 +220,7 @@ export default function Lesson({
                   saving
                     ? "Сохранение…"
                     : index === lesson.blocks.length - 1
-                      ? "Завершить урок"
+                      ? lesson.quiz ? "К тесту" : "Завершить урок"
                       : "Продолжить",
                 )}
               </button>

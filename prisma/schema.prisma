@@ -30,6 +30,7 @@ model User {
   sessions        Session[]
   tokens          AccountToken[]
   lessonProgress  LessonProgress[]
+  quizAttempts    QuizAttempt[]
 }
 
 model Curriculum {
@@ -72,6 +73,7 @@ model Lesson {
   successors     Lesson[] @relation("Unlock")
   blocks         LessonBlock[]
   progress       LessonProgress[]
+  quiz           Quiz?
   @@unique([unitId, position])
 }
 
@@ -83,6 +85,38 @@ model LessonBlock {
   kind     String
   content  Json
   @@unique([lessonId, position])
+}
+
+model Quiz {
+  id          String @id @default(uuid())
+  lessonId    String @unique
+  lesson      Lesson @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+  revision    Int @default(1)
+  passPercent Int @default(80)
+  kind        String @default("lesson")
+  questions   Json
+  attempts    QuizAttempt[]
+}
+
+model QuizAttempt {
+  id             String @id @default(uuid())
+  userId         String
+  user           User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  quizId         String
+  quiz           Quiz @relation(fields: [quizId], references: [id], onDelete: Restrict)
+  requestId      String
+  requestHash    String
+  quizRevision   Int
+  lessonRevision Int
+  snapshot       Json
+  answers        Json
+  result         Json
+  score          Int
+  total          Int
+  passed         Boolean
+  createdAt      DateTime @default(now())
+  @@unique([userId, requestId])
+  @@index([userId, quizId, createdAt])
 }
 
 model LessonProgress {

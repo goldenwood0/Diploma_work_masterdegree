@@ -9,12 +9,16 @@ import {
   NotFoundException,
   ForbiddenException,
   ConflictException,
+  Post,
+  HttpCode,
 } from "@nestjs/common"
 import { Prisma } from "@prisma/client"
 import { z } from "zod"
 import { Database } from "./database.js"
 import { SessionGuard, type AuthRequest } from "./security.js"
 import { parse } from "./validation.js"
+import { grade, publicQuestion, questionsSchema, submissionSchema } from './quiz.js'
+import { digest } from './passwords.js'
 
 const checkpoint = z
   .object({
@@ -102,6 +106,7 @@ export class LearningController {
       include: {
         blocks: { orderBy: { position: "asc" } },
         prerequisite: { select: { revision: true } },
+        quiz: { select: { id: true, revision: true, passPercent: true, kind: true } },
       },
     })
     if (!lesson?.published || !lesson.blocks.length)
@@ -163,7 +168,7 @@ export class LearningController {
           const data = {
             nextBlock: index + 1,
             revision: lesson.revision,
-            completedAt: index + 1 === lesson.blocks.length ? new Date() : null,
+            completedAt: index + 1 === lesson.blocks.length && !lesson.quiz ? new Date() : null,
           }
           return db.lessonProgress.upsert({
             where,
@@ -181,6 +186,55 @@ export class LearningController {
         throw new ConflictException("Прогресс изменился. Повторите сохранение.")
       }
       throw error
+    }
+  }
+
+  @Get('lessons/:slug/quiz')
+  async quiz(@Param('slug') slug: string, @Req() req: AuthRequest) {
+    const userId = req.session!.user.id;
+    const lesson = await this.accessible(this.db, slug, userId);
+    const progress = await this.db.lessonProgress.findUnique({ where: { userId_lessonId: { userId, lessonId: lesson.id } } });
+    if (progress?.revision !== lesson.revision || progress.nextBlock !== lesson.blocks.length) throw new ForbiddenException('Сначала прочитайте все блоки урока.');
+    const quiz = await this.db.quiz.findUnique({ where: { lessonId: lesson.id } });
+    if (!quiz) throw new NotFoundException('Тест недоступен.');
+    const attempts = await this.db.quizAttempt.findMany({ where: { userId, quizId: quiz.id }, orderBy: [{ createdAt: 'desc' }, { id: 'desc' }], take: 10,
+      select: { id: true, createdAt: true, quizRevision: true, lessonRevision: true, result: true } });
+    return { id: quiz.id, revision: quiz.revision, lessonRevision: lesson.revision, passPercent: quiz.passPercent, kind: quiz.kind,
+      questions: questionsSchema.parse(quiz.questions).map(publicQuestion), attempts };
+  }
+
+  @Post('lessons/:slug/attempts')
+  @HttpCode(200)
+  async submit(@Param('slug') slug: string, @Req() req: AuthRequest, @Body() body: unknown) {
+    const input = parse(submissionSchema, body);
+    const userId = req.session!.user.id;
+    const requestHash = digest(JSON.stringify({ slug, lessonRevision: input.lessonRevision, quizRevision: input.quizRevision,
+      answers: [...input.answers].sort((a, b) => a.questionId.localeCompare(b.questionId)) }));
+    try {
+      return await this.db.$transaction(async db => {
+        const previous = await db.quizAttempt.findUnique({ where: { userId_requestId: { userId, requestId: input.requestId } } });
+        if (previous) {
+          if (previous.requestHash !== requestHash) throw new ConflictException('Этот запрос уже содержит другой ответ.');
+          return { id: previous.id, createdAt: previous.createdAt, quizRevision: previous.quizRevision, lessonRevision: previous.lessonRevision, result: previous.result };
+        }
+        const lesson = await this.accessible(db, slug, userId);
+        const quiz = await db.quiz.findUnique({ where: { lessonId: lesson.id } });
+        if (!quiz) throw new NotFoundException('Тест недоступен.');
+        if (quiz.revision !== input.quizRevision || lesson.revision !== input.lessonRevision) throw new ConflictException('Урок обновлён. Откройте его заново.');
+        const where = { userId_lessonId: { userId, lessonId: lesson.id } };
+        const progress = await db.lessonProgress.findUnique({ where });
+        if (progress?.revision !== lesson.revision || progress.nextBlock !== lesson.blocks.length) throw new ForbiddenException('Сначала прочитайте все блоки урока.');
+        const questions = questionsSchema.parse(quiz.questions);
+        const result = grade(questions, input.answers, quiz.passPercent);
+        const attempt = await db.quizAttempt.create({ data: { userId, quizId: quiz.id, requestId: input.requestId, requestHash,
+          quizRevision: quiz.revision, lessonRevision: lesson.revision, snapshot: { questions, passPercent: quiz.passPercent, kind: quiz.kind },
+          answers: input.answers, result, score: result.score, total: result.total, passed: result.passed } });
+        if (result.passed && !progress.completedAt) await db.lessonProgress.update({ where, data: { completedAt: new Date() } });
+        return { id: attempt.id, createdAt: attempt.createdAt, quizRevision: attempt.quizRevision, lessonRevision: attempt.lessonRevision, result: attempt.result };
+      }, { isolationLevel: Prisma.TransactionIsolationLevel.Serializable });
+    } catch (error) {
+      if (error instanceof Prisma.PrismaClientKnownRequestError && ['P2034', 'P2002'].includes(error.code)) throw new ConflictException('Прогресс изменился. Повторите сохранение.');
+      throw error;
     }
   }
 }

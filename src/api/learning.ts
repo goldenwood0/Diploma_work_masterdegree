@@ -68,6 +68,7 @@ const lessonSchema = z.object({
   title: localized,
   revision: z.number(),
   blocks: z.array(block).min(1),
+  quiz: z.object({ id: z.string(), revision: z.number(), passPercent: z.number(), kind: z.string() }).nullable(),
   progress,
 })
 export type CatalogData = z.infer<typeof catalogSchema>
