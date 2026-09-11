@@ -333,3 +333,26 @@ test('review intervals have stable UTC durations, reset on again and remain boun
   assert.equal(schedule(365, 100, 'easy', now).interval, 365);
   assert.equal(schedule(1, 1, 'good', now).dueAt.getTime() - now.getTime(), 2 * 86400000);
 });
+
+test('editor workflow protects published lessons, rejects stale edits and audits transitions', async () => {
+  const lesson = await db.lesson.findUniqueOrThrow({ where: { slug: first } });
+  const detail = () => api.get(`/api/content/lessons/${lesson.id}`).set('Cookie', session);
+  const state = (version: number, value: string) => api.post(`/api/content/lessons/${lesson.id}/state`).set('Cookie', session).set('Origin', process.env.APP_ORIGIN!).set('X-ZhPath-Request', '1').send({ version, state: value });
+  const edit = (version: number, minutes = 12) => api.patch(`/api/content/lessons/${lesson.id}`).set('Cookie', session).set('Origin', process.env.APP_ORIGIN!).set('X-ZhPath-Request', '1').send({ version, title, minutes });
+  await detail().expect(403); await edit(0).expect(403);
+  await db.user.update({ where: { id: users[0] }, data: { role: 'EDITOR' } });
+  await detail().expect(200); await edit(0).expect(409); await state(0, 'ARCHIVED').expect(403);
+  await db.user.update({ where: { id: users[0] }, data: { role: 'ADMIN' } });
+  await state(0, 'ARCHIVED').expect(201);
+  await get(`lessons/${first}`, other).expect(404);
+  await state(1, 'DRAFT').expect(201);
+  await db.user.update({ where: { id: users[0] }, data: { role: 'EDITOR' } });
+  await edit(2, 0).expect(400); await edit(2).expect(200); await edit(2).expect(409);
+  await state(3, 'REVIEW').expect(201); await edit(4).expect(409); await state(4, 'PUBLISHED').expect(403);
+  await db.user.update({ where: { id: users[0] }, data: { role: 'ADMIN' } });
+  await state(4, 'PUBLISHED').expect(201);
+  await get(`lessons/${first}`, other).expect(200);
+  const updated = (await detail().expect(200)).body;
+  assert.equal(updated.minutes, 12); assert.equal(updated.editVersion, 5); assert.equal(updated.changes.length, 5);
+  assert.equal(updated.changes[0].snapshot.after.state, 'PUBLISHED');
+});

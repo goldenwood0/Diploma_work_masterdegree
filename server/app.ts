@@ -12,6 +12,7 @@ import { getConfig } from './config.js';
 import { ProfileController } from './profile.controller.js';
 import { LearningController } from './learning.controller.js';
 import { ReviewController } from './review.controller.js';
+import { ContentController } from './content.controller.js';
 
 @Controller('health')
 class HealthController {
@@ -19,7 +20,7 @@ class HealthController {
 }
 
 @Module({
-  controllers: [AuthController, AdminController, HealthController, ProfileController, LearningController, ReviewController],
+  controllers: [AuthController, AdminController, HealthController, ProfileController, LearningController, ReviewController, ContentController],
   providers: [Database, AuthService, Mailer, SessionGuard, AuthRateGuard, { provide: APP_GUARD, useClass: OriginGuard }],
 })
 class AppModule {}

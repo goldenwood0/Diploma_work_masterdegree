@@ -76,6 +76,9 @@ model Lesson {
   blocks         LessonBlock[]
   progress       LessonProgress[]
   quiz           Quiz?
+  editorialState String @default("DRAFT")
+  editVersion    Int @default(0)
+  changes        LessonChange[]
   @@unique([unitId, position])
 }
 
@@ -87,6 +90,17 @@ model LessonBlock {
   kind     String
   content  Json
   @@unique([lessonId, position])
+}
+
+model LessonChange {
+  id        String @id @default(uuid())
+  lessonId  String
+  lesson    Lesson @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+  actorId   String
+  action    String
+  snapshot  Json
+  createdAt DateTime @default(now())
+  @@index([lessonId, createdAt])
 }
 
 model Quiz {

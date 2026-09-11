@@ -4,6 +4,7 @@ export const routes = {
   lesson: "/lessons/hsk1-greetings",
   profile: "/profile",
   reviews: "/reviews",
+  content: "/content",
   login: "/login",
   register: "/register",
   forgotPassword: "/forgot-password",
