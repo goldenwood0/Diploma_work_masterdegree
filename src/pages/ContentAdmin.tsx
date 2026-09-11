@@ -3,6 +3,8 @@ import { listContent, listUnits, createContent, getContent, updateContent, type 
 import { ApiError } from '../api/client';
 import { useLanguage } from '../i18n/LanguageProvider';
 import ContentBlocksEditor, { TranslationFields, emptyTranslation } from '../components/ContentBlocksEditor';
+import ContentQuizEditor from '../components/ContentQuizEditor';
+import type { EditorQuiz } from '../api/contentQuiz';
 const stateLabels: Record<string, string> = { DRAFT: 'Черновик', REVIEW: 'На проверке', PUBLISHED: 'Опубликован', ARCHIVED: 'В архиве' };
 export default function ContentAdmin({ role }: { role: string }) {
   const { t, language, explanationLanguage: lang } = useLanguage();
@@ -16,13 +18,14 @@ export default function ContentAdmin({ role }: { role: string }) {
   const [title, setTitle] = useState(emptyTranslation);
   const [minutes, setMinutes] = useState(10);
   const [blocks, setBlocks] = useState<ContentBlock[]>([]);
+  const [quiz, setQuiz] = useState<EditorQuiz | null>(null);
   const [error, setError] = useState('');
   const [busy, setBusy] = useState(false);
   const [loading, setLoading] = useState(true);
   const [reload, setReload] = useState(0);
   const lifetime = useRef<AbortController | null>(null);
   const pending = useRef(false);
-  const dirty = creating ? !!(title.ru || title.kk || title.en || slug || minutes !== 10 || unitId !== (units[0]?.id ?? '')) : !!detail && (JSON.stringify(title) !== JSON.stringify(detail.title) || minutes !== detail.minutes || JSON.stringify(blocks) !== JSON.stringify(detail.blocks));
+  const dirty = creating ? !!(title.ru || title.kk || title.en || slug || minutes !== 10 || unitId !== (units[0]?.id ?? '')) : !!detail && (JSON.stringify(title) !== JSON.stringify(detail.title) || minutes !== detail.minutes || JSON.stringify(blocks) !== JSON.stringify(detail.blocks) || JSON.stringify(quiz) !== JSON.stringify(detail.quiz));
   useEffect(() => {
     if (!dirty) return;
     const leave = (event: BeforeUnloadEvent) => { event.preventDefault(); event.returnValue = ''; };
@@ -39,7 +42,7 @@ export default function ContentAdmin({ role }: { role: string }) {
     (async () => { try {
       const [list, sections] = await Promise.all([listContent(controller.signal), listUnits(controller.signal)]);
       const value = selected ? await getContent(selected, controller.signal) : null;
-      if (!controller.signal.aborted) { setLessons(list.lessons); setUnits(sections.units); setDetail(value); setTitle(value?.title ?? emptyTranslation()); setMinutes(value?.minutes ?? 10); setBlocks(value?.blocks ?? []); setSlug(''); setUnitId(sections.units[0]?.id ?? ''); }
+      if (!controller.signal.aborted) { setLessons(list.lessons); setUnits(sections.units); setDetail(value); setTitle(value?.title ?? emptyTranslation()); setMinutes(value?.minutes ?? 10); setBlocks(value?.blocks ?? []); setQuiz(value?.quiz ?? null); setSlug(''); setUnitId(sections.units[0]?.id ?? ''); }
     } catch (err) { if (!controller.signal.aborted) setError(err instanceof ApiError ? err.message : 'Не удалось загрузить редактор.'); }
     finally { if (!controller.signal.aborted) setLoading(false); } })();
     return () => controller.abort();
@@ -55,7 +58,7 @@ export default function ContentAdmin({ role }: { role: string }) {
         const created = await createContent({ unitId, slug, title, minutes }, signal);
         if (!signal.aborted) { setCreating(false); setSelected(created.id); }
       } else {
-        await updateContent(detail!.id, nextState ? { version: detail!.editVersion, state: nextState } : { version: detail!.editVersion, title, minutes, blocks: blocks.map(({ kind, content }) => ({ kind, content })) }, !!nextState, signal);
+        await updateContent(detail!.id, nextState ? { version: detail!.editVersion, state: nextState } : { version: detail!.editVersion, title, minutes, ...(quiz ? { quiz } : {}), blocks: blocks.map(({ kind, content }) => ({ kind, content })) }, !!nextState, signal);
         if (!signal.aborted) setReload(n => n + 1);
       }
     } catch (err) { if (!signal.aborted) setError(err instanceof ApiError ? err.message : 'Не удалось сохранить урок.'); }
@@ -70,7 +73,7 @@ export default function ContentAdmin({ role }: { role: string }) {
         {creating && <><label className="block">{t('Раздел')}<select required className="block w-full border border-border rounded-lg p-3" value={unitId} onChange={e => setUnitId(e.target.value)}>{units.map(unit => <option key={unit.id} value={unit.id}>{unit.level.curriculum.title[language]} · HSK {unit.level.number} · {unit.title[language]}</option>)}</select></label><label className="block">{t('Адрес урока')}<input required minLength={3} maxLength={100} pattern="[a-z0-9]+(-[a-z0-9]+)*" placeholder="hsk1-new-lesson" className="block w-full border border-border rounded-lg p-3" value={slug} onChange={e => setSlug(e.target.value)} /></label><p>{t('Урок добавится в конец раздела после предыдущего урока.')}</p></>}
         <TranslationFields label={t('Название урока')} maxLength={200} value={title} onChange={setTitle} />
         <label className="block">{t('Длительность, мин')}<input type="number" min={1} max={120} required value={minutes} onChange={e => setMinutes(Number(e.target.value))} className="block border border-border rounded-lg p-3" /></label>
-        {!creating && <ContentBlocksEditor blocks={blocks} onChange={setBlocks} />}
+        {!creating && <><ContentBlocksEditor blocks={blocks} onChange={setBlocks} /><ContentQuizEditor quiz={quiz} onChange={setQuiz} /></>}
         <button className="bg-primary text-primary-foreground rounded-xl px-5 py-3 disabled:opacity-40">{t(creating ? 'Создать черновик' : 'Сохранить')}</button>
       </fieldset></form>
       {detail && <><div className="flex gap-3 flex-wrap">{(state === 'DRAFT' ? ['REVIEW'] : state === 'REVIEW' ? role === 'ADMIN' ? ['DRAFT', 'PUBLISHED'] : ['DRAFT'] : state === 'PUBLISHED' ? role === 'ADMIN' ? ['ARCHIVED'] : [] : ['DRAFT']).map(next => <button key={next} disabled={busy || dirty} onClick={() => void save(next)} className="border border-border rounded-xl px-5 py-3 disabled:opacity-40">{t({ DRAFT: 'Вернуть в черновик', REVIEW: 'Отправить на проверку', PUBLISHED: 'Опубликовать', ARCHIVED: 'Архивировать' }[next]!)}</button>)}</div>

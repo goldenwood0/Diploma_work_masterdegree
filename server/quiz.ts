@@ -1,17 +1,20 @@
 import { BadRequestException } from '@nestjs/common';
 import { z } from 'zod';
 
-const localized = z.object({ ru: z.string().min(1), kk: z.string().min(1), en: z.string().min(1) });
-const option = z.object({ id: z.string().min(1), text: localized });
-const common = { id: z.string().min(1), prompt: localized, explanation: localized };
-const textAnswer = { accepted: z.array(z.string().min(1)).min(1) };
+const text = z.string().trim().min(1).max(4000);
+const localized = z.object({ ru: text, kk: text, en: text }).strict();
+const key = z.string().trim().min(1).max(100);
+const https = z.url().max(2000).refine(value => new URL(value).protocol === 'https:' && !new URL(value).username && !new URL(value).password);
+const option = z.object({ id: key, text: localized }).strict();
+const common = { id: key, prompt: localized, explanation: localized };
+const textAnswer = { accepted: z.array(z.string().trim().min(1).max(500).refine(value => value.normalize('NFKC').replace(/[\s\p{P}]/gu, '').length > 0)).min(1).max(30) };
 const question = z.discriminatedUnion('kind', [
-  z.object({ ...common, kind: z.literal('choice'), options: z.array(option).min(2), correct: z.string() }),
-  z.object({ ...common, kind: z.literal('match'), left: z.array(option).min(2), right: z.array(option).min(2), correct: z.array(z.string()) }),
-  z.object({ ...common, kind: z.literal('order'), options: z.array(option).min(2), correct: z.array(z.string()) }),
-  z.object({ ...common, kind: z.literal('gap'), ...textAnswer }),
-  z.object({ ...common, kind: z.literal('input'), ...textAnswer }),
-  z.object({ ...common, kind: z.literal('dictation'), ...textAnswer, audioUrl: z.url().startsWith('https://'), sourceUrl: z.url().startsWith('https://'), author: z.string(), license: z.string(), licenseUrl: z.url().startsWith('https://') }),
+  z.object({ ...common, kind: z.literal('choice'), options: z.array(option).min(2).max(30), correct: key }).strict(),
+  z.object({ ...common, kind: z.literal('match'), left: z.array(option).min(2).max(30), right: z.array(option).min(2).max(30), correct: z.array(key).max(30) }).strict(),
+  z.object({ ...common, kind: z.literal('order'), options: z.array(option).min(2).max(30), correct: z.array(key).max(30) }).strict(),
+  z.object({ ...common, kind: z.literal('gap'), ...textAnswer }).strict(),
+  z.object({ ...common, kind: z.literal('input'), ...textAnswer }).strict(),
+  z.object({ ...common, kind: z.literal('dictation'), ...textAnswer, audioUrl: https, sourceUrl: https, author: z.string().trim().min(1).max(200), license: z.string().trim().min(1).max(200), licenseUrl: https }).strict(),
 ]);
 export const questionsSchema = z.array(question).min(1).max(30).superRefine((questions, ctx) => {
   const reject = () => ctx.addIssue({ code: 'custom', message: 'Invalid question keys or answer configuration' });

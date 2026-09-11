@@ -4,7 +4,7 @@ import { z } from 'zod';
 import { Database } from './database.js';
 import { SessionGuard, RequirePermission, type AuthRequest } from './security.js';
 import { parse } from './validation.js';
-import { titleSchema, updateSchema, createSchema, blocksSchema } from './content.schema.js';
+import { titleSchema, updateSchema, createSchema, blocksSchema, editorQuizSchema } from './content.schema.js';
 
 @Controller('content')
 @UseGuards(SessionGuard)
@@ -36,7 +36,7 @@ export class ContentController {
   }
   @Get('lessons/:id') @RequirePermission('content:edit')
   async detail(@Param('id') id: string) {
-    const lesson = await this.db.lesson.findUnique({ where: { id }, include: { blocks: { orderBy: { position: 'asc' } }, changes: { orderBy: { createdAt: 'desc' }, take: 30 } } });
+    const lesson = await this.db.lesson.findUnique({ where: { id }, include: { quiz: true, blocks: { orderBy: { position: 'asc' } }, changes: { orderBy: { createdAt: 'desc' }, take: 30 } } });
     if (!lesson) throw new NotFoundException('Урок недоступен.');
     return lesson;
   }
@@ -55,6 +55,14 @@ export class ContentController {
           await db.lessonBlock.createMany({ data: input.blocks.map((block, position) => ({ ...block, lessonId: id, position })) });
         }
       }
+      if (input.quiz) {
+        const previous = await db.quiz.findUnique({ where: { lessonId: id } });
+        const normalized = previous ? editorQuizSchema.safeParse({ kind: previous.kind, passPercent: previous.passPercent, questions: previous.questions }) : null;
+        if (!normalized?.success || JSON.stringify(normalized.data) !== JSON.stringify(input.quiz)) {
+          await db.quiz.upsert({ where: { lessonId: id }, create: { lessonId: id, ...input.quiz }, update: { ...input.quiz, revision: { increment: 1 } } });
+          contentChanged = true;
+        }
+      }
       return db.lesson.update({ where: { id }, data: { title: input.title, minutes: input.minutes, editVersion: { increment: 1 }, ...(contentChanged ? { revision: { increment: 1 } } : {}) } });
     });
   }
@@ -67,6 +75,8 @@ export class ContentController {
       const allowed: Record<string, string[]> = { DRAFT: ['REVIEW'], REVIEW: ['DRAFT', 'PUBLISHED'], PUBLISHED: ['ARCHIVED'], ARCHIVED: ['DRAFT'] };
       if (!allowed[current]?.includes(input.state)) throw new ConflictException('Недопустимый переход состояния.');
       if (input.state === 'PUBLISHED') {
+        const quiz = await db.quiz.findUnique({ where: { lessonId: id } });
+        if (quiz) parse(editorQuizSchema, { kind: quiz.kind, passPercent: quiz.passPercent, questions: quiz.questions }, 'Проверьте задания, правильные ответы и порог прохождения.');
         parse(titleSchema, lesson.title, 'Проверьте поля урока, переводы и HTTPS-ссылки.');
         const blocks = await db.lessonBlock.findMany({ where: { lessonId: id }, orderBy: { position: 'asc' } });
         if (!blocks.length) throw new ConflictException('Нельзя опубликовать урок без блоков.');
@@ -83,9 +93,11 @@ export class ContentController {
         if (!lesson) throw new NotFoundException('Урок недоступен.');
         if (lesson.editVersion !== version) throw new ConflictException('Урок изменён другим редактором. Обновите страницу.');
         const beforeBlocks = await db.lessonBlock.findMany({ where: { lessonId: id }, orderBy: { position: 'asc' } });
+        const beforeQuiz = await db.quiz.findUnique({ where: { lessonId: id } });
         const updated = await update(db, lesson);
+        const afterQuiz = await db.quiz.findUnique({ where: { lessonId: id } });
         const afterBlocks = await db.lessonBlock.findMany({ where: { lessonId: id }, orderBy: { position: 'asc' } });
-        await db.lessonChange.create({ data: { lessonId: id, actorId, action, snapshot: { before: { title: lesson.title, minutes: lesson.minutes, state: lesson.published ? 'PUBLISHED' : lesson.editorialState, version, revision: lesson.revision, blocks: beforeBlocks }, after: { title: updated.title, minutes: updated.minutes, state: updated.editorialState, version: updated.editVersion, revision: updated.revision, blocks: afterBlocks } } } });
+        await db.lessonChange.create({ data: { lessonId: id, actorId, action, snapshot: { before: { title: lesson.title, minutes: lesson.minutes, state: lesson.published ? 'PUBLISHED' : lesson.editorialState, version, revision: lesson.revision, blocks: beforeBlocks, quiz: beforeQuiz }, after: { title: updated.title, minutes: updated.minutes, state: updated.editorialState, version: updated.editVersion, revision: updated.revision, blocks: afterBlocks, quiz: afterQuiz } } } });
         return { ok: true, version: updated.editVersion };
       }, { isolationLevel: Prisma.TransactionIsolationLevel.Serializable });
     } catch (err) {

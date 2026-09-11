@@ -44,3 +44,18 @@ test('public questions exclude answers and explanations; invalid editor keys are
   assert.equal(questionsSchema.safeParse([questions[0], questions[0]]).success, false);
   assert.equal(questionsSchema.safeParse([{ ...questions[0], correct: 'unknown' }]).success, false);
 });
+
+test('editor validation bounds answers to learner limits and rejects incomplete content', () => {
+  for (const invalid of [
+    { ...questions[0], prompt: { ...text, kk: '   ' } },
+    { ...questions[0], options: Array.from({ length: 31 }, (_, i) => ({ id: String(i), text })) },
+    { ...questions[0], id: 'x'.repeat(101) },
+    { ...questions[0], score: 100 },
+    { ...questions[4], accepted: ['x'.repeat(501)] },
+    { ...questions[4], accepted: [' ... '] },
+    { ...questions[5], author: '' },
+    { ...questions[5], audioUrl: 'https://user:password@example.test/a' },
+    { ...questions[1], correct: ['a', 'a'] },
+    { ...questions[2], correct: ['a'] },
+  ]) assert.equal(questionsSchema.safeParse([invalid]).success, false);
+});

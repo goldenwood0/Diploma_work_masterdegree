@@ -1,4 +1,6 @@
 import { z } from 'zod';
+import { questionsSchema } from './quiz.js';
+export const editorQuizSchema = z.object({ kind: z.enum(['lesson', 'module']), passPercent: z.number().int().min(1).max(100), questions: questionsSchema }).strict();
 
 const localized = (max: number) => z.object({ ru: z.string().trim().min(1).max(max), kk: z.string().trim().min(1).max(max), en: z.string().trim().min(1).max(max) }).strict();
 export const titleSchema = localized(200);
@@ -9,5 +11,5 @@ export const blocksSchema = z.array(z.discriminatedUnion('kind', [
   z.object({ kind: z.literal('reading'), content: z.object({ title: titleSchema, text: localized(16000), ...phrase }).strict() }).strict(),
   z.object({ kind: z.literal('audio'), content: z.object({ title: titleSchema, ...phrase, audioUrl: https, sourceUrl: https, author: z.string().trim().min(1).max(200), license: z.string().trim().min(1).max(200), licenseUrl: https }).strict() }).strict(),
 ])).max(40);
-export const updateSchema = z.object({ version: z.number().int().nonnegative(), title: titleSchema, minutes: z.number().int().min(1).max(120), blocks: blocksSchema.optional() }).strict();
+export const updateSchema = z.object({ version: z.number().int().nonnegative(), title: titleSchema, minutes: z.number().int().min(1).max(120), blocks: blocksSchema.optional(), quiz: editorQuizSchema.optional() }).strict();
 export const createSchema = z.object({ unitId: z.string().min(1).max(200), slug: z.string().min(3).max(100).regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/), title: titleSchema, minutes: z.number().int().min(1).max(120) }).strict();
