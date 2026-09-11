@@ -6,7 +6,14 @@ export default function useRoute() {
   const [hash, setHash] = useState(() => window.location.hash)
 
   useEffect(() => {
+    let acceptedHash = window.location.hash;
     const update = () => {
+      if (window.location.hash === acceptedHash) return;
+      if (!window.dispatchEvent(new Event('zhpath:before-navigate', { cancelable: true }))) {
+        window.history.replaceState(null, '', window.location.pathname + window.location.search + acceptedHash);
+        return;
+      }
+      acceptedHash = window.location.hash;
       setHash(window.location.hash)
       window.scrollTo(0, 0)
     }

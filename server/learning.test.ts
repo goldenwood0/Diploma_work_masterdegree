@@ -356,3 +356,67 @@ test('editor workflow protects published lessons, rejects stale edits and audits
   assert.equal(updated.minutes, 12); assert.equal(updated.editVersion, 5); assert.equal(updated.changes.length, 5);
   assert.equal(updated.changes[0].snapshot.after.state, 'PUBLISHED');
 });
+
+test('lesson creation appends drafts, protects roles and rejects duplicate slugs', async () => {
+  const create = (body: object) => api.post('/api/content/lessons').set('Cookie', session).set('Origin', process.env.APP_ORIGIN!).set('X-ZhPath-Request', '1').send(body);
+  const body = { unitId: fixture, slug: `${fixture}-new`, title, minutes: 10 };
+  await create(body).expect(403);
+  await api.get('/api/content/units').set('Cookie', session).expect(403);
+  await db.user.update({ where: { id: users[0] }, data: { role: 'EDITOR' } });
+  await api.get('/api/content/units').set('Cookie', session).expect(200);
+  await create({ ...body, published: true }).expect(400);
+  await create({ ...body, slug: '../invalid' }).expect(400);
+  await create({ ...body, unitId: 'missing' }).expect(404);
+  const result = (await create(body).expect(201)).body;
+  await create(body).expect(409);
+  const lesson = await db.lesson.findUniqueOrThrow({ where: { id: result.id }, include: { changes: true, prerequisite: true } });
+  assert.equal(lesson.position, 3); assert.equal(lesson.published, false);
+  assert.equal(lesson.prerequisite?.slug, `${fixture}-draft`);
+  assert.equal(lesson.changes[0].actorId, users[0]); assert.equal(lesson.changes[0].action, 'CREATE');
+  await get(`lessons/${body.slug}`, other).expect(404);
+});
+
+test('block editing validates content, versions progress and keeps audited snapshots atomically', async () => {
+  const lesson = await db.lesson.findUniqueOrThrow({ where: { slug: first } });
+  const edit = (version: number, content: unknown) => api.patch(`/api/content/lessons/${lesson.id}`).set('Cookie', session).set('Origin', process.env.APP_ORIGIN!).set('X-ZhPath-Request', '1').send({ version, title, minutes: 10, blocks: content });
+  const state = (version: number, state: string) => api.post(`/api/content/lessons/${lesson.id}/state`).set('Cookie', session).set('Origin', process.env.APP_ORIGIN!).set('X-ZhPath-Request', '1').send({ version, state });
+  const phrase = { hanzi: '你好', pinyin: 'nǐ hǎo', translation: title };
+  const reading = { kind: 'reading', content: { title, text: title, ...phrase } };
+  const vocabulary = { kind: 'vocabulary', content: { title, words: [phrase] } };
+  const audio = { kind: 'audio', content: { title, ...phrase, audioUrl: 'https://example.test/audio.ogg', sourceUrl: 'https://example.test/source', author: 'Test', license: 'CC0', licenseUrl: 'https://example.test/license' } };
+  await edit(0, [reading]).expect(403);
+  await db.user.update({ where: { id: users[0] }, data: { role: 'ADMIN' } });
+  await edit(0, [reading]).expect(409);
+  await db.lessonProgress.create({ data: { userId: users[1], lessonId: lesson.id, nextBlock: 3, revision: 1, completedAt: new Date() } });
+  await state(0, 'ARCHIVED').expect(201); await state(1, 'DRAFT').expect(201);
+  await edit(2, [{ ...reading, content: { ...reading.content, text: { ru: 'Only Russian' } } }]).expect(400);
+  await edit(2, [{ ...audio, content: { ...audio.content, audioUrl: 'javascript:alert(1)' } }]).expect(400);
+  await edit(2, [{ ...vocabulary, content: { ...vocabulary.content, words: [] } }]).expect(400);
+  await edit(2, [vocabulary, reading, audio]).expect(200);
+  await edit(2, [reading]).expect(409);
+  let updated = await db.lesson.findUniqueOrThrow({ where: { id: lesson.id }, include: { blocks: { orderBy: { position: 'asc' } }, changes: { orderBy: { createdAt: 'desc' } } } });
+  assert.equal(updated.revision, 2); assert.deepEqual(updated.blocks.map(b => b.kind), ['vocabulary', 'reading', 'audio']);
+  const snapshot = updated.changes[0].snapshot as { before: { blocks: unknown[] }; after: { blocks: unknown[] } };
+  assert.equal(snapshot.before.blocks.length, 3); assert.deepEqual(snapshot.after.blocks, updated.blocks);
+  const stableIds = updated.blocks.map(b => b.id);
+  await edit(3, [vocabulary, reading, audio]).expect(200);
+  updated = await db.lesson.findUniqueOrThrow({ where: { id: lesson.id }, include: { blocks: { orderBy: { position: 'asc' } }, changes: { orderBy: { createdAt: 'desc' } } } });
+  assert.equal(updated.revision, 2); assert.deepEqual(updated.blocks.map(b => b.id), stableIds);
+  await edit(4, [audio, vocabulary]).expect(200);
+  await state(5, 'REVIEW').expect(201); await edit(6, []).expect(409); await state(6, 'PUBLISHED').expect(201);
+  const publicLesson = (await get(`lessons/${first}`, other).expect(200)).body;
+  assert.equal(publicLesson.revision, 3); assert.equal(publicLesson.progress.nextBlock, 0); assert.equal(publicLesson.progress.completedAt, null);
+  assert.deepEqual(publicLesson.blocks.map((b: { kind: string }) => b.kind), ['audio', 'vocabulary']);
+  await put(first, { blockId: blocks[0], revision: 1 }, other).expect(409);
+});
+
+test('publication rejects empty drafts and invalid stored block translations', async () => {
+  const lesson = await db.lesson.findUniqueOrThrow({ where: { slug: `${fixture}-draft` } });
+  await db.user.update({ where: { id: users[0] }, data: { role: 'ADMIN' } });
+  const state = (version: number, state: string) => api.post(`/api/content/lessons/${lesson.id}/state`).set('Cookie', session).set('Origin', process.env.APP_ORIGIN!).set('X-ZhPath-Request', '1').send({ version, state });
+  await state(0, 'REVIEW').expect(201); await state(1, 'PUBLISHED').expect(409);
+  await db.lessonBlock.create({ data: { lessonId: lesson.id, position: 0, kind: 'reading', content: { title } } });
+  await state(1, 'PUBLISHED').expect(400);
+  const unchanged = await db.lesson.findUniqueOrThrow({ where: { id: lesson.id } });
+  assert.equal(unchanged.editVersion, 1); assert.equal(unchanged.published, false);
+});
