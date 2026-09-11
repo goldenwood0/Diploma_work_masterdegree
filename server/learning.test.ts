@@ -124,6 +124,7 @@ beforeEach(async () => {
 afterEach(async () => {
   if (db) {
     await db.quizAttempt.deleteMany({ where: { userId: { in: users ?? [] } } })
+    await db.roleChange.deleteMany({ where: { userId: { in: users ?? [] } } });
     await db.user.deleteMany({ where: { id: { in: users ?? [] } } })
     await db.lesson.updateMany({
       where: { unitId: fixture },
@@ -477,4 +478,60 @@ test('editor can add a quiz to a draft and publication rejects invalid stored qu
   const state = (version: number, state: string) => api.post(`/api/content/lessons/${lesson.id}/state`).set('Cookie', session).set('Origin', process.env.APP_ORIGIN!).set('X-ZhPath-Request', '1').send({ version, state });
   await state(1, 'REVIEW').expect(201); await state(2, 'PUBLISHED').expect(400);
   assert.equal((await db.lesson.findUniqueOrThrow({ where: { id: lesson.id } })).published, false);
+});
+
+test('admin role management validates permissions, versions, sessions and immutable audit', async () => {
+  const change = (target: string, role: string, version = 0, cookie = session, extra = {}) => api.patch(`/api/admin/users/${target}/role`).set('Cookie', cookie).set('Origin', process.env.APP_ORIGIN!).set('X-ZhPath-Request', '1').send({ role, version, reason: 'Test access change', ...extra });
+  const list = () => api.get('/api/admin/users').query({ search: fixture, role: 'STUDENT', page: 0 }).set('Cookie', session);
+  const history = () => api.get(`/api/admin/users/${users[1]}/roles`).set('Cookie', session);
+  await list().expect(403); await history().expect(403); await change(users[1], 'ADMIN').expect(403);
+  await db.user.update({ where: { id: users[0] }, data: { role: 'EDITOR' } });
+  await change(users[1], 'ADMIN').expect(403);
+  await db.user.update({ where: { id: users[0] }, data: { role: 'ADMIN' } });
+  await change(users[0], 'STUDENT').expect(403);
+  await change('missing', 'EDITOR').expect(404);
+  await change(users[1], 'EDITOR', 0, session, { roleVersion: 10 }).expect(400);
+  await change(users[1], 'EDITOR', 0, session, { reason: ' ' }).expect(400);
+  await api.patch(`/api/admin/users/${users[1]}/role`).set('Cookie', session).send({ role: 'EDITOR', version: 0, reason: 'Test' }).expect(403);
+  const result = (await list().expect(200)).body;
+  assert.equal(result.length, 1); assert.equal(result[0].id, users[1]); assert.equal(result[0].passwordHash, undefined); assert.equal(result[0].sessions, undefined);
+  const secondDevice = await device(users[1]);
+  await change(users[1], 'EDITOR').expect(200);
+  await api.get('/api/auth/me').set('Cookie', other).expect(401);
+  await api.get('/api/auth/me').set('Cookie', secondDevice).expect(401);
+  await api.get('/api/auth/me').set('Cookie', session).expect(200);
+  await change(users[1], 'ADMIN').expect(409);
+  const newSession = await device(users[1]);
+  await api.get('/api/content/lessons').set('Cookie', newSession).expect(200);
+  await change(users[1], 'EDITOR', 1).expect(200);
+  assert.equal(await db.roleChange.count({ where: { userId: users[1] } }), 1);
+  await api.get('/api/auth/me').set('Cookie', newSession).expect(200);
+  const journal = (await history().expect(200)).body;
+  assert.equal(journal[0].before, 'STUDENT'); assert.equal(journal[0].after, 'EDITOR'); assert.equal(journal[0].actorId, users[0]); assert.equal(journal[0].reason, 'Test access change');
+  await change(users[1], 'STUDENT', 1).expect(200);
+  await api.get('/api/content/lessons').set('Cookie', newSession).expect(401);
+  assert.equal((await history().expect(200)).body.length, 2);
+});
+
+test('role changes reject unverified privileged accounts and concurrent stale writes', async () => {
+  await db.user.update({ where: { id: users[0] }, data: { role: 'ADMIN' } });
+  await db.user.update({ where: { id: users[1] }, data: { emailVerifiedAt: null } });
+  const change = (role: string) => api.patch(`/api/admin/users/${users[1]}/role`).set('Cookie', session).set('Origin', process.env.APP_ORIGIN!).set('X-ZhPath-Request', '1').send({ role, version: 0, reason: 'Concurrent test' });
+  await change('EDITOR').expect(409); await change('ADMIN').expect(409);
+  await db.user.update({ where: { id: users[1] }, data: { emailVerifiedAt: new Date() } });
+  const responses = await Promise.all([change('EDITOR'), change('ADMIN')]);
+  assert.deepEqual(responses.map(r => r.status).sort(), [200, 409]);
+  assert.equal(await db.roleChange.count({ where: { userId: users[1] } }), 1);
+  await api.get('/api/admin/users').query({ page: -1 }).set('Cookie', session).expect(400);
+  await api.get('/api/admin/users').query({ role: 'ROOT' }).set('Cookie', session).expect(400);
+  assert.equal((await api.get('/api/admin/users').query({ search: fixture, page: 1 }).set('Cookie', session).expect(200)).body.length, 0);
+});
+
+test('administrators cannot concurrently demote each other and remove all admin access', async () => {
+  await db.user.updateMany({ where: { id: { in: users } }, data: { role: 'ADMIN' } });
+  const change = (id: string, cookie: string) => api.patch(`/api/admin/users/${id}/role`).set('Cookie', cookie).set('Origin', process.env.APP_ORIGIN!).set('X-ZhPath-Request', '1').send({ role: 'STUDENT', version: 0, reason: 'Concurrent demotion' });
+  const responses = await Promise.all([change(users[1], session), change(users[0], other)]);
+  assert.equal(responses.filter(r => r.status === 200).length, 1);
+  assert.ok(responses.every(r => [200, 401, 403, 409].includes(r.status)));
+  assert.equal(await db.user.count({ where: { id: { in: users }, role: 'ADMIN' } }), 1);
 });

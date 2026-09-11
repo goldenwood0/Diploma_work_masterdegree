@@ -7,8 +7,8 @@ import { digest } from './passwords.js';
 
 export const cookieName = () => getConfig().NODE_ENV === 'production' ? '__Host-zhpath' : 'zhpath_session';
 export type AuthRequest = Request & { session?: Awaited<ReturnType<AuthService['session']>> };
-export type Permission = 'users:read' | 'content:edit' | 'content:publish';
-export const permissions = { STUDENT: [], EDITOR: ['content:edit'], ADMIN: ['users:read', 'content:edit', 'content:publish'] } satisfies Record<string, Permission[]>;
+export type Permission = 'users:read' | 'users:manage' | 'content:edit' | 'content:publish';
+export const permissions = { STUDENT: [], EDITOR: ['content:edit'], ADMIN: ['users:read', 'users:manage', 'content:edit', 'content:publish'] } satisfies Record<string, Permission[]>;
 export const RequirePermission = (permission: Permission) => SetMetadata('permission', permission);
 
 @Injectable()

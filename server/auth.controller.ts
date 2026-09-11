@@ -1,11 +1,10 @@
 import { Body, Controller, Get, HttpCode, Post, Req, Res, UseGuards } from '@nestjs/common';
 import type { Response } from 'express';
 import { z } from 'zod';
-import { AuthService, publicUser } from './auth.service.js';
-import { AuthRateGuard, cookieName, RequirePermission, SessionGuard, type AuthRequest } from './security.js';
+import { AuthService } from './auth.service.js';
+import { AuthRateGuard, cookieName, SessionGuard, type AuthRequest } from './security.js';
 import { credentialsSchema, emailSchema, parse, passwordSchema, registerSchema, tokenSchema } from './validation.js';
 import { getConfig } from './config.js';
-import { Database } from './database.js';
 
 @Controller('auth')
 export class AuthController {
@@ -54,11 +53,4 @@ export class AuthController {
     const { token, password } = parse(z.object({ token: tokenSchema, password: passwordSchema }).strict(), body);
     return this.auth.consumeToken(token, 'RESET_PASSWORD', password);
   }
-}
-
-@Controller('admin') @UseGuards(SessionGuard)
-export class AdminController {
-  constructor(private db: Database) {}
-  @Get('users') @RequirePermission('users:read')
-  users() { return this.db.user.findMany({ select: publicUser, take: 50, orderBy: { createdAt: 'desc' } }); }
 }

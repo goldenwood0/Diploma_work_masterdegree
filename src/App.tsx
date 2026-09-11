@@ -15,6 +15,7 @@ import NotFound from './pages/NotFound';
 import Auth, { isAuthScreen } from './pages/Auth';
 import useAccount from './app/useAccount';
 import ContentAdmin from './pages/ContentAdmin';
+import UsersAdmin from './pages/UsersAdmin';
 
 export default function App() {
   const { t } = useLanguage();
@@ -85,6 +86,8 @@ export default function App() {
       {/* Main Content Area */}
       <main className="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-6 lg:p-8 pt-6 sm:pt-10 transition-all duration-300">
         {account.role !== 'STUDENT' && <button className="mb-6 text-primary underline" onClick={() => setCurrentScreen('content')}>{t('Управление уроками')}</button>}
+        {account.role === 'ADMIN' && <button className="mb-6 ml-5 text-primary underline" onClick={() => setCurrentScreen('users')}>{t('Пользователи и роли')}</button>}
+        {currentScreen === 'users' && <UsersAdmin role={account.role} currentUserId={account.id} />}
         {currentScreen === 'content' && <ContentAdmin role={account.role} />}
         {currentScreen === 'dashboard' && <Dashboard name={account.name} onNavigate={setCurrentScreen} />}
         {currentScreen === 'catalog' && <Catalog onNavigate={setCurrentScreen} />}

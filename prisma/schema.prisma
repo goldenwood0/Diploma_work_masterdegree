@@ -24,6 +24,7 @@ model User {
   name            String
   passwordHash    String
   role            Role      @default(STUDENT)
+  roleVersion     Int       @default(0)
   emailVerifiedAt DateTime?
   createdAt       DateTime  @default(now())
   settings        UserSettings?
@@ -33,6 +34,17 @@ model User {
   quizAttempts    QuizAttempt[]
   cards           ReviewCard[]
   reviews         ReviewEvent[]
+}
+
+model RoleChange {
+  id        String @id @default(uuid())
+  actorId   String
+  userId    String
+  before    Role
+  after     Role
+  reason    String
+  createdAt DateTime @default(now())
+  @@index([userId, createdAt])
 }
 
 model Curriculum {
