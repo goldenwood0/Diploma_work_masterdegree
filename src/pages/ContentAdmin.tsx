@@ -1,6 +1,6 @@
 import { isAudioUrl } from '../api/media';
 import { useEffect, useRef, useState } from 'react';
-import { listContent, listUnits, createContent, getContent, updateContent, type ContentLesson, type ContentDetail, type ContentBlock, type ContentUnit } from '../api/content';
+import { draftAction, listContent, listUnits, createContent, getContent, updateContent, type ContentLesson, type ContentDetail, type ContentBlock, type ContentUnit } from '../api/content';
 import { ApiError } from '../api/client';
 import { useLanguage } from '../i18n/LanguageProvider';
 import ContentBlocksEditor, { TranslationFields, emptyTranslation } from '../components/ContentBlocksEditor';
@@ -49,7 +49,7 @@ export default function ContentAdmin({ role }: { role: string }) {
     return () => controller.abort();
   }, [selected, reload, role, creating]);
   if (role === 'STUDENT') return <p role="alert">{t('Недостаточно прав.')}</p>;
-  const state = creating ? 'DRAFT' : detail?.published ? 'PUBLISHED' : detail?.editorialState;
+  const state = creating ? 'DRAFT' : detail?.hasDraft ? detail.editorialState : detail?.published ? 'PUBLISHED' : detail?.editorialState;
   function discard() { return !dirty || window.confirm(t('Отменить несохранённые изменения?')); }
   async function save(nextState?: string) {
     if ((!detail && !creating) || pending.current || !lifetime.current || (nextState && dirty)) return;
@@ -62,6 +62,16 @@ export default function ContentAdmin({ role }: { role: string }) {
         await updateContent(detail!.id, nextState ? { version: detail!.editVersion, state: nextState } : { version: detail!.editVersion, title, minutes, ...(quiz ? { quiz } : {}), blocks: blocks.map(({ kind, content }) => ({ kind, content })) }, !!nextState, signal);
         if (!signal.aborted) setReload(n => n + 1);
       }
+    } catch (err) { if (!signal.aborted) setError(err instanceof ApiError ? err.message : 'Не удалось сохранить урок.'); }
+    finally { if (!signal.aborted) { pending.current = false; setBusy(false); } }
+  }
+  async function versionAction(changeId?: string) {
+    if (!detail || dirty || pending.current || !lifetime.current) return;
+    if (changeId && !window.confirm(t('Восстановить эту версию в черновик? Текущие сохранённые изменения останутся в журнале.'))) return;
+    const signal = lifetime.current.signal; pending.current = true; setBusy(true); setError('');
+    try {
+      await draftAction(detail.id, changeId ? 'restore' : 'draft', { version: detail.editVersion, ...(changeId ? { changeId } : {}) }, signal);
+      if (!signal.aborted) setReload(n => n + 1);
     } catch (err) { if (!signal.aborted) setError(err instanceof ApiError ? err.message : 'Не удалось сохранить урок.'); }
     finally { if (!signal.aborted) { pending.current = false; setBusy(false); } }
   }
@@ -78,9 +88,10 @@ export default function ContentAdmin({ role }: { role: string }) {
         <button className="bg-primary text-primary-foreground rounded-xl px-5 py-3 disabled:opacity-40">{t(creating ? 'Создать черновик' : 'Сохранить')}</button>
       </fieldset></form>
       {detail && <><div className="flex gap-3 flex-wrap">{(state === 'DRAFT' ? ['REVIEW'] : state === 'REVIEW' ? role === 'ADMIN' ? ['DRAFT', 'PUBLISHED'] : ['DRAFT'] : state === 'PUBLISHED' ? role === 'ADMIN' ? ['ARCHIVED'] : [] : ['DRAFT']).map(next => <button key={next} disabled={busy || dirty} onClick={() => void save(next)} className="border border-border rounded-xl px-5 py-3 disabled:opacity-40">{t({ DRAFT: 'Вернуть в черновик', REVIEW: 'Отправить на проверку', PUBLISHED: 'Опубликовать', ARCHIVED: 'Архивировать' }[next]!)}</button>)}</div>
-      {state === 'PUBLISHED' && <p>{t('Для изменения названия администратор должен сначала архивировать урок.')}</p>}
+      {detail.published && detail.hasDraft && <p role="status">{t('Ученикам доступна прежняя публикация. Здесь показан независимый черновик.')}</p>}
+      {state === 'PUBLISHED' && <button disabled={busy || dirty} className="border border-border rounded-xl p-3" onClick={() => void versionAction()}>{t('Создать независимый черновик')}</button>}
       <details className="border border-border rounded-xl p-5"><summary>{t('Предпросмотр содержания')}</summary><div className="space-y-4 mt-4">{blocks.map(b => <article key={b.id} className="rounded-xl bg-secondary p-4 space-y-2"><h2 className="font-bold">{b.content.title[lang]}</h2>{b.content.text && <p className="whitespace-pre-line">{b.content.text[lang]}</p>}<p className="text-2xl whitespace-pre-line">{b.content.hanzi}</p><p>{b.content.pinyin}</p>{b.content.translation && <p>{b.content.translation[lang]}</p>}{b.content.words?.map((w, i) => <p key={i}>{w.hanzi} · {w.pinyin} · {w.translation[lang]}</p>)}{b.kind === 'audio' && <><audio controls preload="none" src={isAudioUrl(b.content.audioUrl ?? '') ? b.content.audioUrl : undefined} aria-label={b.content.title[lang]} /><p>{b.content.author} · {b.content.license}</p>{b.content.sourceUrl?.startsWith('https://') && <a href={b.content.sourceUrl} target="_blank" rel="noreferrer">{t('Источник аудио')}</a>}{b.content.licenseUrl?.startsWith('https://') && <a className="ml-3" href={b.content.licenseUrl} target="_blank" rel="noreferrer">{t('Лицензия')}</a>}</>}</article>)}</div></details>
-      <details className="border border-border rounded-xl p-5"><summary>{t('Журнал изменений')}</summary><ul className="space-y-2 mt-4">{detail.changes.map(c => <li key={c.id}>{new Date(c.createdAt).toLocaleString(language)} · {c.action === 'EDIT' ? t('Редактирование') : c.action === 'CREATE' ? t('Создание урока') : t(stateLabels[c.action] ?? c.action)}</li>)}</ul></details></>}
+      <details className="border border-border rounded-xl p-5"><summary>{t('Журнал изменений')}</summary><ul className="space-y-2 mt-4">{detail.changes.map(c => <li key={c.id}>{new Date(c.createdAt).toLocaleString(language)} · {c.action === 'EDIT' ? t('Редактирование') : c.action === 'CREATE' ? t('Создание урока') : c.action === 'DRAFT_CREATE' ? t('Создание независимого черновика') : c.action.startsWith('RESTORE:') ? t('Восстановление версии') : t(stateLabels[c.action] ?? c.action)} <button className="underline ml-3 disabled:opacity-40" disabled={busy || dirty || !['DRAFT', 'PUBLISHED'].includes(state!)} onClick={() => void versionAction(c.id)}>{t('Восстановить в черновик')}</button></li>)}</ul></details></>}
     </>}
   </section>;
 }

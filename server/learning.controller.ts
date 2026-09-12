@@ -122,7 +122,8 @@ export class LearningController {
       )
         throw new ForbiddenException("Сначала завершите предыдущий урок.")
     }
-    return lesson
+    const { draft: _draft, ...publishedLesson } = lesson
+    return publishedLesson
   }
 
   @Get("lessons/:slug")

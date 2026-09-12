@@ -304,4 +304,13 @@ export const learningMessages: Record<string, Record<'en' | 'kk', string>> = {
   "Excel: нужен файл .xlsx с одним листом, пятью текстовыми столбцами и 1–100 словами, без формул. Максимум 1 МБ.": {"en": "Excel: use an .xlsx file with one sheet, five text columns and 1–100 words, without formulas. Maximum 1 MB.", "kk": "Excel: бір парағы, бес мәтіндік бағаны және 1–100 сөзі бар формуласыз .xlsx файлы қажет. Ең көбі 1 МБ."},
   "Не удалось создать Excel. Повторите попытку.": {"en": "Could not create Excel. Try again.", "kk": "Excel жасау мүмкін болмады. Қайталап көріңіз."},
   "Файл: максимум 1 МБ.": {"en": "File: maximum 1 MB.", "kk": "Файл: ең көбі 1 МБ."},
+  "Восстановить эту версию в черновик? Текущие сохранённые изменения останутся в журнале.": {"en": "Restore this version to a draft? Current saved changes remain in the history.", "kk": "Осы нұсқаны жобаға қалпына келтіру керек пе? Сақталған өзгерістер журналда қалады."},
+  "Ученикам доступна прежняя публикация. Здесь показан независимый черновик.": {"en": "Students see the previous publication. This is the independent draft.", "kk": "Оқушыларға алдыңғы жарияланым қолжетімді. Мұнда тәуелсіз жоба көрсетілген."},
+  "Создать независимый черновик": {"en": "Create independent draft", "kk": "Тәуелсіз жоба жасау"},
+  "Создание независимого черновика": {"en": "Independent draft created", "kk": "Тәуелсіз жоба жасалды"},
+  "Восстановление версии": {"en": "Version restored", "kk": "Нұсқа қалпына келтірілді"},
+  "Восстановить в черновик": {"en": "Restore to draft", "kk": "Жобаға қалпына келтіру"},
+  "Черновик уже существует или урок не опубликован.": {"en": "A draft already exists or the lesson is not published.", "kk": "Жоба бар немесе сабақ жарияланбаған."},
+  "Версия недоступна.": {"en": "Version unavailable.", "kk": "Нұсқа қолжетімсіз."},
+  "Версия без теста не может заменить существующий тест.": {"en": "A version without a quiz cannot replace an existing quiz.", "kk": "Тестсіз нұсқа бар тестті ауыстыра алмайды."},
 }

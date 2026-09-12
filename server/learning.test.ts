@@ -360,6 +360,77 @@ test('editor workflow protects published lessons, rejects stale edits and audits
   assert.equal(updated.changes[0].snapshot.after.state, 'PUBLISHED');
 });
 
+test('independent drafts isolate live lessons, publish atomically and restore with version protection', async () => {
+  const lesson = await db.lesson.findUniqueOrThrow({ where: { slug: first } });
+  const post = (action: string, body: object) => api.post(`/api/content/lessons/${lesson.id}/${action}`).set('Cookie', session).set('Origin', process.env.APP_ORIGIN!).set('X-ZhPath-Request', '1').send(body);
+  const detail = () => api.get(`/api/content/lessons/${lesson.id}`).set('Cookie', session);
+  await post('draft', { version: 0 }).expect(403);
+  await db.user.update({ where: { id: users[0] }, data: { role: 'EDITOR' } });
+  await post('draft', { version: 0 }).expect(201);
+  const original = (await detail().expect(200)).body;
+  const originalChange = original.changes[0].id;
+  assert.equal(original.hasDraft, true);
+  await post('draft', { version: 1 }).expect(409);
+  const content = [{ kind: 'vocabulary', content: { title, words: [{ hanzi: '秘密', pinyin: 'mìmì', translation: title }] } }];
+  await api.patch(`/api/content/lessons/${lesson.id}`).set('Cookie', session).set('Origin', process.env.APP_ORIGIN!).set('X-ZhPath-Request', '1').send({ version: 1, title: { ...title, ru: 'Секретный черновик' }, minutes: 15, blocks: content }).expect(200);
+  const live = (await get(`lessons/${first}`, other).expect(200)).body;
+  assert.equal(live.title.ru, title.ru); assert.equal(live.revision, lesson.revision);
+  assert.equal('draft' in live, false); assert.ok(!JSON.stringify(live).includes('秘密'));
+  assert.ok(!JSON.stringify((await get('catalog', other).expect(200)).body).includes('Секретный черновик'));
+  await post('state', { version: 1, state: 'REVIEW' }).expect(409);
+  await post('state', { version: 2, state: 'REVIEW' }).expect(201);
+  await post('restore', { version: 3, changeId: originalChange }).expect(409);
+  await post('state', { version: 3, state: 'PUBLISHED' }).expect(403);
+  await db.user.update({ where: { id: users[0] }, data: { role: 'ADMIN' } });
+  await post('state', { version: 3, state: 'PUBLISHED' }).expect(201);
+  const published = (await get(`lessons/${first}`, other).expect(200)).body;
+  assert.equal(published.title.ru, 'Секретный черновик'); assert.equal(published.revision, lesson.revision + 1);
+  await post('restore', { version: 4, changeId: randomUUID() }).expect(404);
+  await post('restore', { version: 4, changeId: originalChange }).expect(201);
+  assert.equal((await detail()).body.title.ru, title.ru);
+  assert.equal((await get(`lessons/${first}`, other)).body.title.ru, 'Секретный черновик');
+  await post('restore', { version: 4, changeId: originalChange }).expect(409);
+  await post('state', { version: 5, state: 'REVIEW' }).expect(201);
+  await post('state', { version: 6, state: 'PUBLISHED' }).expect(201);
+  assert.equal((await get(`lessons/${first}`, other)).body.title.ru, title.ru);
+  const restored = (await detail()).body;
+  assert.equal(restored.hasDraft, false); assert.equal(restored.revision, lesson.revision + 2);
+  assert.ok(restored.changes.some((c: { action: string }) => c.action === `RESTORE:${originalChange}`));
+});
+
+test('draft quiz changes preserve attempts, no-op publication preserves progress and failed restore is atomic', async () => {
+  const quiz = await prepareQuiz();
+  for (const blockId of blocks) await put(first, { blockId, revision: 1 }).expect(200);
+  const attempt = (await submitAttempt(attemptBody()).expect(200)).body;
+  const lesson = await db.lesson.findUniqueOrThrow({ where: { slug: first } });
+  await db.user.update({ where: { id: users[0] }, data: { role: 'ADMIN' } });
+  const post = (action: string, body: object) => api.post(`/api/content/lessons/${lesson.id}/${action}`).set('Cookie', session).set('Origin', process.env.APP_ORIGIN!).set('X-ZhPath-Request', '1').send(body);
+  await post('draft', { version: 0 }).expect(201);
+  const snapshot = await db.lessonChange.findFirstOrThrow({ where: { lessonId: lesson.id, action: 'DRAFT_CREATE' } });
+  await post('state', { version: 1, state: 'REVIEW' }).expect(201);
+  await post('state', { version: 2, state: 'PUBLISHED' }).expect(201);
+  assert.equal((await db.lesson.findUniqueOrThrow({ where: { id: lesson.id } })).revision, 1);
+  assert.deepEqual((await db.lessonBlock.findMany({ where: { lessonId: lesson.id }, orderBy: { position: 'asc' } })).map(b => b.id), blocks);
+  assert.ok((await get(`lessons/${first}`)).body.progress.completedAt);
+  await post('draft', { version: 3 }).expect(201);
+  const input = { version: 4, title, minutes: 10, quiz: { kind: quiz.kind, passPercent: 50, questions: quiz.questions } };
+  await api.patch(`/api/content/lessons/${lesson.id}`).set('Cookie', session).set('Origin', process.env.APP_ORIGIN!).set('X-ZhPath-Request', '1').send(input).expect(200);
+  assert.equal((await db.quiz.findUniqueOrThrow({ where: { id: quiz.id } })).revision, 1);
+  await post('state', { version: 5, state: 'REVIEW' }).expect(201);
+  await post('state', { version: 6, state: 'PUBLISHED' }).expect(201);
+  assert.equal((await db.quiz.findUniqueOrThrow({ where: { id: quiz.id } })).revision, 2);
+  await post('restore', { version: 7, changeId: snapshot.id }).expect(201);
+  await post('state', { version: 8, state: 'REVIEW' }).expect(201);
+  await post('state', { version: 9, state: 'PUBLISHED' }).expect(201);
+  const restored = await db.quiz.findUniqueOrThrow({ where: { id: quiz.id } });
+  assert.equal(restored.revision, 3); assert.equal(restored.passPercent, quiz.passPercent);
+  assert.deepEqual((await db.quizAttempt.findUniqueOrThrow({ where: { id: attempt.id } })).result, attempt.result);
+  const old = await db.lessonChange.create({ data: { lessonId: lesson.id, actorId: users[0], action: 'CREATE', snapshot: { after: { title, minutes: 10, blocks: [], quiz: null } } } });
+  await post('restore', { version: 10, changeId: old.id }).expect(409);
+  const unchanged = await db.lesson.findUniqueOrThrow({ where: { id: lesson.id } });
+  assert.equal(unchanged.editVersion, 10); assert.equal(unchanged.draft, null);
+});
+
 test('lesson creation appends drafts, protects roles and rejects duplicate slugs', async () => {
   const create = (body: object) => api.post('/api/content/lessons').set('Cookie', session).set('Origin', process.env.APP_ORIGIN!).set('X-ZhPath-Request', '1').send(body);
   const body = { unitId: fixture, slug: `${fixture}-new`, title, minutes: 10 };

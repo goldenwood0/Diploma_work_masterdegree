@@ -117,6 +117,7 @@ model Lesson {
   quiz           Quiz?
   editorialState String @default("DRAFT")
   editVersion    Int @default(0)
+  draft          Json?
   changes        LessonChange[]
   @@unique([unitId, position])
 }

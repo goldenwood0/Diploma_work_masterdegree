@@ -14,3 +14,5 @@ export const blocksSchema = z.array(z.discriminatedUnion('kind', [
 ])).max(40);
 export const updateSchema = z.object({ version: z.number().int().nonnegative(), title: titleSchema, minutes: z.number().int().min(1).max(120), blocks: blocksSchema.optional(), quiz: editorQuizSchema.optional() }).strict();
 export const createSchema = z.object({ unitId: z.string().min(1).max(200), slug: z.string().min(3).max(100).regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/), title: titleSchema, minutes: z.number().int().min(1).max(120) }).strict();
+
+export const draftSchema = z.object({ title: titleSchema, minutes: z.number().int().min(1).max(120), blocks: blocksSchema, quiz: editorQuizSchema.nullable() }).strict();
