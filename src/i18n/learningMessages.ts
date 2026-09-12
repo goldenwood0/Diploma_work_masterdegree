@@ -297,4 +297,11 @@ export const learningMessages: Record<string, Record<'en' | 'kk', string>> = {
   "CSV: требуется от 1 до 100 слов.": {"en": "CSV: 1–100 words required.", "kk": "CSV: 1–100 сөз қажет."},
   "CSV: нужны столбцы hanzi,pinyin,ru,kk,en.": {"en": "CSV: expected columns hanzi,pinyin,ru,kk,en.", "kk": "CSV: hanzi,pinyin,ru,kk,en бағандары қажет."},
   "CSV: заполните все поля и проверьте длину текста и UTF-8.": {"en": "CSV: fill every field and check text length and UTF-8 encoding.", "kk": "CSV: барлық өрістерді толтырып, мәтін ұзындығын және UTF-8 кодтауын тексеріңіз."},
+  "Импорт и экспорт слов CSV / Excel": {"en": "Import and export vocabulary CSV / Excel", "kk": "Сөздерді CSV / Excel арқылы импорттау және экспорттау"},
+  "Скачать слова Excel": {"en": "Download vocabulary Excel", "kk": "Сөздерді Excel ретінде жүктеп алу"},
+  "Загрузить CSV или Excel": {"en": "Upload CSV or Excel", "kk": "CSV немесе Excel жүктеу"},
+  "Excel: один лист, текстовые ячейки без формул. Столбцы: hanzi,pinyin,ru,kk,en.": {"en": "Excel: one sheet, text cells without formulas. Columns: hanzi,pinyin,ru,kk,en.", "kk": "Excel: бір парақ, формуласыз мәтіндік ұяшықтар. Бағандар: hanzi,pinyin,ru,kk,en."},
+  "Excel: нужен файл .xlsx с одним листом, пятью текстовыми столбцами и 1–100 словами, без формул. Максимум 1 МБ.": {"en": "Excel: use an .xlsx file with one sheet, five text columns and 1–100 words, without formulas. Maximum 1 MB.", "kk": "Excel: бір парағы, бес мәтіндік бағаны және 1–100 сөзі бар формуласыз .xlsx файлы қажет. Ең көбі 1 МБ."},
+  "Не удалось создать Excel. Повторите попытку.": {"en": "Could not create Excel. Try again.", "kk": "Excel жасау мүмкін болмады. Қайталап көріңіз."},
+  "Файл: максимум 1 МБ.": {"en": "File: maximum 1 MB.", "kk": "Файл: ең көбі 1 МБ."},
 }

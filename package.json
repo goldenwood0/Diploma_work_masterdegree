@@ -16,6 +16,7 @@
     "db:migrate": "prisma migrate dev",
     "db:seed": "node --env-file=.env dist-server/seed.js",
     "test:server": "node --env-file=.env --test --test-concurrency=1 dist-server/auth.test.js dist-server/learning.test.js dist-server/quiz.test.js",
+    "test:excel": "node scripts/test-vocabulary-excel.cjs",
     "test:csv": "node scripts/test-vocabulary-csv.cjs",
     "test:i18n": "node scripts/check-i18n.cjs"
   },
@@ -25,6 +26,8 @@
     "@nestjs/platform-express": "^11.2.3",
     "@prisma/client": "6.19.0",
     "cookie-parser": "^1.4.7",
+    "exceljs": "^4.4.0",
+    "fflate": "^0.8.3",
     "helmet": "^8.3.0",
     "lucide-react": "1.42.0",
     "nodemailer": "^10.0.1",
