@@ -6,6 +6,7 @@ export const routes = {
   reviews: "/reviews",
   content: "/content",
   users: "/users",
+  media: "/media",
   login: "/login",
   register: "/register",
   forgotPassword: "/forgot-password",

@@ -1,3 +1,4 @@
+import MediaLibrary from './pages/MediaLibrary';
 import { useLanguage } from './i18n/LanguageProvider';
 import ProfileForm from './components/ProfileForm';
 import { Home, BookOpen, RefreshCw, User, Sparkles } from 'lucide-react';
@@ -87,6 +88,8 @@ export default function App() {
       <main className="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-6 lg:p-8 pt-6 sm:pt-10 transition-all duration-300">
         {account.role !== 'STUDENT' && <button className="mb-6 text-primary underline" onClick={() => setCurrentScreen('content')}>{t('Управление уроками')}</button>}
         {account.role === 'ADMIN' && <button className="mb-6 ml-5 text-primary underline" onClick={() => setCurrentScreen('users')}>{t('Пользователи и роли')}</button>}
+        {account.role !== 'STUDENT' && <button className="mb-6 ml-5 text-primary underline" onClick={() => setCurrentScreen('media')}>{t('Медиатека')}</button>}
+        {currentScreen === 'media' && <MediaLibrary role={account.role} />}
         {currentScreen === 'users' && <UsersAdmin role={account.role} currentUserId={account.id} />}
         {currentScreen === 'content' && <ContentAdmin role={account.role} />}
         {currentScreen === 'dashboard' && <Dashboard name={account.name} onNavigate={setCurrentScreen} />}

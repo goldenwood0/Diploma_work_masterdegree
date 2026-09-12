@@ -1,3 +1,4 @@
+import { audioUrlSchema } from './media.schema.js';
 import { BadRequestException } from '@nestjs/common';
 import { z } from 'zod';
 
@@ -14,7 +15,7 @@ const question = z.discriminatedUnion('kind', [
   z.object({ ...common, kind: z.literal('order'), options: z.array(option).min(2).max(30), correct: z.array(key).max(30) }).strict(),
   z.object({ ...common, kind: z.literal('gap'), ...textAnswer }).strict(),
   z.object({ ...common, kind: z.literal('input'), ...textAnswer }).strict(),
-  z.object({ ...common, kind: z.literal('dictation'), ...textAnswer, audioUrl: https, sourceUrl: https, author: z.string().trim().min(1).max(200), license: z.string().trim().min(1).max(200), licenseUrl: https }).strict(),
+  z.object({ ...common, kind: z.literal('dictation'), ...textAnswer, audioUrl: audioUrlSchema, sourceUrl: https, author: z.string().trim().min(1).max(200), license: z.string().trim().min(1).max(200), licenseUrl: https }).strict(),
 ]);
 export const questionsSchema = z.array(question).min(1).max(30).superRefine((questions, ctx) => {
   const reject = () => ctx.addIssue({ code: 'custom', message: 'Invalid question keys or answer configuration' });

@@ -1,3 +1,4 @@
+import { localAudio } from './media.schema.js';
 import { Body, Controller, Get, Param, Patch, Post, Req, UseGuards, ConflictException, NotFoundException, ForbiddenException } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import { z } from 'zod';
@@ -63,6 +64,7 @@ export class ContentController {
           contentChanged = true;
         }
       }
+      await this.validateMedia(db, id);
       return db.lesson.update({ where: { id }, data: { title: input.title, minutes: input.minutes, editVersion: { increment: 1 }, ...(contentChanged ? { revision: { increment: 1 } } : {}) } });
     });
   }
@@ -75,6 +77,7 @@ export class ContentController {
       const allowed: Record<string, string[]> = { DRAFT: ['REVIEW'], REVIEW: ['DRAFT', 'PUBLISHED'], PUBLISHED: ['ARCHIVED'], ARCHIVED: ['DRAFT'] };
       if (!allowed[current]?.includes(input.state)) throw new ConflictException('Недопустимый переход состояния.');
       if (input.state === 'PUBLISHED') {
+        await this.validateMedia(db, id);
         const quiz = await db.quiz.findUnique({ where: { lessonId: id } });
         if (quiz) parse(editorQuizSchema, { kind: quiz.kind, passPercent: quiz.passPercent, questions: quiz.questions }, 'Проверьте задания, правильные ответы и порог прохождения.');
         parse(titleSchema, lesson.title, 'Проверьте поля урока, переводы и HTTPS-ссылки.');
@@ -84,6 +87,16 @@ export class ContentController {
       }
       return db.lesson.update({ where: { id }, data: { editorialState: input.state, published: input.state === 'PUBLISHED', editVersion: { increment: 1 } } });
     });
+  }
+  private async validateMedia(db: Prisma.TransactionClient, lessonId: string) {
+    const blocks = await db.lessonBlock.findMany({ where: { lessonId }, select: { content: true } });
+    const quiz = await db.quiz.findUnique({ where: { lessonId }, select: { questions: true } });
+    const objects = [...blocks.map(b => b.content), ...(Array.isArray(quiz?.questions) ? quiz.questions : [])];
+    for (const value of objects) {
+      if (!value || typeof value !== 'object' || Array.isArray(value) || typeof value.audioUrl !== 'string' || !localAudio.test(value.audioUrl)) continue;
+      const asset = await db.mediaAsset.findUnique({ where: { id: value.audioUrl.split('/')[3] }, select: { id: true } });
+      if (!asset) throw new ConflictException('Указанный файл отсутствует в медиатеке.');
+    }
   }
   private async change(id: string, version: number, actorId: string, action: string,
     update: (db: Prisma.TransactionClient, lesson: Prisma.LessonGetPayload<object>) => Promise<Prisma.LessonGetPayload<object>>) {

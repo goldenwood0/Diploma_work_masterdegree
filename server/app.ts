@@ -1,3 +1,4 @@
+import { MediaController } from './media.controller.js';
 import 'reflect-metadata';
 import { Controller, Get, Module } from '@nestjs/common';
 import { APP_GUARD, NestFactory } from '@nestjs/core';
@@ -21,7 +22,7 @@ class HealthController {
 }
 
 @Module({
-  controllers: [AuthController, AdminController, HealthController, ProfileController, LearningController, ReviewController, ContentController],
+  controllers: [MediaController, AuthController, AdminController, HealthController, ProfileController, LearningController, ReviewController, ContentController],
   providers: [Database, AuthService, Mailer, SessionGuard, AuthRateGuard, { provide: APP_GUARD, useClass: OriginGuard }],
 })
 class AppModule {}

@@ -53,6 +53,33 @@ model Curriculum {
   levels CourseLevel[]
 }
 
+model MediaAsset {
+  id        String @id @default(uuid())
+  name      String
+  author    String
+  license   String
+  sourceUrl String
+  licenseUrl String
+  data      Bytes
+  size      Int
+  duration  Float
+  uploaderId String
+  archived  Boolean @default(false)
+  version   Int @default(0)
+  createdAt DateTime @default(now())
+  changes   MediaChange[]
+}
+
+model MediaChange {
+  id        String @id @default(uuid())
+  mediaId   String
+  media     MediaAsset @relation(fields: [mediaId], references: [id], onDelete: Cascade)
+  actorId   String
+  action    String
+  createdAt DateTime @default(now())
+  @@index([mediaId, createdAt])
+}
+
 model CourseLevel {
   id           String @id
   curriculumId String

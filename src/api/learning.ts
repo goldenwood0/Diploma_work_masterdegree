@@ -1,3 +1,4 @@
+import { audioUrlSchema } from './media';
 import { z } from "zod"
 import { request } from "./client"
 const localized = z.object({ ru: z.string(), kk: z.string(), en: z.string() })
@@ -54,7 +55,7 @@ const block = z.discriminatedUnion("kind", [
     content: z.object({
       title: localized,
       ...phrase,
-      audioUrl: z.url().refine((url) => url.startsWith("https://")),
+      audioUrl: audioUrlSchema,
       sourceUrl: z.url().refine((url) => url.startsWith("https://")),
       author: z.string(),
       license: z.string(),

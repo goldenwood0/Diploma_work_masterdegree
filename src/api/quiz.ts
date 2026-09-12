@@ -1,3 +1,4 @@
+import { audioUrlSchema } from './media';
 import { z } from 'zod';
 import { request } from './client';
 const localized = z.object({ ru: z.string(), kk: z.string(), en: z.string() });
@@ -9,7 +10,7 @@ const question = z.discriminatedUnion('kind', [
   z.object({ ...common, kind: z.literal('order'), options: z.array(option) }),
   z.object({ ...common, kind: z.literal('gap') }),
   z.object({ ...common, kind: z.literal('input') }),
-  z.object({ ...common, kind: z.literal('dictation'), audioUrl: z.url().startsWith('https://'), sourceUrl: z.url().startsWith('https://'), author: z.string(), license: z.string(), licenseUrl: z.url().startsWith('https://') }),
+  z.object({ ...common, kind: z.literal('dictation'), audioUrl: audioUrlSchema, sourceUrl: z.url().startsWith('https://'), author: z.string(), license: z.string(), licenseUrl: z.url().startsWith('https://') }),
 ]);
 const value = z.union([z.string(), z.array(z.string())]);
 const result = z.object({ score: z.number(), total: z.number(), passed: z.boolean(), passPercent: z.number(), items: z.array(z.object({ question, value, correct: z.boolean(), expected: z.union([z.string(), localized, z.array(localized)]), explanation: localized })) });

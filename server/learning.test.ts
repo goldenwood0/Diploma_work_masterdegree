@@ -7,6 +7,7 @@ import type { INestApplication } from "@nestjs/common"
 import { createApp } from "./app.js"
 import { Database } from "./database.js"
 import { digest, newToken } from "./passwords.js"
+import { wavDuration } from './media.schema.js';
 import { schedule } from './review.service.js';
 
 let app: INestApplication
@@ -124,6 +125,7 @@ beforeEach(async () => {
 afterEach(async () => {
   if (db) {
     await db.quizAttempt.deleteMany({ where: { userId: { in: users ?? [] } } })
+    await db.mediaAsset.deleteMany({ where: { uploaderId: { in: users ?? [] } } });
     await db.roleChange.deleteMany({ where: { userId: { in: users ?? [] } } });
     await db.user.deleteMany({ where: { id: { in: users ?? [] } } })
     await db.lesson.updateMany({
@@ -534,4 +536,62 @@ test('administrators cannot concurrently demote each other and remove all admin 
   assert.equal(responses.filter(r => r.status === 200).length, 1);
   assert.ok(responses.every(r => [200, 401, 403, 409].includes(r.status)));
   assert.equal(await db.user.count({ where: { id: { in: users }, role: 'ADMIN' } }), 1);
+});
+
+function wavFixture() {
+  const data = Buffer.alloc(16044); data.write('RIFF', 0); data.writeUInt32LE(data.length - 8, 4); data.write('WAVEfmt ', 8); data.writeUInt32LE(16, 16); data.writeUInt16LE(1, 20); data.writeUInt16LE(1, 22); data.writeUInt32LE(8000, 24); data.writeUInt32LE(16000, 28); data.writeUInt16LE(2, 32); data.writeUInt16LE(16, 34); data.write('data', 36); data.writeUInt32LE(16000, 40); return data;
+}
+test('media upload validates bytes, protects drafts, streams ranges and audits archive transitions', async () => {
+  const upload = (data: Buffer, cookie = session) => api.post('/api/media').set('Cookie', cookie).set('Origin', process.env.APP_ORIGIN!).set('X-ZhPath-Request', '1').field('name', fixture).field('author', 'Test author').field('license', 'CC0').field('sourceUrl', 'https://example.test/source').field('licenseUrl', 'https://example.test/license').attach('file', data, 'recording.wav');
+  await upload(wavFixture()).expect(403);
+  await api.get('/api/media').set('Cookie', session).expect(403);
+  await db.user.update({ where: { id: users[0] }, data: { role: 'EDITOR' } });
+  await upload(Buffer.from('<html>not audio</html>')).expect(400);
+  await upload(Buffer.alloc(5 * 1024 * 1024 + 1)).expect(413);
+  const uploaded = await upload(wavFixture()); assert.equal(uploaded.status, 201, JSON.stringify(uploaded.body));
+  const media = uploaded.body;
+  assert.equal(media.data, undefined); assert.equal(media.duration, 1); assert.equal(media.size, 16044);
+  const list = (await api.get('/api/media').query({ search: fixture }).set('Cookie', session).expect(200)).body;
+  assert.equal(list.length, 1); assert.equal(list[0].data, undefined);
+  await api.get(media.audioUrl).expect(401);
+  await api.get(media.audioUrl).set('Cookie', other).expect(404);
+  const full = await api.get(media.audioUrl).set('Cookie', session).expect(200);
+  assert.match(full.headers['content-type'], /audio\/wav/); assert.equal(full.headers['x-content-type-options'], 'nosniff');
+  const range = await api.get(media.audioUrl).set('Cookie', session).set('Range', 'bytes=0-15').expect(206);
+  assert.equal(range.headers['content-range'], 'bytes 0-15/16044'); assert.equal(range.headers['content-length'], '16');
+  await api.get(media.audioUrl).set('Cookie', session).set('Range', 'bytes=99999-').expect(416);
+  await api.get(media.audioUrl).set('Cookie', session).set('Range', 'bytes=-0').expect(416);
+  const lesson = await db.lesson.findUniqueOrThrow({ where: { slug: first } });
+  const audioContent = { title, hanzi: '你好', pinyin: 'nǐ hǎo', translation: title, audioUrl: media.audioUrl, sourceUrl: media.sourceUrl, author: media.author, license: media.license, licenseUrl: media.licenseUrl };
+  await db.lessonBlock.update({ where: { id: blocks[0] }, data: { kind: 'audio', content: audioContent } });
+  await api.get(media.audioUrl).set('Cookie', other).expect(200);
+  const archive = (version: number, archived: boolean) => api.patch(`/api/media/${media.id}`).set('Cookie', session).set('Origin', process.env.APP_ORIGIN!).set('X-ZhPath-Request', '1').send({ version, archived });
+  await archive(0, true).expect(403);
+  await db.user.update({ where: { id: users[0] }, data: { role: 'ADMIN' } });
+  await archive(0, true).expect(200); await archive(0, false).expect(409);
+  assert.equal((await api.get('/api/media').query({ search: fixture }).set('Cookie', session).expect(200)).body.length, 0);
+  await api.get(media.audioUrl).set('Cookie', other).expect(200);
+  await db.lesson.update({ where: { id: lesson.id }, data: { published: false } });
+  await api.get(media.audioUrl).set('Cookie', other).expect(404);
+  await archive(1, false).expect(200);
+  const history = (await api.get(`/api/media/${media.id}/history`).set('Cookie', session).expect(200)).body;
+  assert.deepEqual(history.map((c: { action: string }) => c.action), ['RESTORE', 'ARCHIVE', 'UPLOAD']);
+  await api.get(`/api/media/${media.id}/history`).set('Cookie', other).expect(403);
+  await db.lessonBlock.delete({ where: { id: blocks[0] } });
+  await db.quiz.create({ data: { lessonId: lesson.id, questions: [{ id: 'audio-q', kind: 'dictation', prompt: title, explanation: title, accepted: ['你好'], audioUrl: media.audioUrl, sourceUrl: media.sourceUrl, author: media.author, license: media.license, licenseUrl: media.licenseUrl }] } });
+  await db.lesson.update({ where: { id: lesson.id }, data: { published: true } });
+  await api.get(media.audioUrl).set('Cookie', other).expect(200);
+});
+
+test('media references must exist and WAV parsing rejects malformed chunks and unsupported formats', async () => {
+  assert.equal(wavDuration(wavFixture()), 1);
+  for (const offset of [4, 16, 20, 22, 28, 32, 34, 40]) {
+    const malformed = wavFixture(); malformed.writeUInt32LE(0xffffffff, offset); assert.throws(() => wavDuration(malformed));
+  }
+  assert.throws(() => wavDuration(wavFixture().subarray(0, 43)));
+  const lesson = await db.lesson.findUniqueOrThrow({ where: { slug: `${fixture}-draft` } });
+  await db.user.update({ where: { id: users[0] }, data: { role: 'EDITOR' } });
+  await api.patch(`/api/content/lessons/${lesson.id}`).set('Cookie', session).set('Origin', process.env.APP_ORIGIN!).set('X-ZhPath-Request', '1').send({ version: 0, title, minutes: 10, blocks: [{ kind: 'audio', content: { title, hanzi: '你', pinyin: 'nǐ', translation: title, audioUrl: `/api/media/${randomUUID()}/file`, sourceUrl: 'https://example.test/source', author: 'Test', license: 'CC0', licenseUrl: 'https://example.test/license' } }] }).expect(409);
+  assert.equal(await db.lessonBlock.count({ where: { lessonId: lesson.id } }), 0);
+  assert.equal((await db.lesson.findUniqueOrThrow({ where: { id: lesson.id } })).editVersion, 0);
 });
