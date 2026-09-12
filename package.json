@@ -16,6 +16,7 @@
     "db:migrate": "prisma migrate dev",
     "db:seed": "node --env-file=.env dist-server/seed.js",
     "test:server": "node --env-file=.env --test --test-concurrency=1 dist-server/auth.test.js dist-server/learning.test.js dist-server/quiz.test.js",
+    "test:csv": "node scripts/test-vocabulary-csv.cjs",
     "test:i18n": "node scripts/check-i18n.cjs"
   },
   "dependencies": {
