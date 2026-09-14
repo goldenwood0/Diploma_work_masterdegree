@@ -1,0 +1,21 @@
+ZhPath stroke-order data
+
+Copyright 1999 Arphic Technology Co., Ltd.
+Copyright 2016 Shaunak Kishore (Make Me a Hanzi).
+Hanzi Writer Data contributors.
+
+Source: https://github.com/chanind/hanzi-writer-data
+Pinned revision: 68d10a4b21150cae5e1ebbd223eed289cf32d90c
+Upstream: https://github.com/skishore/makemeahanzi
+
+Imported 2026-09-14: 14 character JSON files for the ZhPath pilot vocabulary.
+JSON contents are verbatim copies from data/<character>.json in the source
+revision; local filenames use lowercase hexadecimal Unicode codepoints.
+manifest.json records the selected characters. No glyph data was modified.
+
+These data are distributed under the Arphic Public License, without warranty.
+You may redistribute and modify them under that license.
+The complete unchanged license is available at /strokes/ARPHICPL.TXT
+and alongside this notice. Each JSON is freely downloadable from
+/strokes/<hex-codepoint>.json. These data are separately licensed from
+the ZhPath application code.

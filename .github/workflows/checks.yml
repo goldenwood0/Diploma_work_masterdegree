@@ -42,6 +42,7 @@ jobs:
       - run: pnpm test:csv
       - run: pnpm test:excel
       - run: pnpm test:voice
+      - run: pnpm test:strokes
       - run: pnpm server:build
       - run: pnpm db:seed
       - run: pnpm db:seed
