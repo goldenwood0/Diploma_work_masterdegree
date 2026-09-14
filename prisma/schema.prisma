@@ -34,6 +34,7 @@ model User {
   quizAttempts    QuizAttempt[]
   cards           ReviewCard[]
   reviews         ReviewEvent[]
+  studyActivities StudyActivity[]
 }
 
 model RoleChange {
@@ -206,6 +207,14 @@ model QuizAttempt {
   createdAt      DateTime @default(now())
   @@unique([userId, requestId])
   @@index([userId, quizId, createdAt])
+}
+
+model StudyActivity {
+  id        String @id @default(uuid())
+  userId    String
+  user      User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+  @@index([userId, createdAt])
 }
 
 model LessonProgress {

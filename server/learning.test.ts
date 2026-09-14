@@ -9,6 +9,7 @@ import { Database } from "./database.js"
 import { digest, newToken } from "./passwords.js"
 import { wavDuration } from './media.schema.js';
 import { schedule } from './review.service.js';
+import { localDay } from './analytics.js';
 
 let app: INestApplication
 let db: Database
@@ -237,6 +238,79 @@ async function prepareQuiz() {
   return db.quiz.create({ data: { lessonId: lesson.id, questions: [{ id: 'q1', kind: 'input', prompt: title, explanation: title, accepted: ['你好'] }] } });
 }
 const attemptBody = (value = '你好') => ({ requestId: randomUUID(), quizRevision: 1, lessonRevision: 1, answers: [{ questionId: 'q1', value }] });
+
+test('statistics require a session, isolate learners and record only new committed checkpoints', async () => {
+  await api.get('/api/learning/stats').expect(401);
+  const empty = (await get('stats').expect(200)).body;
+  assert.equal(empty.streak, 0); assert.equal(empty.assessedQuestions, 0);
+  await put(first, { blockId: blocks[2], revision: 1 }).expect(409);
+  assert.equal(await db.studyActivity.count({ where: { userId: users[0] } }), 0);
+  await put(first, { blockId: blocks[0], revision: 1 }).expect(200);
+  await put(first, { blockId: blocks[0], revision: 1 }).expect(200);
+  assert.equal(await db.studyActivity.count({ where: { userId: users[0] } }), 1);
+  // A retry on a later day must not count as studying again.
+  await db.studyActivity.updateMany({ where: { userId: users[0] }, data: { createdAt: new Date(Date.now() - 86400000) } });
+  await put(first, { blockId: blocks[0], revision: 1 }).expect(200);
+  assert.equal((await get('stats').expect(200)).body.activeToday, false);
+  await put(first, { blockId: blocks[1], revision: 1 }).expect(200);
+  const result = (await get('stats').expect(200)).body;
+  assert.equal(result.streak, 2); assert.equal(result.activeToday, true);
+  assert.equal((await get('stats', other).expect(200)).body.streak, 0);
+  await db.userSettings.create({ data: { userId: users[0], timezone: 'Pacific/Kiritimati' } });
+  const zoned = (await get('stats').expect(200)).body;
+  assert.equal(zoned.timezone, 'Pacific/Kiritimati');
+  assert.equal(zoned.week.at(-1).date, localDay(new Date(zoned.serverNow), zoned.timezone));
+  assert.equal(zoned.activeToday, true); assert.equal(zoned.streak, 2);
+  for (const timezone of ['+23:59', '-23:59']) {
+    await db.userSettings.update({ where: { userId: users[0] }, data: { timezone } });
+    const offsetStats = (await get('stats').expect(200)).body;
+    assert.equal(offsetStats.activeToday, true); assert.equal(offsetStats.streak, 2);
+    assert.equal(offsetStats.week.at(-1).date, localDay(new Date(offsetStats.serverNow), timezone));
+  }
+});
+
+test('weak areas use latest attempts, exclude old versions and archived lessons, and never reveal answers', async () => {
+  const quiz = await prepareQuiz();
+  for (const blockId of blocks) await put(first, { blockId, revision: 1 }).expect(200);
+  const failed = await submitAttempt(attemptBody('错')).expect(200);
+  let stats = (await get('stats').expect(200)).body;
+  assert.deepEqual(stats.weakAreas, [{ kind: 'input', total: 1, incorrect: 1 }]);
+  assert.ok(!JSON.stringify(stats).includes('expected'));
+  assert.equal((await get('stats', other).expect(200)).body.assessedQuestions, 0);
+  await db.quizAttempt.update({ where: { id: failed.body.id }, data: { createdAt: new Date(Date.now() - 60000) } });
+  await submitAttempt(attemptBody()).expect(200);
+  stats = (await get('stats').expect(200)).body;
+  assert.equal(stats.assessedQuestions, 1); assert.deepEqual(stats.weakAreas, []);
+  await db.quiz.update({ where: { id: quiz.id }, data: { revision: 2 } });
+  assert.equal((await get('stats').expect(200)).body.assessedQuestions, 0);
+  await db.quiz.update({ where: { id: quiz.id }, data: { revision: 1 } });
+  await db.lesson.update({ where: { slug: first }, data: { revision: 2 } });
+  assert.equal((await get('stats').expect(200)).body.assessedQuestions, 0);
+  await db.lesson.update({ where: { slug: first }, data: { revision: 1, published: false } });
+  assert.equal((await get('stats').expect(200)).body.assessedQuestions, 0);
+  await db.lesson.update({ where: { slug: first }, data: { published: true } });
+  await db.quizAttempt.updateMany({ where: { userId: users[0] }, data: { createdAt: new Date(Date.now() - 31 * 86400000) } });
+  assert.equal((await get('stats').expect(200)).body.assessedQuestions, 0);
+});
+
+test('quiz and SRS activity count towards streak without checkpoints and retries do not add days', async () => {
+  await prepareQuiz();
+  for (const blockId of blocks) await put(first, { blockId, revision: 1 }).expect(200);
+  await db.studyActivity.deleteMany({ where: { userId: users[0] } });
+  const body = attemptBody('错');
+  await submitAttempt(body).expect(200);
+  assert.equal((await get('stats').expect(200)).body.activeToday, true);
+  await db.quizAttempt.updateMany({ where: { userId: users[0] }, data: { createdAt: new Date(Date.now() - 86400000) } });
+  await submitAttempt(body).expect(200);
+  assert.equal((await get('stats').expect(200)).body.activeToday, false);
+  const card = await newCard('analytics');
+  const ratingBody = { requestId: randomUUID(), version: 0, rating: 'good' };
+  await rating(card.id, ratingBody).expect(200);
+  const stats = (await get('stats').expect(200)).body;
+  assert.equal(stats.activeToday, true); assert.equal(stats.streak, 2);
+  await rating(card.id, ratingBody).expect(200);
+  assert.equal(await db.reviewEvent.count({ where: { userId: users[0] } }), 1);
+});
 
 test('quiz gates completion, keeps answer keys private and persists failed and passed attempts', async () => {
   const quiz = await prepareQuiz();

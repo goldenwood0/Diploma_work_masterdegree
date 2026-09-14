@@ -15,6 +15,7 @@ import { ProfileController } from './profile.controller.js';
 import { LearningController } from './learning.controller.js';
 import { ReviewController } from './review.controller.js';
 import { ContentController } from './content.controller.js';
+import { AnalyticsController } from './analytics.controller.js';
 
 @Controller('health')
 class HealthController {
@@ -22,7 +23,7 @@ class HealthController {
 }
 
 @Module({
-  controllers: [MediaController, AuthController, AdminController, HealthController, ProfileController, LearningController, ReviewController, ContentController],
+  controllers: [AnalyticsController, MediaController, AuthController, AdminController, HealthController, ProfileController, LearningController, ReviewController, ContentController],
   providers: [Database, AuthService, Mailer, SessionGuard, AuthRateGuard, { provide: APP_GUARD, useClass: OriginGuard }],
 })
 class AppModule {}

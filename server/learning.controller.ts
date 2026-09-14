@@ -172,6 +172,7 @@ export class LearningController {
             revision: lesson.revision,
             completedAt: index + 1 === lesson.blocks.length && !lesson.quiz ? new Date() : null,
           }
+          await db.studyActivity.create({ data: { userId } })
           return db.lessonProgress.upsert({
             where,
             create: { userId, lessonId: lesson.id, ...data },

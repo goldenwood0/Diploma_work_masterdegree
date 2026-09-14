@@ -2,6 +2,7 @@ import { ArrowRight, BookOpen, CheckCircle2 } from "lucide-react"
 import type { Screen } from "../app/routes"
 import useCatalog from "../app/useCatalog"
 import { useLanguage } from "../i18n/LanguageProvider"
+import LearningStats from "../components/LearningStats"
 
 export default function Dashboard({
   name,
@@ -87,6 +88,7 @@ export default function Dashboard({
           </div>
         </>
       )}
+      <LearningStats />
     </section>
   )
 }
