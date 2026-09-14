@@ -2,6 +2,7 @@ import { useRef, useState, type PointerEvent } from "react"
 import { PenLine, Undo2, Trash2 } from "lucide-react"
 import { useLanguage } from "../i18n/LanguageProvider"
 import StrokeOrder from "./StrokeOrder"
+import GuidedWriting from "./GuidedWriting"
 
 type Point = {
   x: number
@@ -90,6 +91,7 @@ export default function CharacterPractice({ text }: { text: string }) {
         </select>
       </label>
       <StrokeOrder key={characters[selected]} character={characters[selected]} />
+      <GuidedWriting key={`guided-${characters[selected]}`} character={characters[selected]} />
       <label className="flex items-center gap-3">
         <input
           type="checkbox"

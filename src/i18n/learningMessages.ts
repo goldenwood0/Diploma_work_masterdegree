@@ -1,4 +1,13 @@
 export const learningMessages: Record<string, Record<'en' | 'kk', string>> = {
+  "Письмо по чертам": { en: "Stroke practice", kk: "Сызықтар бойынша жазу" },
+  "Пишите по одной черте: от круга к квадрату. После отпускания указателя тренажёр проверит текущую черту.": { en: "Draw one stroke at a time, from the circle to the square. Release to check the current stroke.", kk: "Шеңберден шаршыға қарай бір сызықтан жазыңыз. Жібергеннен кейін ағымдағы сызық тексеріледі." },
+  "Подсказка текущей черты": { en: "Current stroke hint", kk: "Ағымдағы сызыққа нұсқау" },
+  "Черта принята.": { en: "Stroke accepted.", kk: "Сызық қабылданды." },
+  "Попробуйте в обратном направлении: от круга к квадрату.": { en: "Try the other direction: from circle to square.", kk: "Кері бағытта көріңіз: шеңберден шаршыға қарай." },
+  "Повторите текущую черту, следуя её форме и расположению.": { en: "Try the current stroke again, following its shape and position.", kk: "Ағымдағы сызықтың пішіні мен орналасуына сай қайта көріңіз." },
+  "Принято черт": { en: "Strokes accepted", kk: "Қабылданған сызықтар" },
+  "Все черты пройдены. Сравните результат с образцом.": { en: "All strokes completed. Compare with the example.", kk: "Барлық сызықтар аяқталды. Нәтижені үлгімен салыстырыңыз." },
+  "Подсказки приблизительные. Принятая черта заменяется образцом. Это упражнение не оценивает качество почерка; результат не сохраняется в аккаунте.": { en: "Feedback is approximate. Accepted strokes are replaced by the model. This exercise does not grade handwriting; results are not saved to your account.", kk: "Нұсқаулар шамамен беріледі. Қабылданған сызық үлгімен ауыстырылады. Жаттығу қолжазба сапасын бағаламайды; нәтиже аккаунтта сақталмайды." },
   "Порядок черт": { en: "Stroke order", kk: "Сызықтар реті" },
   "Черта": { en: "Stroke", kk: "Сызық" },
   "Предыдущая черта": { en: "Previous stroke", kk: "Алдыңғы сызық" },

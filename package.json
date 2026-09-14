@@ -19,6 +19,7 @@
     "test:excel": "node scripts/test-vocabulary-excel.cjs",
     "test:voice": "node --test scripts/test-voice.cjs",
     "test:strokes": "node scripts/test-strokes.cjs",
+    "test:stroke-matching": "node scripts/test-stroke-matching.cjs",
     "test:csv": "node scripts/test-vocabulary-csv.cjs",
     "test:i18n": "node scripts/check-i18n.cjs"
   },
