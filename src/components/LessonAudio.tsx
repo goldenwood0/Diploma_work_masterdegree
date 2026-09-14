@@ -1,6 +1,7 @@
 import { useRef, useState } from "react"
 import type { AudioContent } from "../api/learning"
 import { useLanguage } from "../i18n/LanguageProvider"
+import VoicePractice from "./VoicePractice"
 
 export default function LessonAudio({ content }: { content: AudioContent }) {
   const { t, explanationLanguage } = useLanguage()
@@ -10,6 +11,7 @@ export default function LessonAudio({ content }: { content: AudioContent }) {
   const [transcript, setTranscript] = useState(true)
   const [translation, setTranslation] = useState(false)
   const [error, setError] = useState(false)
+  const [capturing, setCapturing] = useState(false)
   return (
     <div className="space-y-5">
       <audio
@@ -21,6 +23,9 @@ export default function LessonAudio({ content }: { content: AudioContent }) {
         className="w-full"
         aria-label={content.title[explanationLanguage]}
         onError={() => setError(true)}
+        onPlay={() => {
+          if (capturing) ref.current?.pause()
+        }}
         onLoadedMetadata={() => {
           setError(false)
           if (ref.current) ref.current.playbackRate = speed
@@ -105,6 +110,7 @@ export default function LessonAudio({ content }: { content: AudioContent }) {
         </a>{" "}
         · {t("Запись без изменений")}
       </p>
+      <VoicePractice reference={ref} onCaptureChange={setCapturing} />
     </div>
   )
 }
