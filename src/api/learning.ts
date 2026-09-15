@@ -14,6 +14,7 @@ const summary = z.object({
   minutes: z.number(),
   blockCount: z.number(),
   locked: z.boolean(),
+  searchText: z.string(),
   progress,
 })
 const catalogSchema = z.object({

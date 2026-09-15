@@ -1,4 +1,5 @@
 export const learningMessages: Record<string, Record<'en' | 'kk', string>> = {
+  "По названиям, словам, пиньиню и текстам доступных уроков на трёх языках. Пиньинь можно вводить без тонов.": { en: "Search titles, words, pinyin and texts of available lessons in three languages. Pinyin can be entered without tone marks.", kk: "Қолжетімді сабақтардың атаулары, сөздері, пиньині мен мәтіндері бойынша үш тілде іздеу. Пиньиньді тон белгілерінсіз енгізуге болады." },
   "Письмо по чертам": { en: "Stroke practice", kk: "Сызықтар бойынша жазу" },
   "Пишите по одной черте: от круга к квадрату. После отпускания указателя тренажёр проверит текущую черту.": { en: "Draw one stroke at a time, from the circle to the square. Release to check the current stroke.", kk: "Шеңберден шаршыға қарай бір сызықтан жазыңыз. Жібергеннен кейін ағымдағы сызық тексеріледі." },
   "Подсказка текущей черты": { en: "Current stroke hint", kk: "Ағымдағы сызыққа нұсқау" },

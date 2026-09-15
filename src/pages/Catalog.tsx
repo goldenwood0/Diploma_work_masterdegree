@@ -38,6 +38,7 @@ export default function Catalog({
                       ...Object.values(curriculum.title),
                       ...Object.values(unit.title),
                       ...Object.values(lesson.title),
+                      lesson.searchText,
                     ].join(" "),
                   )
                   return (
@@ -85,7 +86,7 @@ export default function Catalog({
         </label>
         <p id="catalog-search-hint" className="text-sm text-foreground/65">
           {t(
-            "По названиям уроков и разделов на русском, казахском и английском.",
+            "По названиям, словам, пиньиню и текстам доступных уроков на трёх языках. Пиньинь можно вводить без тонов.",
           )}
         </p>
         <div className="flex flex-wrap gap-4 items-end">

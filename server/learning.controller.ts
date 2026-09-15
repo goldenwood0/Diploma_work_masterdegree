@@ -20,6 +20,7 @@ import { parse } from "./validation.js"
 import { grade, publicQuestion, questionsSchema, submissionSchema } from './quiz.js'
 import { digest } from './passwords.js'
 import { collectWords } from './review.service.js'
+import { searchableContent } from './content-search.js'
 
 const checkpoint = z
   .object({
@@ -56,6 +57,7 @@ export class LearningController {
                     orderBy: { position: "asc" },
                     include: {
                       _count: { select: { blocks: true } },
+                      blocks: { select: { kind: true, content: true }, orderBy: { position: "asc" } },
                       prerequisite: { select: { revision: true } },
                     },
                   },
@@ -68,6 +70,9 @@ export class LearningController {
       this.db.lessonProgress.findMany({ where: { userId } }),
     ])
     const byLesson = new Map(progress.map((p) => [p.lessonId, p]))
+    const locked = (lesson: { prerequisiteId: string | null; prerequisite: { revision: number } | null }) =>
+      !!lesson.prerequisiteId && (!byLesson.get(lesson.prerequisiteId)?.completedAt ||
+        byLesson.get(lesson.prerequisiteId)?.revision !== lesson.prerequisite?.revision)
     return {
       curricula: curricula.map((c) => ({
         ...c,
@@ -81,11 +86,8 @@ export class LearningController {
               title: lesson.title,
               minutes: lesson.minutes,
               blockCount: lesson._count.blocks,
-              locked:
-                !!lesson.prerequisiteId &&
-                (!byLesson.get(lesson.prerequisiteId)?.completedAt ||
-                  byLesson.get(lesson.prerequisiteId)?.revision !==
-                    lesson.prerequisite?.revision),
+              locked: locked(lesson),
+              searchText: locked(lesson) ? "" : searchableContent(lesson.blocks),
               progress:
                 byLesson.get(lesson.id)?.revision === lesson.revision
                   ? byLesson.get(lesson.id)

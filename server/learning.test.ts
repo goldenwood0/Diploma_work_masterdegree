@@ -153,6 +153,26 @@ test("catalog and lesson enforce sessions, publication and prerequisite access",
   await get("lessons/nonexistent").expect(404)
 })
 
+test("catalog search indexes only accessible published learning fields and refreshes after unlocking", async () => {
+  await db.lessonBlock.update({ where: { id: blocks[0] }, data: { content: {
+    title, text: {ru:'грамматика',kk:'грамматика',en:'grammar'}, hanzi:'女', pinyin:'nǚ', translation: title,
+    secret:'hidden-metadata', accepted:['hidden-answer'], audioUrl:'https://hidden-media.test'
+  } } });
+  await db.lesson.update({ where: { slug: first }, data: { draft: { title:{ru:'hidden-draft',kk:'hidden-draft',en:'hidden-draft'} } } });
+  const find = (body: any, slug: string) => body.curricula.flatMap((c: any)=>c.levels.flatMap((l: any)=>l.units.flatMap((u: any)=>u.lessons))).find((l: any)=>l.slug===slug);
+  const catalog = (await get('catalog').expect(200)).body;
+  const text = find(catalog, first).searchText;
+  assert.ok(text.includes('女')); assert.ok(text.includes('nǚ')); assert.ok(text.includes('nü')); assert.ok(text.includes('grammar'));
+  assert.ok(!JSON.stringify(catalog).includes('hidden-'));
+  assert.equal(find(catalog, second).searchText, '');
+  assert.equal(find(catalog, `${fixture}-draft`), undefined);
+  for (const blockId of blocks) await put(first, {blockId,revision:1}).expect(200);
+  assert.ok(find((await get('catalog').expect(200)).body, second).searchText.includes(title.ru));
+  assert.equal(find((await get('catalog', other).expect(200)).body, second).searchText,'');
+  await db.lesson.update({where:{slug:first},data:{revision:2}});
+  assert.equal(find((await get('catalog').expect(200)).body,second).searchText,'');
+});
+
 test("checkpoint resumes in a second session and isolates another learner", async () => {
   await put(first, { blockId: blocks[0], revision: 1 }).expect(200)
   const secondDevice = await device(users[0])
