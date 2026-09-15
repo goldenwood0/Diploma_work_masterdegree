@@ -19,6 +19,19 @@ export class ReviewController {
   }
   @Get()
   async list(@Req() req: AuthRequest) {
+    const state = await this.queueState(req);
+    const history = await this.db.reviewEvent.findMany({ where: { userId: req.session!.user.id }, orderBy: { createdAt: "desc" }, take: 30, select: { id: true, cardId: true, rating: true, createdAt: true, result: true } });
+    return { ...state, history };
+  }
+  @Get("summary")
+  async summary(@Req() req: AuthRequest) {
+    const state = await this.queueState(req);
+    const dueReviews = state.cards.filter(c => c.version > 0 && c.dueAt <= state.serverNow).length;
+    const dueNew = state.cards.filter(c => c.version === 0 && c.dueAt <= state.serverNow).length;
+    const next = state.cards.find(c => c.version > 0 && c.dueAt > state.serverNow);
+    return { ready: state.queue.length, dueReviews, availableNew: state.queue.length - dueReviews, deferredNew: Math.max(0, dueNew - state.remainingNew), remainingNew: state.remainingNew, newLimit: state.newLimit, reviewedToday: state.reviewedToday, totalCards: state.cards.length, nextReviewAt: next?.dueAt ?? null, timezone: state.timezone, serverNow: state.serverNow };
+  }
+  private async queueState(req: AuthRequest) {
     const userId = req.session!.user.id;
     const now = new Date();
     const timezone = req.session!.user.settings?.timezone ?? 'UTC';
@@ -31,8 +44,7 @@ export class ReviewController {
     const remainingNew = Math.max(0, 10 - introduced.size);
     const due = cards.filter(c => c.dueAt <= now);
     const queue = [...due.filter(c => c.version > 0), ...due.filter(c => c.version === 0).slice(0, remainingNew)].map(c => c.id);
-    const history = await this.db.reviewEvent.findMany({ where: { userId }, orderBy: { createdAt: 'desc' }, take: 30, select: { id: true, cardId: true, rating: true, createdAt: true, result: true } });
-    return { cards, queue, newLimit: 10, remainingNew, reviewedToday: today.length, timezone, serverNow: now, history };
+    return { cards, queue, newLimit: 10, remainingNew, reviewedToday: today.length, timezone, serverNow: now };
   }
   @Patch(':id')
   async edit(@Param('id') id: string, @Req() req: AuthRequest, @Body() body: unknown) {

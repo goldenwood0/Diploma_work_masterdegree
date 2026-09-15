@@ -33,8 +33,8 @@ export class AnalyticsController {
           SELECT "createdAt" FROM "ReviewEvent" WHERE "userId" = ${userId} AND "createdAt" <= ${now}
         ) AS activity`,
       // Only current published versions; a successful retake replaces older mistakes.
-      this.db.$queryRaw<Array<{ result: unknown }>>`
-        SELECT DISTINCT ON (a."quizId") a.result
+      this.db.$queryRaw<Array<{ result: unknown; lessonId: string }>>`
+        SELECT DISTINCT ON (a."quizId") a.result, l.id AS "lessonId"
         FROM "QuizAttempt" a
         JOIN "Quiz" q ON q.id = a."quizId"
         JOIN "Lesson" l ON l.id = q."lessonId"
@@ -51,6 +51,7 @@ export class AnalyticsController {
         days.map((day) => day.day),
         localDay(now, timezone),
       ),
+      mistakeLessonIds: attempts.filter(a => exerciseSummary([a.result]).weakAreas.length > 0).map(a => a.lessonId),
       ...exerciseSummary(attempts.map((attempt) => attempt.result)),
     }
   }

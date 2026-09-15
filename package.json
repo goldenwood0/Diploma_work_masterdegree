@@ -18,6 +18,7 @@
     "test:server": "node --env-file=.env --test --test-concurrency=1 dist-server/auth.test.js dist-server/learning.test.js dist-server/quiz.test.js dist-server/analytics.test.js",
     "test:excel": "node scripts/test-vocabulary-excel.cjs",
     "test:voice": "node --test scripts/test-voice.cjs",
+    "test:dashboard": "node scripts/test-dashboard.cjs",
     "test:strokes": "node scripts/test-strokes.cjs",
     "test:stroke-matching": "node scripts/test-stroke-matching.cjs",
     "test:csv": "node scripts/test-vocabulary-csv.cjs",

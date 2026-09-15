@@ -10,3 +10,11 @@ export async function loadReviews(signal: AbortSignal) {
 }
 export async function editCard(id: string, data: { favorite?: boolean; note?: string }) { await request(`/reviews/${encodeURIComponent(id)}`, { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) }); }
 export async function rateCard(id: string, data: { version: number; rating: string; requestId: string }, signal: AbortSignal) { return z.object({ dueAt: z.string(), interval: z.number(), version: z.number() }).parse(await request(`/reviews/${encodeURIComponent(id)}/rate`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data), signal })); }
+
+const count = z.number().int().nonnegative();
+const summarySchema = z.object({ ready: count, dueReviews: count, availableNew: count, deferredNew: count, remainingNew: count, newLimit: count, reviewedToday: count, totalCards: count, nextReviewAt: z.iso.datetime().nullable(), timezone: z.string(), serverNow: z.iso.datetime() });
+export type ReviewSummary = z.infer<typeof summarySchema>;
+export async function loadReviewSummary(signal: AbortSignal) {
+  await request('/reviews/sync', { method: 'POST', signal });
+  return summarySchema.parse(await request('/reviews/summary', { signal }));
+}

@@ -295,12 +295,15 @@ test('weak areas use latest attempts, exclude old versions and archived lessons,
   const failed = await submitAttempt(attemptBody('错')).expect(200);
   let stats = (await get('stats').expect(200)).body;
   assert.deepEqual(stats.weakAreas, [{ kind: 'input', total: 1, incorrect: 1 }]);
+  assert.deepEqual(stats.mistakeLessonIds, [quiz.lessonId]);
+  assert.deepEqual((await get('stats', other).expect(200)).body.mistakeLessonIds, []);
   assert.ok(!JSON.stringify(stats).includes('expected'));
   assert.equal((await get('stats', other).expect(200)).body.assessedQuestions, 0);
   await db.quizAttempt.update({ where: { id: failed.body.id }, data: { createdAt: new Date(Date.now() - 60000) } });
   await submitAttempt(attemptBody()).expect(200);
   stats = (await get('stats').expect(200)).body;
   assert.equal(stats.assessedQuestions, 1); assert.deepEqual(stats.weakAreas, []);
+  assert.deepEqual(stats.mistakeLessonIds, []);
   await db.quiz.update({ where: { id: quiz.id }, data: { revision: 2 } });
   assert.equal((await get('stats').expect(200)).body.assessedQuestions, 0);
   await db.quiz.update({ where: { id: quiz.id }, data: { revision: 1 } });
@@ -759,4 +762,30 @@ test('media references must exist and WAV parsing rejects malformed chunks and u
   await api.patch(`/api/content/lessons/${lesson.id}`).set('Cookie', session).set('Origin', process.env.APP_ORIGIN!).set('X-ZhPath-Request', '1').send({ version: 0, title, minutes: 10, blocks: [{ kind: 'audio', content: { title, hanzi: '你', pinyin: 'nǐ', translation: title, audioUrl: `/api/media/${randomUUID()}/file`, sourceUrl: 'https://example.test/source', author: 'Test', license: 'CC0', licenseUrl: 'https://example.test/license' } }] }).expect(409);
   assert.equal(await db.lessonBlock.count({ where: { lessonId: lesson.id } }), 0);
   assert.equal((await db.lesson.findUniqueOrThrow({ where: { id: lesson.id } })).editVersion, 0);
+});
+
+test('dashboard review summary matches the queue, protects accounts and handles limits and scheduled cards', async () => {
+  const summary = (cookie = session) => api.get('/api/reviews/summary').set('Cookie', cookie);
+  await api.get('/api/reviews/summary').expect(401);
+  assert.equal((await summary().expect(200)).body.ready, 0);
+  await db.userSettings.create({ data: { userId: users[0], timezone: 'Asia/Qyzylorda' } });
+  const cards = [];
+  for (let i = 0; i < 11; i++) cards.push(await newCard(`summary-${i}`));
+  let result = (await summary().expect(200)).body;
+  assert.equal(result.ready, 10); assert.equal(result.availableNew, 10); assert.equal(result.deferredNew, 1);
+  assert.equal(result.dueReviews, 0); assert.equal(result.totalCards, 11); assert.equal(result.nextReviewAt, null);
+  assert.equal(result.timezone, 'Asia/Qyzylorda');
+  assert.ok(!JSON.stringify(result).includes('summary-'));
+  assert.equal((await summary(other).expect(200)).body.totalCards, 0);
+  for (const card of cards.slice(0, 10)) await rating(card.id, { requestId: randomUUID(), version: 0, rating: 'again' }).expect(200);
+  result = (await summary().expect(200)).body;
+  assert.equal(result.ready, 0); assert.equal(result.remainingNew, 0); assert.equal(result.reviewedToday, 10);
+  assert.ok(new Date(result.nextReviewAt) > new Date(result.serverNow));
+  await db.reviewCard.update({ where: { id: cards[0].id }, data: { dueAt: new Date(Date.now() - 1000) } });
+  result = (await summary().expect(200)).body;
+  assert.equal(result.ready, 1); assert.equal(result.dueReviews, 1); assert.equal(result.availableNew, 0);
+  assert.equal(result.ready, (await reviews().expect(200)).body.queue.length);
+  await db.reviewEvent.updateMany({ where: { userId: users[0] }, data: { createdAt: new Date(Date.now() - 48 * 3600000) } });
+  result = (await summary().expect(200)).body;
+  assert.equal(result.ready, 2); assert.equal(result.remainingNew, 10); assert.equal(result.reviewedToday, 0);
 });

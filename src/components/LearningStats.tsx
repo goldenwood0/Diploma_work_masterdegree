@@ -1,6 +1,5 @@
-import { useEffect, useState } from "react"
 import { Flame, CheckCircle2, Circle } from "lucide-react"
-import { getStats, type LearningStats as Stats } from "../api/stats"
+import { type LearningStats as Stats } from "../api/stats"
 import { useLanguage } from "../i18n/LanguageProvider"
 
 const kindNames = {
@@ -12,56 +11,8 @@ const kindNames = {
   dictation: "Диктант",
 }
 
-export default function LearningStats() {
+export default function LearningStats({ data }: { data: Stats }) {
   const { t, language } = useLanguage()
-  const [data, setData] = useState<Stats | null>(null)
-  const [error, setError] = useState(false)
-  const [attempt, setAttempt] = useState(0)
-  useEffect(() => {
-    let controller: AbortController | undefined
-    const refresh = () => {
-      controller?.abort()
-      const current = new AbortController()
-      controller = current
-      getStats(current.signal)
-        .then((value) => {
-          if (!current.signal.aborted) {
-            setData(value)
-            setError(false)
-          }
-        })
-        .catch(() => {
-          if (!current.signal.aborted) setError(true)
-        })
-    }
-    refresh()
-    const timer = window.setInterval(refresh, 60000)
-    window.addEventListener("focus", refresh)
-    return () => {
-      controller?.abort()
-      window.clearInterval(timer)
-      window.removeEventListener("focus", refresh)
-    }
-  }, [attempt])
-
-  if (error)
-    return (
-      <div role="alert" className="rounded-2xl border border-border p-6">
-        <p>{t("Не удалось загрузить статистику.")}</p>
-        <button
-          onClick={() => {
-            setError(false)
-            setData(null)
-            setAttempt((value) => value + 1)
-          }}
-          className="underline py-2"
-        >
-          {t("Повторить")}
-        </button>
-      </div>
-    )
-  if (!data) return <p role="status">{t("Загрузка статистики…")}</p>
-
   const dateLabel = (date: string) =>
     new Intl.DateTimeFormat(language, {
       weekday: "short",
