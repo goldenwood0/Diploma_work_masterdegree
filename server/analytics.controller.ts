@@ -2,7 +2,7 @@ import { Controller, Get, Req, UseGuards } from "@nestjs/common"
 import { Database } from "./database.js"
 import { Prisma } from "@prisma/client"
 import { SessionGuard, type AuthRequest } from "./security.js"
-import { activitySummary, exerciseSummary, localDay } from "./analytics.js"
+import { activitySummary, exerciseSummary, localDay, accuracySummary } from "./analytics.js"
 import { timeByDay, type Segment } from "./study-time.js"
 import { shiftDay } from "./analytics.js"
 
@@ -64,6 +64,7 @@ export class AnalyticsController {
       ),
       mistakeLessonIds: attempts.filter(a => exerciseSummary([a.result]).weakAreas.length > 0).map(a => a.lessonId),
       ...exerciseSummary(attempts.map((attempt) => attempt.result)),
+      ...accuracySummary(attempts.map((attempt) => attempt.result)),
     }
   }
 }

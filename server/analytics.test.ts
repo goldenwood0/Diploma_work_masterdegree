@@ -1,6 +1,6 @@
 import { test } from "node:test"
 import assert from "node:assert/strict"
-import { activitySummary, localDay, exerciseSummary } from "./analytics.js"
+import { activitySummary, localDay, exerciseSummary, accuracySummary } from "./analytics.js"
 
 test("streak handles duplicates, yesterday grace, gaps, future dates and year boundaries", () => {
   assert.equal(activitySummary([], "2026-01-01").streak, 0)
@@ -63,3 +63,18 @@ test("exercise statistics distinguish no data, no errors and ordered error rates
     ["dictation", "choice"],
   )
 })
+
+test('accuracy keeps unclassified answers separate and never infers skills from exercise types', () => {
+  const empty = accuracySummary([]);
+  assert.ok(empty.topicAccuracy.every(row => row.total === 0));
+  assert.ok(empty.skillAccuracy.every(row => row.total === 0));
+  const summary = accuracySummary([{ items: [
+    { question: { kind: 'dictation' }, correct: false },
+    { question: { topic: 'greetings', skill: 'vocabulary' }, correct: true },
+    { question: { topic: 'greetings', skill: 'listening' }, correct: false },
+    { question: { topic: 'unknown', skill: 'writing' }, correct: true },
+  ] }]);
+  assert.deepEqual(summary.topicAccuracy[0], { key: 'greetings', correct: 1, total: 2 });
+  assert.deepEqual(summary.skillAccuracy.find(row => row.key === 'listening'), { key: 'listening', correct: 0, total: 1 });
+  assert.equal(summary.unclassifiedTopics, 2); assert.equal(summary.unclassifiedSkills, 1);
+});

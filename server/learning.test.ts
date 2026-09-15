@@ -599,7 +599,7 @@ test('editor quiz changes preserve attempt history, hide answer keys and version
   const oldBody = attemptBody();
   const attempt = (await submitAttempt(oldBody).expect(200)).body;
   const lesson = await db.lesson.findUniqueOrThrow({ where: { slug: first } });
-  const quiz = { kind: 'module', passPercent: 100, questions: [{ id: 'q2', kind: 'choice', prompt: title, explanation: title, options: [{ id: 'a', text: title }, { id: 'b', text: title }], correct: 'b' }] };
+  const quiz = { kind: 'module', passPercent: 100, questions: [{ id: 'q2', topic: 'introductions', skill: 'grammar', kind: 'choice', prompt: title, explanation: title, options: [{ id: 'a', text: title }, { id: 'b', text: title }], correct: 'b' }] };
   const edit = (version: number, value: unknown = quiz) => api.patch(`/api/content/lessons/${lesson.id}`).set('Cookie', session).set('Origin', process.env.APP_ORIGIN!).set('X-ZhPath-Request', '1').send({ version, title, minutes: 10, quiz: value });
   const state = (version: number, state: string) => api.post(`/api/content/lessons/${lesson.id}/state`).set('Cookie', session).set('Origin', process.env.APP_ORIGIN!).set('X-ZhPath-Request', '1').send({ version, state });
   await edit(0).expect(403);
@@ -617,6 +617,8 @@ test('editor quiz changes preserve attempt history, hide answer keys and version
   assert.equal((await db.lesson.findUniqueOrThrow({ where: { id: lesson.id } })).revision, 2);
   const detail = (await api.get(`/api/content/lessons/${lesson.id}`).set('Cookie', session).expect(200)).body;
   assert.equal(detail.quiz.questions[0].correct, 'b');
+  assert.equal(detail.quiz.questions[0].topic, 'introductions');
+  assert.equal(detail.quiz.questions[0].skill, 'grammar');
   assert.equal(detail.changes[0].snapshot.before.quiz.questions[0].accepted[0], '你好');
   assert.equal(detail.changes[0].snapshot.after.quiz.questions[0].correct, 'b');
   await edit(3).expect(200);
@@ -632,6 +634,8 @@ test('editor quiz changes preserve attempt history, hide answer keys and version
   assert.equal((await submitAttempt(oldBody).expect(200)).body.id, attempt.id);
   for (const blockId of blocks) await put(first, { blockId, revision: 3 }).expect(200);
   const visible = (await get(`lessons/${first}/quiz`).expect(200)).body;
+  assert.equal(visible.questions[0].topic, 'introductions');
+  assert.equal(visible.questions[0].skill, 'grammar');
   assert.equal(visible.questions[0].correct, undefined); assert.equal(visible.questions[0].explanation, undefined);
   assert.equal(visible.attempts[0].result.items[0].expected, '你好');
   const passed = (await submitAttempt({ requestId: randomUUID(), lessonRevision: 3, quizRevision: 3, answers: [{ questionId: 'q2', value: 'b' }] }).expect(200)).body;
@@ -844,4 +848,30 @@ test('study time interval union and DST day splitting preserve credited millisec
   const midnight = Date.parse('2026-11-02T05:00:00Z');
   const split = timeByDay([[midnight - 10000, midnight + 10000]], 'America/New_York');
   assert.equal(split.get('2026-11-01'), 10000); assert.equal(split.get('2026-11-02'), 10000);
+});
+
+test('topic and skill accuracy uses attempt snapshots, latest retakes, current versions and account isolation', async () => {
+  const quiz = await prepareQuiz();
+  const questions = (quiz.questions as Array<Record<string, unknown>>).map(q => ({ ...q, topic: 'greetings', skill: 'vocabulary' }));
+  await db.quiz.update({ where: { id: quiz.id }, data: { questions } });
+  for (const blockId of blocks) await put(first, { blockId, revision: 1 }).expect(200);
+  const failed = (await submitAttempt(attemptBody('wrong')).expect(200)).body;
+  let stats = (await get('stats').expect(200)).body;
+  assert.deepEqual(stats.topicAccuracy[0], { key: 'greetings', correct: 0, total: 1 });
+  assert.deepEqual(stats.skillAccuracy[0], { key: 'vocabulary', correct: 0, total: 1 });
+  assert.equal(stats.unclassifiedTopics, 0); assert.equal(stats.unclassifiedSkills, 0);
+  assert.equal((await get('stats', other).expect(200)).body.topicAccuracy[0].total, 0);
+  assert.ok(!JSON.stringify(stats).includes('accepted'));
+  await db.quizAttempt.update({ where: { id: failed.id }, data: { createdAt: new Date(Date.now() - 60000) } });
+  await submitAttempt(attemptBody()).expect(200);
+  stats = (await get('stats').expect(200)).body;
+  assert.deepEqual(stats.topicAccuracy[0], { key: 'greetings', correct: 1, total: 1 });
+  await db.quiz.update({ where: { id: quiz.id }, data: { revision: 2 } });
+  assert.equal((await get('stats').expect(200)).body.topicAccuracy[0].total, 0);
+  await db.quiz.update({ where: { id: quiz.id }, data: { revision: 1 } });
+  await db.lesson.update({ where: { slug: first }, data: { published: false } });
+  assert.equal((await get('stats').expect(200)).body.skillAccuracy[0].total, 0);
+  await db.lesson.update({ where: { slug: first }, data: { published: true } });
+  await db.quizAttempt.updateMany({ where: { userId: users[0] }, data: { createdAt: new Date(Date.now() - 31 * 86400000) } });
+  assert.equal((await get('stats').expect(200)).body.topicAccuracy[0].total, 0);
 });

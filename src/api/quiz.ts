@@ -3,7 +3,7 @@ import { z } from 'zod';
 import { request } from './client';
 const localized = z.object({ ru: z.string(), kk: z.string(), en: z.string() });
 const option = z.object({ id: z.string(), text: localized });
-const common = { id: z.string(), prompt: localized };
+const common = { id: z.string(), topic: z.enum(["greetings", "introductions", "courtesy"]).optional(), skill: z.enum(["vocabulary", "grammar", "reading", "listening", "writing"]).optional(), prompt: localized };
 const question = z.discriminatedUnion('kind', [
   z.object({ ...common, kind: z.literal('choice'), options: z.array(option) }),
   z.object({ ...common, kind: z.literal('match'), left: z.array(option), right: z.array(option) }),

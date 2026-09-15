@@ -1,6 +1,7 @@
 import { Flame, CheckCircle2, Circle } from "lucide-react"
 import { type LearningStats as Stats } from "../api/stats"
 import { useLanguage } from "../i18n/LanguageProvider"
+import AccuracyStats from "./AccuracyStats"
 
 const kindNames = {
   choice: "Выбор ответа",
@@ -26,6 +27,7 @@ export default function LearningStats({ data }: { data: Stats }) {
     }).format(new Date(`${date}T00:00:00Z`))
   return (
     <div className="space-y-6">
+      <AccuracyStats data={data} />
       <section className="bg-card border border-border rounded-2xl p-6 space-y-4" aria-labelledby="study-time-title">
         <h2 id="study-time-title" className="text-xl font-semibold">{t("Время занятий")}</h2>
         <dl className="grid sm:grid-cols-3 gap-4">

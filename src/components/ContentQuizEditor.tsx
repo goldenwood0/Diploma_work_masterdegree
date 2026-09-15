@@ -3,6 +3,7 @@ import MediaPicker from './MediaPicker';
 import type { EditorQuestion, EditorQuiz } from '../api/contentQuiz';
 import { TranslationFields, emptyTranslation } from './ContentBlocksEditor';
 import { useLanguage } from '../i18n/LanguageProvider';
+import { topicLabels, skillLabels } from '../app/assessmentLabels';
 const kinds = { choice: 'Выбор ответа', match: 'Сопоставление пар', order: 'Порядок слов', gap: 'Заполнение пропуска', input: 'Свободный ввод', dictation: 'Диктант' };
 const inputClass = 'block w-full border border-border bg-background rounded-lg p-2';
 const option = () => ({ id: crypto.randomUUID(), text: emptyTranslation() });
@@ -28,6 +29,11 @@ export default function ContentQuizEditor({ quiz, onChange }: { quiz: EditorQuiz
       <div className="flex flex-wrap gap-3 items-center"><h3 className="font-bold">{index + 1}. {t(kinds[q.kind])}</h3><button type="button" disabled={index === 0} onClick={() => move(index, -1)}>{t('Вверх')}</button><button type="button" disabled={index === quiz.questions.length - 1} onClick={() => move(index, 1)}>{t('Вниз')}</button><button type="button" disabled={quiz.questions.length === 1} onClick={() => onChange({ ...quiz, questions: quiz.questions.filter((_, i) => i !== index) })}>{t('Удалить задание')}</button></div>
       <TranslationFields label={t('Условие задания')} value={q.prompt} maxLength={4000} onChange={prompt => update(index, { ...q, prompt })} />
       <TranslationFields label={t('Объяснение ответа')} value={q.explanation} maxLength={4000} onChange={explanation => update(index, { ...q, explanation })} />
+      <div className="grid sm:grid-cols-2 gap-3">
+        <label>{t('Тема задания')}<select className={inputClass} value={q.topic ?? ''} onChange={e => update(index, { ...q, topic: e.target.value ? e.target.value as EditorQuestion['topic'] : undefined })}><option value="">{t('Без разметки')}</option>{Object.entries(topicLabels).map(([key, label]) => <option key={key} value={key}>{t(label)}</option>)}</select></label>
+        <label>{t('Основной навык')}<select className={inputClass} value={q.skill ?? ''} onChange={e => update(index, { ...q, skill: e.target.value ? e.target.value as EditorQuestion['skill'] : undefined })}><option value="">{t('Без разметки')}</option>{Object.entries(skillLabels).map(([key, label]) => <option key={key} value={key}>{t(label)}</option>)}</select></label>
+      </div>
+      <p className="text-sm text-foreground/65">{t('Выберите учебную цель задания. Письменная речь — составление текста, а не почерк; тип упражнения не определяет навык.')}</p>
       {(q.kind === 'choice' || q.kind === 'order') && <div className="space-y-4">{q.options.map((o, oi) => <div key={o.id} className="border-l-4 border-border pl-3 space-y-2">
         <TranslationFields label={`${t('Вариант ответа')} ${oi + 1}`} value={o.text} maxLength={4000} onChange={text => update(index, { ...q, options: q.options.map(v => v.id === o.id ? { ...v, text } : v) })} />
         {q.kind === 'choice' ? <label className="flex gap-2"><input type="radio" name={`correct-${q.id}`} checked={q.correct === o.id} onChange={() => update(index, { ...q, correct: o.id })} />{t('Правильный ответ')}</label> : <label className="block">{t('Место в правильном порядке')}<select className={inputClass} value={q.correct.indexOf(o.id)} onChange={e => { const correct = [...q.correct]; const old = correct.indexOf(o.id); const next = Number(e.target.value); [correct[old], correct[next]] = [correct[next], correct[old]]; update(index, { ...q, correct }); }}>{q.options.map((_, position) => <option key={position} value={position}>{position + 1}</option>)}</select></label>}

@@ -59,3 +59,12 @@ test('editor validation bounds answers to learner limits and rejects incomplete 
     { ...questions[2], correct: ['a'] },
   ]) assert.equal(questionsSchema.safeParse([invalid]).success, false);
 });
+
+test('assessment metadata is validated and retained in public questions and grading snapshots', () => {
+  const tagged = questionsSchema.parse(questions.map(q => ({ ...q, topic: 'greetings', skill: 'vocabulary' })));
+  assert.equal(publicQuestion(tagged[0]).topic, 'greetings');
+  assert.equal(grade(tagged, answers, 80).items[0].question.skill, 'vocabulary');
+  assert.equal(questionsSchema.safeParse([{ ...questions[0], topic: 'unknown' }]).success, false);
+  assert.equal(questionsSchema.safeParse([{ ...questions[0], skill: 'choice' }]).success, false);
+  assert.equal(questionsSchema.safeParse(questions).success, true);
+});

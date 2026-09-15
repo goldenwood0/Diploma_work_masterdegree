@@ -1,7 +1,7 @@
 import { z } from 'zod';
 const localized = z.object({ ru: z.string(), kk: z.string(), en: z.string() });
 const option = z.object({ id: z.string(), text: localized });
-const common = { id: z.string(), prompt: localized, explanation: localized };
+const common = { id: z.string(), topic: z.enum(["greetings", "introductions", "courtesy"]).optional(), skill: z.enum(["vocabulary", "grammar", "reading", "listening", "writing"]).optional(), prompt: localized, explanation: localized };
 export const editorQuestionSchema = z.discriminatedUnion('kind', [
   z.object({ ...common, kind: z.literal('choice'), options: z.array(option), correct: z.string() }),
   z.object({ ...common, kind: z.literal('order'), options: z.array(option), correct: z.array(z.string()) }),

@@ -20,6 +20,7 @@
     "test:voice": "node --test scripts/test-voice.cjs",
     "test:dashboard": "node scripts/test-dashboard.cjs",
     "test:study-time": "node scripts/test-study-time.cjs",
+    "test:accuracy": "node scripts/test-accuracy.cjs",
     "test:strokes": "node scripts/test-strokes.cjs",
     "test:stroke-matching": "node scripts/test-stroke-matching.cjs",
     "test:csv": "node scripts/test-vocabulary-csv.cjs",

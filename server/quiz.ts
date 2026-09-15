@@ -7,7 +7,7 @@ const localized = z.object({ ru: text, kk: text, en: text }).strict();
 const key = z.string().trim().min(1).max(100);
 const https = z.url().max(2000).refine(value => new URL(value).protocol === 'https:' && !new URL(value).username && !new URL(value).password);
 const option = z.object({ id: key, text: localized }).strict();
-const common = { id: key, prompt: localized, explanation: localized };
+const common = { id: key, topic: z.enum(["greetings", "introductions", "courtesy"]).optional(), skill: z.enum(["vocabulary", "grammar", "reading", "listening", "writing"]).optional(), prompt: localized, explanation: localized };
 const textAnswer = { accepted: z.array(z.string().trim().min(1).max(500).refine(value => value.normalize('NFKC').replace(/[\s\p{P}]/gu, '').length > 0)).min(1).max(30) };
 const question = z.discriminatedUnion('kind', [
   z.object({ ...common, kind: z.literal('choice'), options: z.array(option).min(2).max(30), correct: key }).strict(),
