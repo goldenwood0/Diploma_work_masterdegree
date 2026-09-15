@@ -10,6 +10,7 @@ import { digest, newToken } from "./passwords.js"
 import { wavDuration } from './media.schema.js';
 import { schedule } from './review.service.js';
 import { localDay } from './analytics.js';
+import { uncovered, timeByDay } from './study-time.js';
 
 let app: INestApplication
 let db: Database
@@ -788,4 +789,59 @@ test('dashboard review summary matches the queue, protects accounts and handles 
   await db.reviewEvent.updateMany({ where: { userId: users[0] }, data: { createdAt: new Date(Date.now() - 48 * 3600000) } });
   result = (await summary().expect(200)).body;
   assert.equal(result.ready, 2); assert.equal(result.remainingNew, 10); assert.equal(result.reviewedToday, 0);
+});
+
+const recordTime = (body: object, cookie = session) => api.post('/api/learning/time').set('Cookie', cookie).set('Origin', process.env.APP_ORIGIN!).set('X-ZhPath-Request', '1').send(body);
+function timeBody(start: number, end: number) {
+  return { accountId: users[0], requestId: randomUUID(), startAt: new Date(start).toISOString(), endAt: new Date(end).toISOString(), source: 'reviews', lessonSlug: null };
+}
+test('study time rejects invalid windows and accounts; retries and concurrent overlaps never double count', async () => {
+  await api.get('/api/learning/time').expect(401);
+  const clock = (await api.get('/api/learning/time').set('Cookie', session).expect(200)).body;
+  assert.equal(clock.accountId, users[0]); assert.ok(Date.parse(clock.serverNow));
+  const end = Date.now() - 1000;
+  const body = timeBody(end - 15000, end);
+  await recordTime(body, other).expect(409);
+  await api.post('/api/learning/time').set('Cookie', session).send(body).expect(403);
+  await recordTime(timeBody(end - 31000, end)).expect(409);
+  await recordTime(timeBody(end, end - 1000)).expect(409);
+  await recordTime(timeBody(end - 180000, end - 170000)).expect(409);
+  await recordTime(timeBody(end, end + 60000)).expect(409);
+  const duplicate = await Promise.all([recordTime(body), recordTime(body)]);
+  for (const result of duplicate) { assert.equal(result.status, 200); assert.equal(result.body.creditedMs, 15000); }
+  await recordTime({ ...body, startAt: new Date(end - 16000).toISOString() }).expect(409);
+  const overlap = await Promise.all([recordTime(timeBody(end - 25000, end - 5000)), recordTime(timeBody(end - 20000, end))]);
+  assert.ok(overlap.every(result => result.status === 200));
+  assert.equal(overlap.reduce((sum, result) => sum + result.body.creditedMs, 0), 10000);
+  const stats = (await get('stats').expect(200)).body;
+  assert.equal(stats.studyTime.totalMs, 25000); assert.equal(stats.studyTime.weekMs, 25000);
+  assert.equal((await get('stats', other).expect(200)).body.studyTime.totalMs, 0);
+});
+
+test('study time checks lesson access and splits credited time at the profile local midnight', async () => {
+  const end = Date.now() - 1000;
+  await recordTime({ ...timeBody(end - 1000, end), source: 'lesson', lessonSlug: second }).expect(404);
+  await recordTime({ ...timeBody(end - 1000, end), source: 'lesson', lessonSlug: 'missing' }).expect(404);
+  await recordTime({ ...timeBody(end - 1000, end), source: 'lesson', lessonSlug: first }).expect(200);
+  await db.userSettings.create({ data: { userId: users[0], timezone: 'Asia/Qyzylorda' } });
+  const midnight = Date.parse(`${localDay(new Date(), 'Asia/Qyzylorda')}T00:00:00+05:00`);
+  await db.studyTimeEntry.deleteMany({ where: { userId: users[0] } });
+  await db.studyTimeEntry.create({ data: { userId: users[0], requestId: randomUUID(), startAt: new Date(midnight - 10000), endAt: new Date(midnight + 10000), source: 'reviews', creditedMs: 20000, segments: [[midnight - 10000, midnight + 10000]] } });
+  let stats = (await get('stats').expect(200)).body;
+  assert.equal(stats.studyTime.todayMs, 10000); assert.equal(stats.studyTime.weekMs, 20000);
+  await db.userSettings.update({ where: { userId: users[0] }, data: { timezone: 'UTC' } });
+  stats = (await get('stats').expect(200)).body;
+  assert.equal(stats.studyTime.todayMs, localDay(new Date(), 'UTC') === localDay(new Date(midnight), 'UTC') ? 20000 : 0);
+  assert.equal(stats.studyTime.totalMs, 20000);
+});
+
+test('study time interval union and DST day splitting preserve credited milliseconds', () => {
+  assert.deepEqual(uncovered(0, 30, [[10, 20], [5, 15], [25, 40]]), [[0, 5], [20, 25]]);
+  assert.deepEqual(uncovered(10, 20, [[0, 30]]), []);
+  const start = Date.parse('2026-03-08T06:59:50Z');
+  const total = timeByDay([[start, start + 20000]], 'America/New_York');
+  assert.equal(total.get('2026-03-08'), 20000);
+  const midnight = Date.parse('2026-11-02T05:00:00Z');
+  const split = timeByDay([[midnight - 10000, midnight + 10000]], 'America/New_York');
+  assert.equal(split.get('2026-11-01'), 10000); assert.equal(split.get('2026-11-02'), 10000);
 });

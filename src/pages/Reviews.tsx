@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { useLanguage } from '../i18n/LanguageProvider';
 import { editCard, loadReviews, rateCard, type Card, type ReviewData } from '../api/reviews';
 import { ApiError } from '../api/client';
+import StudyTimeTracker from '../components/StudyTimeTracker';
 const labels: Record<string, string> = { again: 'Ещё раз', hard: 'Трудно', good: 'Хорошо', easy: 'Легко' };
 function DictionaryCard({ card, onChange }: { card: Card; onChange: (value: Card) => void }) {
   const { t, explanationLanguage } = useLanguage();
@@ -61,6 +62,7 @@ export default function Reviews() {
   const filtered = data?.cards.filter(c => (!favorites || c.favorite) && [c.content.hanzi, c.content.pinyin, ...Object.values(c.content.translation)].some(value => value.toLocaleLowerCase().includes(query))) ?? [];
   const date = (value: string) => new Date(value).toLocaleString(language === 'kk' ? 'kk-KZ' : language, { timeZone: data?.timezone });
   return <section className="max-w-4xl mx-auto space-y-6"><h1 className="text-3xl font-bold text-dark-green">{t('Словарь и повторение')}</h1>
+    {data && data.cards.length > 0 && !error && <StudyTimeTracker source="reviews" />}
     {error && <div role="alert"><p>{t(error)}</p><button disabled={busy} className="underline" onClick={() => setReload(n => n + 1)}>{t('Обновить карточки')}</button></div>}
     {!data && !error && <p role="status">{t('Загрузка…')}</p>}
     {data && <><p>{t('Повторений сегодня')}: {data.reviewedToday} · {t('Новых осталось')}: {data.remainingNew}/{data.newLimit} · {data.timezone}</p>

@@ -35,6 +35,22 @@ model User {
   cards           ReviewCard[]
   reviews         ReviewEvent[]
   studyActivities StudyActivity[]
+  studyTimeEntries StudyTimeEntry[]
+}
+
+model StudyTimeEntry {
+  id String @id @default(uuid())
+  userId String
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  requestId String
+  startAt DateTime
+  endAt DateTime
+  source String
+  lessonSlug String?
+  creditedMs Int
+  segments Json
+  @@unique([userId, requestId])
+  @@index([userId, endAt])
 }
 
 model RoleChange {

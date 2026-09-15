@@ -12,6 +12,7 @@ const statsSchema = z.object({
     .array(z.object({ date: z.iso.date(), active: z.boolean() }))
     .length(7),
   assessedQuestions: count,
+  studyTime: z.object({ todayMs: count, weekMs: count, totalMs: count }),
   mistakeLessonIds: z.array(z.string()),
   weakAreas: z.array(
     z

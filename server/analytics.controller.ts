@@ -3,6 +3,8 @@ import { Database } from "./database.js"
 import { Prisma } from "@prisma/client"
 import { SessionGuard, type AuthRequest } from "./security.js"
 import { activitySummary, exerciseSummary, localDay } from "./analytics.js"
+import { timeByDay, type Segment } from "./study-time.js"
+import { shiftDay } from "./analytics.js"
 
 @Controller("learning")
 @UseGuards(SessionGuard)
@@ -22,7 +24,7 @@ export class AnalyticsController {
       : Prisma.sql`${canonical}::text`
     const now = new Date()
     const since = new Date(now.getTime() - 30 * 86400000)
-    const [days, attempts] = await this.db.$transaction([
+    const [days, attempts, timeEntries, timeTotal] = await this.db.$transaction([
       this.db.$queryRaw<Array<{ day: string }>>`
         SELECT DISTINCT to_char(("createdAt" AT TIME ZONE 'UTC') AT TIME ZONE (${zone}), 'YYYY-MM-DD') AS day
         FROM (
@@ -42,11 +44,20 @@ export class AnalyticsController {
           AND a."quizRevision" = q.revision AND a."lessonRevision" = l.revision
           AND l.published = true
         ORDER BY a."quizId", a."createdAt" DESC, a.id DESC`,
+      this.db.studyTimeEntry.findMany({ where: { userId, endAt: { gte: new Date(now.getTime() - 8 * 86400000) } }, select: { segments: true } }),
+      this.db.studyTimeEntry.aggregate({ where: { userId }, _sum: { creditedMs: true } }),
     ])
+    const today = localDay(now, timezone)
+    const dailyTime = timeByDay(timeEntries.flatMap(entry => entry.segments as Segment[]), timezone)
     return {
       timezone,
       serverNow: now.toISOString(),
       since: since.toISOString(),
+      studyTime: {
+        todayMs: dailyTime.get(today) ?? 0,
+        weekMs: [...dailyTime].filter(([day]) => day >= shiftDay(today, -6) && day <= today).reduce((sum, [, ms]) => sum + ms, 0),
+        totalMs: timeTotal._sum.creditedMs ?? 0,
+      },
       ...activitySummary(
         days.map((day) => day.day),
         localDay(now, timezone),

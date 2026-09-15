@@ -1,4 +1,11 @@
 export const learningMessages: Record<string, Record<'en' | 'kk', string>> = {
+  "Время занятий": { en: "Study time", kk: "Оқу уақыты" },
+  "За семь дней": { en: "Last seven days", kk: "Соңғы жеті күн" },
+  "За всё время": { en: "All time", kk: "Барлық уақыт" },
+  "Часы:минуты:секунды. Учитываются уроки, словарь и повторения в активной вкладке; после минуты без действий — пауза.": { en: "Hours:minutes:seconds. Tracks lessons, dictionary and reviews in the active tab; pauses after a minute of inactivity.", kk: "Сағат:минут:секунд. Белсенді беттегі сабақтар, сөздік және қайталаулар есептеледі; бір минут әрекет болмаса, есеп тоқтайды." },
+  "Учёт начат с подключения таймера. Ранние занятия не восстановлены; при потере связи часть времени может не сохраниться.": { en: "Tracking starts when the timer is enabled. Earlier study time is not reconstructed; some time may not be saved if the connection is lost.", kk: "Уақыт таймер қосылғаннан бастап есептеледі. Бұрынғы оқу уақыты қалпына келтірілмейді; байланыс үзілсе, уақыттың бір бөлігі сақталмауы мүмкін." },
+  "Время занятия не сохранено. Проверьте соединение.": { en: "Study time was not saved. Check your connection.", kk: "Оқу уақыты сақталмады. Байланысты тексеріңіз." },
+  "Время учитывается в активной вкладке. Пауза после минуты без действий.": { en: "Time is tracked in the active tab. Pauses after a minute of inactivity.", kk: "Уақыт белсенді бетте есептеледі. Бір минут әрекет болмаса, есеп тоқтайды." },
   "Начните с повторения слов.": { en: "Start by reviewing words.", kk: "Алдымен сөздерді қайталаңыз." },
   "Продолжите начатый урок.": { en: "Continue your current lesson.", kk: "Бастаған сабағыңызды жалғастырыңыз." },
   "Вернитесь к уроку с ошибками в тесте.": { en: "Revisit a lesson with test mistakes.", kk: "Тестте қате жіберген сабаққа оралыңыз." },

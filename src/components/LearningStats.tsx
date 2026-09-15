@@ -13,6 +13,10 @@ const kindNames = {
 
 export default function LearningStats({ data }: { data: Stats }) {
   const { t, language } = useLanguage()
+  const duration = (ms: number) => {
+    const seconds = Math.floor(ms / 1000)
+    return `${Math.floor(seconds / 3600)}:${String(Math.floor(seconds / 60) % 60).padStart(2, "0")}:${String(seconds % 60).padStart(2, "0")}`
+  }
   const dateLabel = (date: string) =>
     new Intl.DateTimeFormat(language, {
       weekday: "short",
@@ -22,6 +26,17 @@ export default function LearningStats({ data }: { data: Stats }) {
     }).format(new Date(`${date}T00:00:00Z`))
   return (
     <div className="space-y-6">
+      <section className="bg-card border border-border rounded-2xl p-6 space-y-4" aria-labelledby="study-time-title">
+        <h2 id="study-time-title" className="text-xl font-semibold">{t("Время занятий")}</h2>
+        <dl className="grid sm:grid-cols-3 gap-4">
+          <div><dt>{t("Сегодня")}</dt><dd className="text-2xl font-semibold tabular-nums">{duration(data.studyTime.todayMs)}</dd></div>
+          <div><dt>{t("За семь дней")}</dt><dd className="text-2xl font-semibold tabular-nums">{duration(data.studyTime.weekMs)}</dd></div>
+          <div><dt>{t("За всё время")}</dt><dd className="text-2xl font-semibold tabular-nums">{duration(data.studyTime.totalMs)}</dd></div>
+        </dl>
+        <p className="text-sm text-foreground/65">{t("Часы:минуты:секунды. Учитываются уроки, словарь и повторения в активной вкладке; после минуты без действий — пауза.")}</p>
+        <p className="text-sm text-foreground/65">{t("Учёт начат с подключения таймера. Ранние занятия не восстановлены; при потере связи часть времени может не сохраниться.")}</p>
+        <p className="text-sm text-foreground/65">{t("Часовой пояс")}: {data.timezone}</p>
+      </section>
       <section
         className="bg-card border border-border rounded-2xl p-6 space-y-4"
         aria-labelledby="study-streak-title"

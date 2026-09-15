@@ -7,6 +7,7 @@ import { useLanguage } from "../i18n/LanguageProvider"
 import LessonAudio from "../components/LessonAudio"
 import QuizPanel from '../components/QuizPanel'
 import CharacterPractice from "../components/CharacterPractice"
+import StudyTimeTracker from "../components/StudyTimeTracker"
 
 export default function Lesson({
   slug,
@@ -84,6 +85,7 @@ export default function Lesson({
   const block = lesson?.blocks[index]
   return (
     <section className="max-w-3xl mx-auto space-y-6">
+      {lesson && !error && <StudyTimeTracker source="lesson" lessonSlug={slug} />}
       <button
         className="flex items-center gap-2 text-primary"
         onClick={() => onNavigate("catalog")}
