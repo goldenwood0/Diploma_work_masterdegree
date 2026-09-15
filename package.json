@@ -21,6 +21,8 @@
     "test:dashboard": "node scripts/test-dashboard.cjs",
     "test:study-time": "node scripts/test-study-time.cjs",
     "test:accuracy": "node scripts/test-accuracy.cjs",
+    "test:reminder-ui": "node scripts/test-reminder-ui.cjs",
+    "test:reminder-smtp": "node --env-file=.env scripts/test-reminder-smtp.mjs",
     "test:strokes": "node scripts/test-strokes.cjs",
     "test:stroke-matching": "node scripts/test-stroke-matching.cjs",
     "test:csv": "node scripts/test-vocabulary-csv.cjs",

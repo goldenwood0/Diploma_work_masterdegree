@@ -126,7 +126,7 @@ test('concurrent confirmation requests cannot consume the same token twice', asy
 });
 
 
-const profileInput = { name: 'Learner', uiLanguage: 'kk', explanationLanguage: 'en', timezone: 'Asia/Almaty', dailyGoalMinutes: 30, experience: 'some', goal: 'exam', startLevel: 3, remindersEnabled: true };
+const profileInput = { name: 'Learner', uiLanguage: 'kk', explanationLanguage: 'en', timezone: 'Asia/Almaty', dailyGoalMinutes: 30, experience: 'some', goal: 'exam', startLevel: 3, remindersEnabled: true, reminderTime: '08:45' };
 const patchProfile = (session: string, body: object) => api.patch('/api/profile').set('Origin', origin).set('X-ZhPath-Request', '1').set('Cookie', session).send(body);
 
 test('profile and onboarding persist across sessions without changing another account', async () => {
@@ -148,7 +148,7 @@ test('profile and onboarding persist across sessions without changing another ac
 test('profile rejects unauthorized writes, invalid settings and privilege escalation', async () => {
   const { session } = await signedIn();
   await patchProfile('', profileInput).expect(401);
-  for (const change of [{ uiLanguage: 'de' }, { explanationLanguage: 'zh' }, { startLevel: 7 }, { timezone: 'Not/AZone' }, { dailyGoalMinutes: 7 }, { name: ' ' }, { goal: 'invalid' }, { experience: 'invalid' }, { remindersEnabled: 'true' }, { role: 'ADMIN' }, { userId: 'another-account' }]) {
+  for (const change of [{ reminderTime: '24:00' }, { reminderTime: '9:00' }, { reminderTime: '' }, { uiLanguage: 'de' }, { explanationLanguage: 'zh' }, { startLevel: 7 }, { timezone: 'Not/AZone' }, { dailyGoalMinutes: 7 }, { name: ' ' }, { goal: 'invalid' }, { experience: 'invalid' }, { remindersEnabled: 'true' }, { role: 'ADMIN' }, { userId: 'another-account' }]) {
     await patchProfile(session, { ...profileInput, ...change }).expect(400);
   }
   await api.patch('/api/profile').set('Cookie', session).send(profileInput).expect(403);

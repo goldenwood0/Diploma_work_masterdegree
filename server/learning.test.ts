@@ -11,6 +11,9 @@ import { wavDuration } from './media.schema.js';
 import { schedule } from './review.service.js';
 import { localDay } from './analytics.js';
 import { uncovered, timeByDay } from './study-time.js';
+import { ReminderService } from './reminder.service.js';
+import { Mailer } from './mailer.js';
+import { reminderDate, reminderMessage } from './reminders.js';
 
 let app: INestApplication
 let db: Database
@@ -874,4 +877,66 @@ test('topic and skill accuracy uses attempt snapshots, latest retakes, current v
   await db.lesson.update({ where: { slug: first }, data: { published: true } });
   await db.quizAttempt.updateMany({ where: { userId: users[0] }, data: { createdAt: new Date(Date.now() - 31 * 86400000) } });
   assert.equal((await get('stats').expect(200)).body.topicAccuracy[0].total, 0);
+});
+
+test('reminder schedule handles local time, midnight, DST, catch-up and three email languages', () => {
+  assert.equal(reminderDate(new Date('2026-09-15T14:00:00Z'), 'Asia/Qyzylorda', '19:00'), '2026-09-15');
+  assert.equal(reminderDate(new Date('2026-09-15T13:59:00Z'), 'Asia/Qyzylorda', '19:00'), null);
+  assert.equal(reminderDate(new Date('2026-09-15T15:00:00Z'), 'Asia/Qyzylorda', '19:00'), null);
+  assert.equal(reminderDate(new Date('2026-09-15T19:00:00Z'), 'Asia/Qyzylorda', '00:00'), '2026-09-16');
+  assert.equal(reminderDate(new Date('2026-03-08T07:00:00Z'), 'America/New_York', '02:30'), '2026-03-08');
+  assert.equal(reminderDate(new Date('2026-11-01T05:30:00Z'), 'America/New_York', '01:30'), '2026-11-01');
+  assert.equal(reminderDate(new Date('2026-11-01T06:30:00Z'), 'America/New_York', '01:30'), '2026-11-01');
+  assert.equal(reminderDate(new Date(), 'UTC', '25:00'), null);
+  const subjects = new Set();
+  for (const language of ['ru', 'kk', 'en']) {
+    const message = reminderMessage(language, 'https://example.test');
+    subjects.add(message.subject);
+    assert.ok(message.text.includes('https://example.test/#/profile'));
+    assert.ok(message.text.includes('https://example.test/#/'));
+  }
+  assert.equal(subjects.size, 3);
+  assert.deepEqual(reminderMessage('unknown', 'https://example.test'), reminderMessage('ru', 'https://example.test'));
+});
+
+test('reminders claim once across workers, survive restarts and prevent timezone duplicates', async () => {
+  const worker = app.get(ReminderService);
+  const sent: string[] = [];
+  app.get(Mailer).sendReminder = async (_email, language, id) => { sent.push(`${language}:${id}`); };
+  await db.userSettings.create({ data: { userId: users[0], remindersEnabled: true, reminderTime: '19:00', timezone: 'Asia/Qyzylorda', uiLanguage: 'kk', onboardingCompletedAt: new Date() } });
+  const now = new Date('2026-09-15T14:00:00Z');
+  await Promise.all([worker.processUser(users[0], now), new ReminderService(db, app.get(Mailer)).processUser(users[0], now)]);
+  assert.equal(sent.length, 1); assert.ok(sent[0].startsWith('kk:'));
+  assert.equal((await db.reminderDelivery.findFirstOrThrow({ where: { userId: users[0] } })).status, 'SENT');
+  await worker.processUser(users[0], new Date(+now + 300000)); assert.equal(sent.length, 1);
+  await db.userSettings.update({ where: { userId: users[0] }, data: { timezone: 'Pacific/Kiritimati', reminderTime: '04:00' } });
+  await worker.processUser(users[0], now); assert.equal(sent.length, 1);
+  await worker.processUser(users[0], new Date(+now + 86400000)); assert.equal(sent.length, 2);
+  await api.get('/api/profile/reminders').expect(401);
+  const mine = (await api.get('/api/profile/reminders').set('Cookie', session).expect(200)).body;
+  assert.equal(mine.latest.status, 'SENT');
+  assert.equal((await api.get('/api/profile/reminders').set('Cookie', other).expect(200)).body.latest, null);
+});
+
+test('reminders honor opt-in, verification, onboarding, completed daily goal and uncertain SMTP failure', async () => {
+  const worker = app.get(ReminderService);
+  let count = 0;
+  app.get(Mailer).sendReminder = async () => { count++; throw new Error('simulated SMTP timeout'); };
+  const now = new Date('2026-09-15T19:00:00Z');
+  await db.userSettings.create({ data: { userId: users[0], remindersEnabled: false, reminderTime: '19:00', timezone: 'UTC', dailyGoalMinutes: 5, onboardingCompletedAt: new Date() } });
+  await worker.processUser(users[0], now); assert.equal(count, 0);
+  await db.userSettings.update({ where: { userId: users[0] }, data: { remindersEnabled: true, onboardingCompletedAt: null } });
+  await worker.processUser(users[0], now); assert.equal(count, 0);
+  await db.userSettings.update({ where: { userId: users[0] }, data: { onboardingCompletedAt: new Date() } });
+  await db.user.update({ where: { id: users[0] }, data: { emailVerifiedAt: null } });
+  await worker.processUser(users[0], now); assert.equal(count, 0);
+  await db.user.update({ where: { id: users[0] }, data: { emailVerifiedAt: new Date() } });
+  const segments = Array.from({ length: 10 }, (_, i) => [+now - (i + 1) * 30000, +now - i * 30000]);
+  await db.studyTimeEntry.create({ data: { userId: users[0], requestId: randomUUID(), source: 'reviews', startAt: new Date(+now - 300000), endAt: now, creditedMs: 300000, segments } });
+  await worker.processUser(users[0], now);
+  assert.equal(count, 0); assert.equal((await db.reminderDelivery.findFirstOrThrow({ where: { userId: users[0] } })).status, 'SKIPPED_GOAL');
+  const next = new Date(+now + 86400000);
+  await worker.processUser(users[0], next); assert.equal(count, 1);
+  await worker.processUser(users[0], new Date(+next + 60000)); assert.equal(count, 1);
+  assert.equal((await db.reminderDelivery.findFirstOrThrow({ where: { userId: users[0] }, orderBy: { attemptedAt: 'desc' } })).status, 'FAILED');
 });

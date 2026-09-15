@@ -10,6 +10,7 @@ const userSchema = z.object({
     experience: z.enum(['beginner', 'some', 'experienced']),
     goal: z.enum(['communication', 'study', 'work', 'exam']),
     remindersEnabled: z.boolean(), onboardingCompletedAt: z.string().nullable(),
+    reminderTime: z.string(),
   }).nullable(),
 });
 export type Account = z.infer<typeof userSchema>;

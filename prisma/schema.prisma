@@ -36,6 +36,20 @@ model User {
   reviews         ReviewEvent[]
   studyActivities StudyActivity[]
   studyTimeEntries StudyTimeEntry[]
+  reminderDeliveries ReminderDelivery[]
+}
+
+model ReminderDelivery {
+  id String @id @default(uuid())
+  userId String
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  localDate String
+  timezone String
+  scheduledTime String
+  status String
+  attemptedAt DateTime @default(now())
+  @@unique([userId, localDate])
+  @@index([userId, attemptedAt])
 }
 
 model StudyTimeEntry {
@@ -256,6 +270,7 @@ model UserSettings {
   goal                String @default("communication")
   startLevel          Int    @default(1)
   remindersEnabled    Boolean @default(false)
+  reminderTime        String @default("19:00")
   onboardingCompletedAt DateTime?
 }
 

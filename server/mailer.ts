@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import nodemailer from 'nodemailer';
 import { getConfig } from './config.js';
+import { reminderMessage } from './reminders.js';
 
 @Injectable()
 export class Mailer {
@@ -12,6 +13,12 @@ export class Mailer {
     auth: this.config.SMTP_USER ? { user: this.config.SMTP_USER, pass: this.config.SMTP_PASSWORD } : undefined,
     connectionTimeout: 5000, socketTimeout: 10000,
   });
+
+  async sendReminder(email: string, language: string, deliveryId: string) {
+    const message = reminderMessage(language, this.config.APP_ORIGIN);
+    const result = await this.transport.sendMail({ from: this.config.MAIL_FROM, to: email, ...message, messageId: `<reminder-${deliveryId}@zhpath.local>` });
+    if (!result.accepted.length) throw new Error('SMTP did not accept reminder');
+  }
 
   async send(email: string, purpose: 'VERIFY_EMAIL' | 'RESET_PASSWORD', token: string) {
     const page = purpose === 'VERIFY_EMAIL' ? 'verify-email' : 'reset-password';

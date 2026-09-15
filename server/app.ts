@@ -17,6 +17,7 @@ import { ReviewController } from './review.controller.js';
 import { ContentController } from './content.controller.js';
 import { AnalyticsController } from './analytics.controller.js';
 import { StudyTimeController } from './study-time.controller.js';
+import { ReminderService } from './reminder.service.js';
 
 @Controller('health')
 class HealthController {
@@ -25,7 +26,7 @@ class HealthController {
 
 @Module({
   controllers: [StudyTimeController, AnalyticsController, MediaController, AuthController, AdminController, HealthController, ProfileController, LearningController, ReviewController, ContentController],
-  providers: [Database, AuthService, Mailer, SessionGuard, AuthRateGuard, { provide: APP_GUARD, useClass: OriginGuard }],
+  providers: [Database, AuthService, Mailer, ReminderService, SessionGuard, AuthRateGuard, { provide: APP_GUARD, useClass: OriginGuard }],
 })
 class AppModule {}
 

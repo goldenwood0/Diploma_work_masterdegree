@@ -11,6 +11,7 @@ const schema = z.object({
   SMTP_USER: z.string().optional(),
   SMTP_PASSWORD: z.string().optional(),
   MAIL_FROM: z.string().min(1).default('ZhPath <noreply@zhpath.local>'),
+  REMINDERS_ENABLED: z.enum(['true', 'false']).default('false'),
 });
 
 export function getConfig() {

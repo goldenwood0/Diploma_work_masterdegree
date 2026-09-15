@@ -1,4 +1,5 @@
-import { Body, Controller, Patch, Req, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Patch, Req, UseGuards } from '@nestjs/common';
+import { getConfig } from './config.js';
 import { z } from 'zod';
 import { Database } from './database.js';
 import { publicUser } from './auth.service.js';
@@ -17,12 +18,18 @@ const schema = z.object({
   goal: z.enum(['communication', 'study', 'work', 'exam']),
   startLevel: z.number().int().min(1).max(6),
   remindersEnabled: z.boolean(),
+  reminderTime: z.string().regex(/^([01]\d|2[0-3]):[0-5]\d$/).optional(),
   completeOnboarding: z.boolean().optional(),
 }).strict();
 
 @Controller('profile') @UseGuards(SessionGuard)
 export class ProfileController {
   constructor(private db: Database) {}
+  @Get('reminders')
+  async reminders(@Req() req: AuthRequest) {
+    const latest = await this.db.reminderDelivery.findFirst({ where: { userId: req.session!.user.id }, orderBy: { attemptedAt: 'desc' }, select: { status: true, attemptedAt: true } });
+    return { available: getConfig().REMINDERS_ENABLED === 'true', latest };
+  }
   @Patch()
   async update(@Req() req: AuthRequest, @Body() body: unknown) {
     const { name, completeOnboarding, ...settings } = parse(schema, body, 'Проверьте настройки профиля.');

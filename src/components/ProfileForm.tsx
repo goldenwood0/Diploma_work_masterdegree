@@ -2,6 +2,7 @@ import { useState, type FormEvent } from 'react';
 import { saveProfile, type Account, type ProfileInput } from '../api/auth';
 import { useLanguage } from '../i18n/LanguageProvider';
 import { isLanguage } from '../i18n/translate';
+import ReminderStatus from './ReminderStatus';
 
 export default function ProfileForm({ account, onboarding = false, onSaved }: {
   account: Account; onboarding?: boolean; onSaved: (account: Account) => void;
@@ -14,6 +15,7 @@ export default function ProfileForm({ account, onboarding = false, onSaved }: {
     dailyGoalMinutes: account.settings?.dailyGoalMinutes ?? 20,
     experience: account.settings?.experience ?? 'beginner', goal: account.settings?.goal ?? 'communication',
     startLevel: account.settings?.startLevel ?? 1, remindersEnabled: account.settings?.remindersEnabled ?? false,
+    reminderTime: account.settings?.reminderTime ?? '19:00',
   }));
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState('');
@@ -59,7 +61,10 @@ export default function ProfileForm({ account, onboarding = false, onSaved }: {
       <label className="block font-medium">{t('Часовой пояс')}<input required maxLength={80} list="timezones" value={form.timezone} onChange={e => update('timezone', e.target.value)} className={field} placeholder="Asia/Almaty" /></label>
       <datalist id="timezones">{['Asia/Almaty', 'Asia/Qyzylorda', 'Asia/Shanghai', 'Europe/Moscow', 'Europe/London', 'America/New_York', 'UTC'].map(zone => <option key={zone} value={zone} />)}</datalist>
       <label className="flex gap-3 items-center font-medium"><input type="checkbox" checked={form.remindersEnabled} onChange={e => update('remindersEnabled', e.target.checked)} className="size-5 accent-primary" />{t('Напоминать о ежедневной цели')}</label>
-      <p className="text-sm text-muted-foreground">{t('Предпочтение сохранится; отправка напоминаний появится позже.')}</p>
+      <label className="block font-medium">{t('Время напоминания')}<input required type="time" value={form.reminderTime} onChange={e => update('reminderTime', e.target.value)} className={field} /></label>
+      <p className="text-sm text-muted-foreground">{t('Письмо на подтверждённый email, на языке интерфейса и по часовому поясу профиля. Если дневная цель выполнена, напоминание не отправляется.')}</p>
+      <p className="text-sm text-muted-foreground">{t('Отправка возможна в течение часа после выбранного времени в тот же день. После смены часового пояса между письмами остаётся не менее 20 часов.')}</p>
+      <ReminderStatus />
       <button className="w-full rounded-xl bg-primary text-primary-foreground font-bold p-4">{t(busy ? 'Сохранение…' : onboarding ? 'Начать обучение' : 'Сохранить настройки')}</button>
     </fieldset>
   </form>;
