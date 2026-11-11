@@ -1,0 +1,20 @@
+{
+  "testOnly": true,
+  "calls": 28,
+  "modes": [
+    "explain",
+    "check",
+    "dialogue",
+    "practice"
+  ],
+  "languages": [
+    "ru",
+    "kk",
+    "en"
+  ],
+  "dialogueHistoryObserved": true,
+  "privateDataAbsent": true,
+  "greetingsObserved": true,
+  "nextBlockObserved": true,
+  "otherLessonObserved": true
+}

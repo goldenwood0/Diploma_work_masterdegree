@@ -1,67 +1,80 @@
+import { useEffect, useRef, useState } from 'react';
+import { X, Sparkles } from 'lucide-react';
 import { useLanguage } from '../i18n/LanguageProvider';
-import { Play, ChevronRight, Sparkles } from 'lucide-react';
+import { askTutor, tutorError, tutorStatus, type TutorMode, type TutorTurn } from '../api/tutor';
 
-export default function AiTutorPanel({ onClose }: { onClose: () => void }) {
-  const { t } = useLanguage();
-  return (
-    <>
-      {/* Backdrop */}
-      <div 
-        className="fixed inset-0 bg-dark-green/20 backdrop-blur-sm z-40 transition-opacity animate-in fade-in" 
-        onClick={onClose}
-      />
-      {/* Panel */}
-      <div className="fixed top-0 right-0 bottom-0 w-full max-w-sm bg-background shadow-2xl z-50 border-l border-border flex flex-col animate-in slide-in-from-right duration-300">
-        <header className="px-6 py-5 border-b border-border flex items-center justify-between bg-white">
-          <div className="flex items-center gap-3">
-            <div className="size-10 rounded-full bg-accent text-accent-foreground flex items-center justify-center">
-              <Sparkles size={20} />
-            </div>
-            <div>
-              <h2 className="font-bold text-lg leading-tight">{t("Помощник ZhPath")}</h2>
-              <p className="text-xs text-primary font-medium">{t("HSK 1 • В сети")}</p>
-            </div>
-          </div>
-          <button onClick={onClose} className="p-2 text-muted-foreground hover:text-foreground hover:bg-secondary rounded-full transition-colors">
-            <ChevronRight size={24} />
-          </button>
-        </header>
-
-        <div className="flex-1 overflow-y-auto p-4 space-y-4">
-          <div className="flex justify-center my-4">
-            <span className="text-xs font-bold text-muted-foreground uppercase tracking-widest bg-secondary px-3 py-1 rounded-full">{t("Сегодня")}</span>
-          </div>
-
-          {/* AI Message */}
-          <div className="flex gap-3">
-            <div className="size-8 rounded-full bg-accent shrink-0 flex items-center justify-center">
-              <Sparkles size={14} className="text-accent-foreground" />
-            </div>
-            <div className="bg-white border border-border rounded-2xl rounded-tl-sm p-4 shadow-sm text-sm">
-              <p className="mb-2">{t("你好 (Nǐ hǎo)! Я твой AI-наставник.")}</p>
-              <p>{t("Отлично справляешься с первым уроком. Помочь с грамматикой или попрактикуем диалог?")}</p>
-            </div>
-          </div>
-        </div>
-
-        <div className="p-4 border-t border-border bg-white">
-          <div className="flex flex-wrap gap-2 mb-4">
-            <button className="text-xs font-medium bg-sage hover:bg-primary/10 text-dark-green px-3 py-2 rounded-xl transition-colors border border-border"> {t("Объясни правило")} </button>
-            <button className="text-xs font-medium bg-sage hover:bg-primary/10 text-dark-green px-3 py-2 rounded-xl transition-colors border border-border"> {t("Проверь мою фразу")} </button>
-            <button className="text-xs font-medium bg-sage hover:bg-primary/10 text-dark-green px-3 py-2 rounded-xl transition-colors border border-border"> {t("Начать диалог")} </button>
-          </div>
-          <div className="relative">
-            <input 
-              type="text" 
-              placeholder={t("Спроси о чем угодно...")} 
-              className="w-full bg-secondary border border-border rounded-2xl py-3 pl-4 pr-12 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all placeholder:text-muted-foreground"
-            />
-            <button className="absolute right-2 top-1/2 -translate-y-1/2 p-2 bg-primary text-primary-foreground rounded-xl hover:bg-primary/90 transition-colors">
-               <Play size={14} fill="currentColor" />
-            </button>
-          </div>
-        </div>
+const modes: Array<[TutorMode, string]> = [['explain', 'Объясни правило'], ['check', 'Проверь мою фразу'], ['dialogue', 'Начать диалог'], ['practice', 'Тренировочные вопросы']];
+export default function AiTutorPanel({ onClose, lessonSlug }: { onClose: () => void; lessonSlug?: string }) {
+  const { t, explanationLanguage } = useLanguage();
+  const [provider, setProvider] = useState<'unconfigured' | 'test' | 'live' | null>(null);
+  const [mode, setMode] = useState<TutorMode>('explain');
+  const [text, setText] = useState('');
+  const [turns, setTurns] = useState<TutorTurn[]>([]);
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [notice, setNotice] = useState('');
+  const [retry, setRetry] = useState(0);
+  const active = useRef<AbortController | null>(null);
+  const close = useRef<HTMLButtonElement>(null);
+  useEffect(() => {
+    const previous = document.activeElement as HTMLElement | null;
+    close.current?.focus();
+    return () => previous?.focus();
+  }, []);
+  useEffect(() => {
+    const controller = new AbortController();
+    setProvider(null); setError(''); setTurns([]); setNotice(''); setLoading(false); active.current = null;
+    tutorStatus(controller.signal).then(s => { if (!controller.signal.aborted) setProvider(s.provider); })
+      .catch(e => { if (!controller.signal.aborted) setError(tutorError(e)); });
+    return () => { controller.abort(); active.current?.abort(); };
+  }, [lessonSlug, explanationLanguage, retry]);
+  function cancel() { active.current?.abort(); active.current = null; setLoading(false); setNotice('Запрос отменён.'); }
+  async function send() {
+    if (!lessonSlug || active.current || !provider || provider === 'unconfigured' || (mode === 'check' && !text.trim())) return;
+    const controller = new AbortController(); active.current = controller;
+    setLoading(true); setError(''); setNotice('');
+    try {
+      const result = await askTutor({ lessonSlug, mode, text, history: mode === 'dialogue' ? turns.slice(-6).map(m => ({ ...m, text: m.text.slice(0, 2000) })) : [] }, controller.signal);
+      if (!controller.signal.aborted) {
+        setProvider(result.provider);
+        setTurns(old => [...old, { role: 'user', text: text || t(modes.find(m => m[0] === mode)![1]) }, { role: 'assistant', text: result.text }].slice(-20) as TutorTurn[]);
+        setText('');
+      }
+    } catch (e) { if (!controller.signal.aborted) setError(tutorError(e)); }
+    finally { if (active.current === controller) { active.current = null; setLoading(false); } }
+  }
+  return <div className="fixed inset-0 z-50 bg-dark-green/20 flex justify-end" onClick={onClose}>
+    <section role="dialog" aria-modal="true" aria-labelledby="tutor-title" className="tutor-panel w-full max-w-sm h-dvh bg-background shadow-xl flex flex-col min-w-0" onClick={e => e.stopPropagation()} onKeyDown={e => {
+      if (e.key === 'Escape') onClose();
+      if (e.key === 'Tab') {
+        const controls = Array.from(e.currentTarget.querySelectorAll<HTMLElement>('button:not(:disabled), textarea:not(:disabled), select:not(:disabled)'));
+        const first = controls[0], last = controls[controls.length - 1];
+        if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last?.focus(); }
+        else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first?.focus(); }
+      }
+    }}>
+      <header className="p-4 flex items-center justify-between border-b border-border"><h2 id="tutor-title" className="font-bold flex items-center gap-2"><Sparkles size={20} />{t('Помощник ZhPath')}</h2><button ref={close} onClick={onClose} aria-label={t('Закрыть')} className="flex size-11 shrink-0 items-center justify-center rounded-lg"><X aria-hidden="true" /></button></header>
+      <div className="p-4 flex-1 overflow-y-auto space-y-4 min-h-0" aria-live="polite">
+        {!lessonSlug && <p>{t('Откройте урок, чтобы обсудить его материал.')}</p>}
+        {provider === null && !error && <p role="status">{t('Проверка доступности помощника…')}</p>}
+        {provider === 'unconfigured' && <p role="status">{t('ИИ-провайдер пока не настроен. Ответы ИИ недоступны.')}</p>}
+        {provider === 'test' && <p className="font-semibold">{t('Тестовый адаптер: это не ответы настоящего ИИ.')}</p>}
+        {provider === 'live' && <p>{t('Ответы ИИ могут содержать ошибки. Проверяйте их с преподавателем.')}</p>}
+        {turns.map((turn, i) => <p key={i} className={`whitespace-pre-wrap break-words rounded-xl p-3 ${turn.role === 'user' ? 'bg-secondary' : 'bg-card border border-border'}`}><strong>{t(turn.role === 'user' ? 'Вы' : 'Помощник ZhPath')}: </strong>{turn.text}</p>)}
+        {loading && <p role="status">{t('Помощник готовит ответ…')}</p>}
+        {notice && <p role="status">{t(notice)}</p>}
+        {error && <div role="alert"><p>{t(error)}</p><button className="underline mt-2" disabled={loading} onClick={() => provider ? void send() : setRetry(n => n + 1)}>{t('Повторить')}</button></div>}
       </div>
-    </>
-  )
+      <form className="p-4 border-t border-border space-y-3" onSubmit={e => { e.preventDefault(); void send(); }}>
+        <label className="block">{t('Режим помощника')}<select className="block w-full p-2 rounded-lg border border-border mt-1" value={mode} disabled={loading} onChange={e => { setMode(e.target.value as TutorMode); setTurns([]); setError(''); }}>
+          {modes.map(([value, label]) => <option key={value} value={value}>{t(label)}</option>)}
+        </select></label>
+        <label className="block">{t('Сообщение помощнику')}<textarea className="w-full resize-none p-2 rounded-lg border border-border mt-1" rows={3} maxLength={1500} value={text} onChange={e => setText(e.target.value)} disabled={loading} /></label>
+        <div className="flex flex-wrap gap-3">
+          {loading ? <button type="button" onClick={e => { e.preventDefault(); cancel(); }} className="underline">{t('Отменить запрос')}</button> : <button type="submit" disabled={!lessonSlug || !provider || provider === 'unconfigured' || (mode === 'check' && !text.trim())} className="bg-primary text-primary-foreground px-4 py-2 rounded-xl disabled:opacity-50">{t('Отправить')}</button>}
+          <button type="button" disabled={loading} className="underline" onClick={() => { setTurns([]); setText(''); setError(''); setNotice(''); }}>{t('Начать заново')}</button>
+        </div>
+      </form>
+    </section>
+  </div>;
 }
