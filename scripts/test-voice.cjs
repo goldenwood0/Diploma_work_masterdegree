@@ -106,3 +106,60 @@ test('device disconnect finalizes audio, while disposal suppresses queued audio 
   const g = fixture(); await g.recorder.start(); g.recorder.stop(); g.recorder.dispose(); const count = g.states.length;
   await flush(); assert.equal(g.states.length, count); assert.equal(g.recorder.state.url, null); assert.equal(g.hasTimer(), false);
 });
+
+test('late permission rejection cannot overwrite a newer recording', async () => {
+  const f = fixture(); let reject;
+  f.env.open = () => new Promise((_, fail) => { reject = fail; });
+  const pending = f.recorder.start(); f.recorder.stop();
+  f.env.open = async () => f.stream;
+  await f.recorder.start();
+  reject({ name: 'NotAllowedError' }); await pending;
+  assert.equal(f.recorder.state.status, 'recording');
+  assert.equal(f.recorder.state.error, null); assert.equal(f.track.stops, 0);
+  f.recorder.stop(); await flush(); assert.equal(f.recorder.state.status, 'ready');
+});
+
+test('late permission success releases only the cancelled stream', async () => {
+  const f = fixture(); let allow;
+  const oldTrack = { stops: 0, stop() { this.stops++; } };
+  f.env.open = () => new Promise(resolve => { allow = resolve; });
+  const pending = f.recorder.start(); f.recorder.clear();
+  f.env.open = async () => f.stream; await f.recorder.start();
+  allow({ getTracks: () => [oldTrack] }); await pending;
+  assert.equal(oldTrack.stops, 1); assert.equal(f.track.stops, 0);
+  assert.equal(f.recorder.state.status, 'recording');
+  f.recorder.stop(); await flush(); assert.equal(f.recorder.state.status, 'ready');
+});
+
+test('clearing while final audio is queued prevents playback URL creation and allows retry', async () => {
+  const f = fixture(); await f.recorder.start(); f.recorder.stop(); f.recorder.clear();
+  await flush();
+  assert.equal(f.recorder.state.status, 'idle'); assert.equal(f.recorder.state.url, null);
+  assert.equal(f.hasTimer(), false); assert.ok(f.track.stops);
+  assert.equal(f.states.some(state => state.status === 'ready'), false);
+  await f.recorder.start(); f.recorder.stop(); await flush();
+  assert.equal(f.recorder.state.url, 'blob:test-1');
+  f.recorder.clear(); assert.deepEqual(f.revoked, ['blob:test-1']);
+});
+
+test('size limit includes all chunks and accepts exactly five MiB', async () => {
+  const f = fixture(); f.media.data = ''; await f.recorder.start();
+  f.media.ondataavailable({ data: new Blob([new Uint8Array(5 * 1024 * 1024)]) });
+  f.recorder.stop(); await flush(); assert.equal(f.recorder.state.status, 'ready');
+  f.recorder.clear();
+  const g = fixture(); await g.recorder.start();
+  const chunk = new Blob([new Uint8Array(3 * 1024 * 1024)]);
+  g.media.ondataavailable({ data: chunk }); g.media.ondataavailable({ data: chunk });
+  await flush(); assert.equal(g.recorder.state.error, 'size');
+  assert.equal(g.recorder.state.url, null); assert.ok(g.track.stops); assert.equal(g.hasTimer(), false);
+});
+
+test('encoder start failure releases the opened microphone and permits another attempt', async () => {
+  const f = fixture(); const start = f.media.start;
+  f.media.start = () => { throw new Error('encoder start failed'); };
+  await f.recorder.start();
+  assert.equal(f.recorder.state.error, 'recording'); assert.ok(f.track.stops);
+  assert.equal(f.hasTimer(), false);
+  f.media.start = start; await f.recorder.start(); f.recorder.stop(); await flush();
+  assert.equal(f.recorder.state.status, 'ready'); f.recorder.dispose();
+});

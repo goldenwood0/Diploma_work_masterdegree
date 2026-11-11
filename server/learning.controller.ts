@@ -175,11 +175,13 @@ export class LearningController {
             completedAt: index + 1 === lesson.blocks.length && !lesson.quiz ? new Date() : null,
           }
           await db.studyActivity.create({ data: { userId } })
-          return db.lessonProgress.upsert({
+          const saved = await db.lessonProgress.upsert({
             where,
             create: { userId, lessonId: lesson.id, ...data },
             update: data,
           })
+          if (saved.completedAt) await collectWords(db, userId)
+          return saved
         },
         { isolationLevel: Prisma.TransactionIsolationLevel.Serializable },
       )
@@ -197,6 +199,7 @@ export class LearningController {
   @Get('lessons/:slug/quiz')
   async quiz(@Param('slug') slug: string, @Req() req: AuthRequest) {
     const userId = req.session!.user.id;
+    if (req.headers['x-zhpath-user'] && req.headers['x-zhpath-user'] !== userId) throw new ForbiddenException('Аккаунт изменился. Перезагрузите страницу.');
     const lesson = await this.accessible(this.db, slug, userId);
     const progress = await this.db.lessonProgress.findUnique({ where: { userId_lessonId: { userId, lessonId: lesson.id } } });
     if (progress?.revision !== lesson.revision || progress.nextBlock !== lesson.blocks.length) throw new ForbiddenException('Сначала прочитайте все блоки урока.');
@@ -213,6 +216,7 @@ export class LearningController {
   async submit(@Param('slug') slug: string, @Req() req: AuthRequest, @Body() body: unknown) {
     const input = parse(submissionSchema, body);
     const userId = req.session!.user.id;
+    if (req.headers['x-zhpath-user'] && req.headers['x-zhpath-user'] !== userId) throw new ForbiddenException('Аккаунт изменился. Перезагрузите страницу.');
     const requestHash = digest(JSON.stringify({ slug, lessonRevision: input.lessonRevision, quizRevision: input.quizRevision,
       answers: [...input.answers].sort((a, b) => a.questionId.localeCompare(b.questionId)) }));
     try {

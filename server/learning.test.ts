@@ -26,6 +26,35 @@ let users: string[]
 let session: string
 let other: string
 const title = { ru: "Тест", kk: "Сынақ", en: "Test" }
+test('dictionary knowledge is personal, reversible and independent of lesson completion', async () => {
+  // A rare character absent from the seeded course, so unpublishing the fixture really removes it.
+  const word = { hanzi: '龘', pinyin: 'dá', translation: title };
+  await db.lessonBlock.update({ where: { id: blocks[0] }, data: { kind: 'vocabulary', content: { words: [word] } } });
+  const dictionary = () => api.get('/api/reviews/vocabulary').set('Cookie', session);
+  const mark = (known: boolean, key = '龘|dá') => api.post('/api/reviews/vocabulary/knowledge').set('Cookie', session).set('Origin', process.env.APP_ORIGIN!).set('X-ZhPath-Request', '1').send({ key, known });
+  await api.get('/api/reviews/vocabulary').expect(401);
+  const initial = (await dictionary().expect(200)).body.words.find((w: any) => w.key === '龘|dá');
+  assert.equal(initial.known, false);
+  assert.equal(await db.reviewCard.count({ where: { userId: users[0] } }), 0);
+  await mark(true).expect(200);
+  await mark(true).expect(200);
+  const card = await db.reviewCard.findUniqueOrThrow({ where: { userId_wordKey: { userId: users[0], wordKey: '龘|dá' } } });
+  assert.equal(await db.reviewCard.count({ where: { userId: users[0] } }), 1);
+  assert.equal((await api.get('/api/reviews').set('Cookie', session).expect(200)).body.queue.length, 0);
+  assert.equal((await dictionary()).body.words.find((w: any) => w.key === '龘|dá').known, true);
+  assert.equal((await api.get('/api/reviews/vocabulary').set('Cookie', other)).body.words.find((w: any) => w.key === '龘|dá').known, false);
+  await api.post(`/api/reviews/${card.id}/rate`).set('Cookie', session).set('Origin', process.env.APP_ORIGIN!).set('X-ZhPath-Request', '1').send({ version: 0, rating: 'easy', requestId: randomUUID() }).expect(409);
+  await db.reviewCard.update({ where: { id: card.id }, data: { note: 'keep', favorite: true, interval: 4, version: 2 } });
+  await mark(false).expect(200);
+  assert.ok((await api.get('/api/reviews').set('Cookie', session)).body.queue.includes(card.id));
+  const after = await db.reviewCard.findUniqueOrThrow({ where: { id: card.id } });
+  assert.equal(after.note, 'keep'); assert.equal(after.favorite, true); assert.equal(after.interval, 4); assert.equal(after.version, 2);
+  assert.equal(await db.reviewEvent.count({ where: { userId: users[0] } }), 0);
+  assert.equal(await db.lessonProgress.count({ where: { userId: users[0] } }), 0);
+  await mark(true, '不存在|unknown').expect(404);
+  await db.lesson.update({ where: { slug: first }, data: { published: false } });
+  assert.ok(!(await api.get('/api/reviews/vocabulary').set('Cookie', other)).body.words.some((w: any) => w.key === '龘|dá'));
+});
 const get = (path: string, cookie = session) =>
   api.get(`/api/learning/${path}`).set("Cookie", cookie)
 const put = (slug: string, body: object, cookie = session) =>
@@ -139,7 +168,11 @@ afterEach(async () => {
     })
     await db.curriculum.deleteMany({ where: { id: fixture } })
   }
-  if (app) await app.close()
+  if (app) {
+    // Supertest can leave keep-alive sockets open on recent Node versions.
+    app.getHttpServer().closeAllConnections();
+    await app.close()
+  }
 })
 
 test("catalog and lesson enforce sessions, publication and prerequisite access", async () => {
@@ -363,6 +396,21 @@ test('quiz gates completion, keeps answer keys private and persists failed and p
   await get(`lessons/${second}`).expect(200);
 });
 
+test('quiz requests reject a changed session before reading or submitting another account answers', async () => {
+  const quiz = await prepareQuiz();
+  for (const blockId of blocks) await put(first, { blockId, revision: 1 }).expect(200);
+  await get(`lessons/${first}/quiz`).set('X-ZhPath-User', users[0]).expect(200);
+  await get(`lessons/${first}/quiz`, other).set('X-ZhPath-User', users[0]).expect(403);
+  await submitAttempt(attemptBody(), other).set('X-ZhPath-User', users[0]).expect(403);
+  assert.equal(await db.quizAttempt.count({ where: { quizId: quiz.id } }), 0);
+  const body = attemptBody();
+  const saved = await submitAttempt(body).set('X-ZhPath-User', users[0]).expect(200);
+  const signedInAgain = await device(users[0]);
+  const replay = await submitAttempt(body, signedInAgain).set('X-ZhPath-User', users[0]).expect(200);
+  assert.equal(replay.body.id, saved.body.id);
+  assert.equal(await db.quizAttempt.count({ where: { quizId: quiz.id } }), 1);
+});
+
 test('quiz submissions are idempotent, reject altered retries and retain historical snapshots', async () => {
   const quiz = await prepareQuiz();
   for (const blockId of blocks) await put(first, { blockId, revision: 1 }).expect(200);
@@ -398,6 +446,23 @@ test('review import is additive, isolated and only includes completed lesson voc
   await patch(session, { userId: users[1] }).expect(400);
   assert.equal((await reviews().expect(200)).body.cards[0].note, 'Remember tones');
 });
+test('completion without a quiz imports words immediately; stale revisions never import new words', async () => {
+  const content = (hanzi: string) => ({ words: [{ hanzi, pinyin: 'nǐ', translation: title }] });
+  await db.lessonBlock.update({ where: { id: blocks[0] }, data: { kind: 'vocabulary', content: content('你') } });
+  for (const blockId of blocks) await put(first, { blockId, revision: 1 }).expect(200);
+  const original = await db.reviewCard.findMany({ where: { userId: users[0] } });
+  assert.equal(original.length, 1);
+  await db.lesson.update({ where: { slug: first }, data: { revision: 2 } });
+  await db.lessonBlock.update({ where: { id: blocks[0] }, data: { content: content('你好') } });
+  const sync = () => api.post('/api/reviews/sync').set('Cookie', session).set('Origin', process.env.APP_ORIGIN!).set('X-ZhPath-Request', '1');
+  await sync().expect(200);
+  assert.deepEqual(await db.reviewCard.findMany({ where: { userId: users[0] } }), original);
+  for (const blockId of blocks) await put(first, { blockId, revision: 2 }).expect(200);
+  await sync().expect(200);
+  assert.equal(await db.reviewCard.count({ where: { userId: users[0] } }), 2);
+  assert.deepEqual(await db.reviewCard.findUnique({ where: { id: original[0].id } }), original[0]);
+});
+
 test('review scheduling rejects early and stale writes and repeats idempotently', async () => {
   const card = await newCard('你好');
   const body = { requestId: randomUUID(), version: 0, rating: 'good' };

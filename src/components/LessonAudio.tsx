@@ -97,7 +97,7 @@ export default function LessonAudio({ content }: { content: AudioContent }) {
           rel="noreferrer"
           href={content.sourceUrl}
         >
-          {content.author} · Wikimedia Commons
+          {content.author}
         </a>{" "}
         ·{" "}
         <a

@@ -32,8 +32,16 @@ export default function Dashboard({
     complete: t("Все опубликованные уроки завершены."),
     catalog: t("Посмотрите доступные материалы в каталоге."),
   }
+  const actionReason = {
+    reviews: t("Карточки доступны для практики — закрепите слова перед новым уроком."),
+    continue: t("Ваш прогресс сохранён — вернитесь к месту остановки."),
+    mistakes: t("В последнем тесте были ошибки — повторите материал урока."),
+    start: t("Следующий доступный урок поможет продвинуться дальше."),
+    complete: t("Можно вернуться к материалам в каталоге. Повторение появится здесь, когда будут доступны карточки."),
+    catalog: t("Сейчас нет доступного следующего урока. Проверьте материалы и условия доступа в каталоге."),
+  }
   return (
-    <section className="max-w-4xl mx-auto space-y-8">
+    <section className="max-w-4xl mx-auto space-y-6 sm:space-y-8 break-words">
       <header>
         <h1 className="text-3xl font-bold text-dark-green">
           {t("Здравствуйте")}, {name}!
@@ -43,16 +51,70 @@ export default function Dashboard({
         </p>
       </header>
       {error ? (
-        <div role="alert">
+        <div role="alert" className="rounded-2xl border border-border bg-card p-5 sm:p-8 space-y-4">
           <p>{t("Не удалось загрузить учебные данные.")}</p>
-          <button className="underline" onClick={retry}>
-            {t("Повторить")}
+          <button className="min-h-12 rounded-xl bg-primary text-primary-foreground px-6 py-3 font-semibold focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary" onClick={retry}>
+            {t("Повторить загрузку")}
           </button>
         </div>
       ) : !data ? (
-        <p role="status">{t("Загрузка…")}</p>
+        <div role="status" aria-busy="true" className="rounded-2xl border border-border bg-secondary p-5 sm:p-8">{t("Подбираем следующее учебное действие…")}</div>
       ) : (
         <>
+          <section
+            className="bg-secondary border border-primary/15 rounded-2xl p-5 sm:p-8 space-y-4"
+            aria-labelledby="next-action-title"
+          >
+            <h2 id="next-action-title" className="text-sm font-semibold text-primary">
+              {t("Следующее учебное действие")}
+            </h2>
+            <p className="text-xl sm:text-2xl font-bold leading-snug">{actionText[action.kind]}</p>
+            <p className="text-sm text-foreground/75">{actionReason[action.kind]}</p>
+            {action.kind === "reviews" && (
+              <p className="font-semibold break-words">
+                {t("Карточек доступно сейчас")}: {data.reviews.ready}
+              </p>
+            )}
+            {action.lesson && (
+              <p className="font-semibold">{action.lesson.title[language]}</p>
+            )}
+            {action.kind === "continue" && action.lesson && (
+              <p>
+                {action.lesson.progress.nextBlock}/{action.lesson.blockCount}{" "}
+                {t("блоков")}
+              </p>
+            )}
+            {action.kind === "mistakes" && (
+              <p className="text-sm">
+                {t(
+                  "Учтена последняя попытка актуального теста за 30 дней. Откройте урок, чтобы разобрать ошибки и пройти тест снова.",
+                )}
+              </p>
+            )}
+            <button
+              onClick={() =>
+                action.kind === "reviews"
+                  ? onNavigate("reviews")
+                  : action.lesson
+                    ? onNavigate("lesson", action.lesson.slug)
+                    : onNavigate("catalog")
+              }
+              className="inline-flex w-full sm:w-auto min-h-12 items-center justify-center gap-3 rounded-xl bg-primary text-primary-foreground px-6 py-3 font-semibold hover:bg-dark-green focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary transition-colors"
+            >
+              {t(
+                action.kind === "reviews"
+                  ? "Повторить слова"
+                  : action.kind === "continue"
+                    ? "Продолжить урок"
+                    : action.kind === "mistakes"
+                      ? "Разобрать ошибки"
+                      : action.kind === "start"
+                        ? "Начать урок"
+                        : "Открыть каталог",
+              )}
+              <ArrowRight size={18} className="shrink-0" aria-hidden="true" />
+            </button>
+          </section>
           <div className="grid sm:grid-cols-2 gap-4">
             <div className="bg-card border border-border rounded-2xl p-6">
               <BookOpen className="text-primary mb-3" />
@@ -100,8 +162,7 @@ export default function Dashboard({
             </dl>
             <p className="text-sm text-foreground/65">
               {t("Осталось новых карточек по дневному лимиту")}:{" "}
-              {data.reviews.remainingNew} / {data.reviews.newLimit}.{" "}
-              {t("Часовой пояс")}: {data.reviews.timezone}
+              {data.reviews.remainingNew} / {data.reviews.newLimit}.
             </p>
             {data.reviews.deferredNew > 0 && (
               <p>
@@ -130,60 +191,6 @@ export default function Dashboard({
                 </time>
               </p>
             )}
-            <button
-              className="underline py-2"
-              onClick={() => onNavigate("reviews")}
-            >
-              {t("Открыть повторение")}
-            </button>
-          </section>
-          <section
-            className="bg-secondary rounded-2xl p-6 sm:p-8 space-y-4"
-            aria-labelledby="next-action-title"
-          >
-            <h2 id="next-action-title" className="text-xl font-semibold">
-              {t("Следующее учебное действие")}
-            </h2>
-            <p>{actionText[action.kind]}</p>
-            {action.lesson && (
-              <p className="font-semibold">{action.lesson.title[language]}</p>
-            )}
-            {action.kind === "continue" && action.lesson && (
-              <p>
-                {action.lesson.progress.nextBlock}/{action.lesson.blockCount}{" "}
-                {t("блоков")}
-              </p>
-            )}
-            {action.kind === "mistakes" && (
-              <p className="text-sm">
-                {t(
-                  "Учтена последняя попытка актуального теста за 30 дней. Откройте урок, чтобы разобрать ошибки и пройти тест снова.",
-                )}
-              </p>
-            )}
-            <button
-              onClick={() =>
-                action.kind === "reviews"
-                  ? onNavigate("reviews")
-                  : action.lesson
-                    ? onNavigate("lesson", action.lesson.slug)
-                    : onNavigate("catalog")
-              }
-              className="inline-flex items-center gap-3 rounded-xl bg-primary text-primary-foreground px-6 py-3 font-semibold"
-            >
-              {t(
-                action.kind === "reviews"
-                  ? "Открыть повторение"
-                  : action.kind === "continue"
-                    ? "Продолжить"
-                    : action.kind === "mistakes"
-                      ? "Разобрать ошибки"
-                      : action.kind === "start"
-                        ? "Начать урок"
-                        : "Курсы",
-              )}
-              <ArrowRight size={18} aria-hidden="true" />
-            </button>
           </section>
           <LearningStats data={data.stats} />
         </>

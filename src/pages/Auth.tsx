@@ -51,7 +51,7 @@ export default function Auth({ mode, onNavigate, onSignedIn }: {
 
   return (
     <main className="min-h-screen bg-background flex items-center justify-center px-4 py-12">
-      <section className="w-full max-w-md bg-white rounded-3xl border border-border shadow-sm p-6 sm:p-8 space-y-6">
+      <section className="w-full max-w-md bg-card rounded-3xl border border-border shadow-sm p-6 sm:p-8 space-y-6">
         <a href="#/login" className="font-bold text-2xl text-primary">中 ZhPath</a>
         <LanguageSelect />
         <div><h1 className="text-2xl font-bold text-dark-green">{t(title)}</h1><p className="mt-2 text-muted-foreground">{t("Китайский язык — шаг за шагом.")}</p></div>
