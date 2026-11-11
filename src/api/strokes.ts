@@ -1,5 +1,5 @@
 import { z } from "zod"
-import manifest from "../../public/strokes/manifest.json"
+import manifest from "./strokeManifest.json"
 
 export const strokeSchema = z.object({
   strokes: z.array(z.string().min(1).max(30000).regex(/^[MmZzLlHhVvCcSsQqTtAa\d\s.,+\-]+$/)).min(1).max(64),

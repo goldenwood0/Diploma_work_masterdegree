@@ -12,22 +12,40 @@
   --color-accent-lime: #D9F46F;
   --color-coral: #EE755C;
 
-  --color-background: #FFFDF9; /* cream */
+  --color-background: #F3F2EC; /* warm neutral, separates white cards */
   --color-foreground: #164934; /* dark green */
   --color-card: #ffffff;
   --color-card-foreground: #164934;
   --color-primary: #226447; /* primary green */
   --color-primary-foreground: #FFFDF9;
-  --color-secondary: #F2F6F0; /* sage */
+  --color-secondary: #E7EEE3; /* sage */
   --color-secondary-foreground: #164934;
   --color-muted: #F2F6F0;
-  --color-muted-foreground: #5A7B68;
+  --color-muted-foreground: #4F6858;
   --color-accent: #D9F46F; /* lime */
   --color-accent-foreground: #164934;
-  --color-border: #E5EBE3;
+  --color-border: #CDD8CB;
   --color-ring: #D9F46F;
   --radius-xl: 1rem;
   --radius-2xl: 1.5rem;
+}
+
+:root[data-theme="dark"] {
+  --color-background: #121C18;
+  --color-foreground: #E3EBE5;
+  --color-card: #1C2A23;
+  --color-card-foreground: #E3EBE5;
+  --color-primary: #A2D7AE;
+  --color-primary-foreground: #14291C;
+  --color-secondary: #293B2F;
+  --color-secondary-foreground: #E3EBE5;
+  --color-muted: #293B2F;
+  --color-muted-foreground: #A9BFAE;
+  --color-border: #4C6654;
+  --color-dark-green: #D6EBDC;
+  --color-primary-green: #A2D7AE;
+  --color-cream: #121C18;
+  --color-sage: #293B2F;
 }
 
 @layer base {
@@ -55,3 +73,31 @@ body {
 .sc-text {
   font-family: var(--font-sc);
 }
+
+/* Measured navigation height includes wrapped labels and the device safe area. */
+html {
+  scroll-padding-top: calc(var(--app-header-height, 0px) + 1rem);
+  scroll-padding-bottom: calc(var(--mobile-nav-height, 0px) + 1rem);
+}
+.app-shell {
+  padding-bottom: var(--mobile-nav-height, 0px);
+}
+.app-header {
+  padding-top: env(safe-area-inset-top, 0px);
+  padding-left: env(safe-area-inset-left, 0px);
+  padding-right: env(safe-area-inset-right, 0px);
+}
+.mobile-nav {
+  padding: 0.5rem max(0.5rem, env(safe-area-inset-right, 0px))
+    max(0.5rem, env(safe-area-inset-bottom, 0px)) max(0.5rem, env(safe-area-inset-left, 0px));
+}
+:where(button, a, input, select, textarea, [tabindex]):focus-visible {
+  outline: 3px solid var(--color-primary);
+  outline-offset: 3px;
+}
+
+.tutor-panel {
+  padding: env(safe-area-inset-top, 0px) env(safe-area-inset-right, 0px)
+    env(safe-area-inset-bottom, 0px) env(safe-area-inset-left, 0px);
+}
+

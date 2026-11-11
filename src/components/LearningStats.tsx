@@ -37,7 +37,6 @@ export default function LearningStats({ data }: { data: Stats }) {
         </dl>
         <p className="text-sm text-foreground/65">{t("Часы:минуты:секунды. Учитываются уроки, словарь и повторения в активной вкладке; после минуты без действий — пауза.")}</p>
         <p className="text-sm text-foreground/65">{t("Учёт начат с подключения таймера. Ранние занятия не восстановлены; при потере связи часть времени может не сохраниться.")}</p>
-        <p className="text-sm text-foreground/65">{t("Часовой пояс")}: {data.timezone}</p>
       </section>
       <section
         className="bg-card border border-border rounded-2xl p-6 space-y-4"
@@ -86,7 +85,6 @@ export default function LearningStats({ data }: { data: Stats }) {
           ))}
         </ul>
         <p className="text-sm text-foreground/65">
-          {t("Часовой пояс")}: {data.timezone}.{" "}
           {t("Серия сохраняется до конца дня, если вы занимались вчера.")}
         </p>
         <p className="text-sm text-foreground/65">

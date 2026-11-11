@@ -1,3 +1,4 @@
+import HskBadge from '../components/HskBadge';
 import { useEffect, useRef, useState } from "react"
 import { ArrowLeft, CheckCircle2 } from "lucide-react"
 import { completeBlock, getLesson, type LessonData } from "../api/learning"
@@ -11,9 +12,11 @@ import StudyTimeTracker from "../components/StudyTimeTracker"
 
 export default function Lesson({
   slug,
+  userId,
   onNavigate,
 }: {
   slug: string
+  userId: string
   onNavigate: (screen: Screen) => void
 }) {
   const { t, language, explanationLanguage } = useLanguage()
@@ -47,7 +50,7 @@ export default function Lesson({
           )
       })
     return () => controller.abort()
-  }, [slug, attempt])
+  }, [slug, userId, attempt])
   async function advance() {
     if (!lesson || pending.current || !lifetime.current) return
     const signal = lifetime.current.signal
@@ -129,10 +132,19 @@ export default function Lesson({
             />
           </div>
           {lesson.progress.completedAt && (
-            <p role="status" className="flex items-center gap-2 text-primary">
-              <CheckCircle2 size={22} />
-              {t("Урок завершён. Можно повторить материал.")}
-            </p>
+            <div className="rounded-xl border border-primary p-4 space-y-3">
+              <p role="status" className="flex items-center gap-2 text-primary">
+                <CheckCircle2 size={22} />
+                {t(lesson.quiz?.kind === "module" ? "Пилотный модуль завершён." : "Урок завершён. Можно повторить материал.")}
+              </p>
+              <p>{t(lesson.quiz?.kind === "module"
+                ? "Результат сохранён. Это итог пилотного модуля, а не всего HSK 1. Следующий шаг — повторение изученных слов."
+                : "Результат сохранён. Откройте каталог, чтобы перейти к следующему уроку, или повторите изученные слова.")}</p>
+              <div className="flex flex-wrap gap-4">
+                <button className="underline" onClick={() => onNavigate("reviews")}>{t("Повторить слова")}</button>
+                <button className="underline" onClick={() => onNavigate("catalog")}>{t("Открыть каталог")}</button>
+              </div>
+            </div>
           )}
           <div
             role="group"
@@ -167,7 +179,7 @@ export default function Lesson({
                     <p lang="zh-CN" className="text-4xl sc-text">
                       {word.hanzi}
                     </p>
-                    <p className="text-primary text-lg my-2">{word.pinyin}</p>
+                    <HskBadge word={word.hanzi} /><p className="text-primary text-lg my-2">{word.pinyin}</p>
                     <p>{word.translation[explanationLanguage]}</p>
                   </div>
                 ))}
@@ -197,7 +209,7 @@ export default function Lesson({
             {block.kind === "audio" && <LessonAudio content={block.content} />}
             {block.kind === "vocabulary" && <CharacterPractice text={block.content.words.map((word) => word.hanzi).join("")} />}
           </article>
-          {lesson.quiz && lesson.progress.nextBlock === lesson.blocks.length && index === lesson.blocks.length - 1 && <QuizPanel key={`${lesson.id}-${lesson.revision}`} slug={slug} onPassed={at => setLesson(current => current ? { ...current, progress: { ...current.progress, completedAt: current.progress.completedAt ?? at } } : current)} />}
+          {lesson.quiz && lesson.progress.nextBlock === lesson.blocks.length && index === lesson.blocks.length - 1 && <QuizPanel key={`${lesson.id}-${lesson.revision}`} slug={slug} userId={userId} onPassed={at => setLesson(current => current ? { ...current, progress: { ...current.progress, completedAt: current.progress.completedAt ?? at } } : current)} />}
           <div className="flex justify-between gap-3">
             <button
               disabled={index === 0 || saving}

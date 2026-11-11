@@ -20,7 +20,13 @@ export default function ProfileForm({ account, onboarding = false, onSaved }: {
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState('');
   const [saved, setSaved] = useState(false);
-  const field = 'mt-2 w-full rounded-xl border border-border bg-white p-3 focus:outline-none focus:ring-2 focus:ring-primary/30';
+  const supportedTimezones = (Intl as typeof Intl & { supportedValuesOf?: (key: 'timeZone') => string[] }).supportedValuesOf;
+  const timezones = [...new Set([
+    form.timezone, 'Asia/Almaty', 'Asia/Qyzylorda', 'Asia/Shanghai',
+    'Europe/Moscow', 'Europe/London', 'America/New_York', 'UTC',
+    ...(supportedTimezones ? supportedTimezones('timeZone') : []),
+  ])];
+  const field = 'mt-2 w-full rounded-xl border border-border bg-card p-3 focus:outline-none focus:ring-2 focus:ring-primary/30';
   function update<K extends keyof ProfileInput>(key: K, value: ProfileInput[K]) { setForm(previous => ({ ...previous, [key]: value })); setSaved(false); }
   async function submit(event: FormEvent) {
     event.preventDefault(); if (busy) return;
@@ -29,7 +35,7 @@ export default function ProfileForm({ account, onboarding = false, onSaved }: {
     catch (err) { setError(err instanceof Error ? err.message : 'Проверьте настройки профиля.'); }
     finally { setBusy(false); }
   }
-  return <form onSubmit={submit} className="bg-white border border-border rounded-3xl p-6 sm:p-8 space-y-6">
+  return <form onSubmit={submit} className="bg-card border border-border rounded-3xl p-6 sm:p-8 space-y-6">
     <div><h1 className="text-2xl font-bold">{t(onboarding ? 'Настроим ваше обучение' : 'Настройки обучения')}</h1>
       {onboarding && <p className="mt-2 text-muted-foreground">{t('Выберите цель и удобный темп. Всё можно изменить в профиле.')}</p>}</div>
     {error && <p role="alert" className="bg-coral/10 rounded-xl p-3">{t(error)}</p>}
@@ -58,8 +64,7 @@ export default function ProfileForm({ account, onboarding = false, onSaved }: {
       <label className="block font-medium">{t('Дневная норма (мин)')}: <output>{form.dailyGoalMinutes}</output>
         <input type="range" min={5} max={60} step={5} value={form.dailyGoalMinutes} onChange={e => update('dailyGoalMinutes', Number(e.target.value))} className="mt-3 block w-full accent-primary" />
       </label>
-      <label className="block font-medium">{t('Часовой пояс')}<input required maxLength={80} list="timezones" value={form.timezone} onChange={e => update('timezone', e.target.value)} className={field} placeholder="Asia/Almaty" /></label>
-      <datalist id="timezones">{['Asia/Almaty', 'Asia/Qyzylorda', 'Asia/Shanghai', 'Europe/Moscow', 'Europe/London', 'America/New_York', 'UTC'].map(zone => <option key={zone} value={zone} />)}</datalist>
+      <label className="block font-medium">{t('Часовой пояс')}<select required value={form.timezone} onChange={e => update('timezone', e.target.value)} className={field}>{timezones.map(zone => <option key={zone} value={zone}>{zone.replace(/_/g, ' ')}</option>)}</select></label>
       <label className="flex gap-3 items-center font-medium"><input type="checkbox" checked={form.remindersEnabled} onChange={e => update('remindersEnabled', e.target.checked)} className="size-5 accent-primary" />{t('Напоминать о ежедневной цели')}</label>
       <label className="block font-medium">{t('Время напоминания')}<input required type="time" value={form.reminderTime} onChange={e => update('reminderTime', e.target.value)} className={field} /></label>
       <p className="text-sm text-muted-foreground">{t('Письмо на подтверждённый email, на языке интерфейса и по часовому поясу профиля. Если дневная цель выполнена, напоминание не отправляется.')}</p>
@@ -69,3 +74,4 @@ export default function ProfileForm({ account, onboarding = false, onSaved }: {
     </fieldset>
   </form>;
 }
+

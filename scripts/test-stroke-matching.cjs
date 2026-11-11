@@ -2,7 +2,7 @@ const fs=require('node:fs'),vm=require('node:vm'),ts=require('typescript'),asser
 const scope={exports:{}};
 vm.runInNewContext(ts.transpileModule(fs.readFileSync('src/app/strokeMatching.ts','utf8'),{compilerOptions:{module:ts.ModuleKind.CommonJS}}).outputText,scope);
 const {matchStroke,medianPoints}=scope.exports;
-const manifest=require('../public/strokes/manifest.json');
+const manifest=require('../src/api/strokeManifest.json');
 let count=0;
 for(const char of manifest.characters){
  const data=JSON.parse(fs.readFileSync(`public/strokes/${char.codePointAt(0).toString(16)}.json`));
