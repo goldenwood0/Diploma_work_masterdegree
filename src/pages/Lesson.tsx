@@ -14,10 +14,12 @@ export default function Lesson({
   slug,
   userId,
   onNavigate,
+  onReviewMistakes,
 }: {
   slug: string
   userId: string
   onNavigate: (screen: Screen) => void
+  onReviewMistakes?: () => void
 }) {
   const { t, language, explanationLanguage } = useLanguage()
   const [lesson, setLesson] = useState<LessonData | null>(null)
@@ -209,7 +211,7 @@ export default function Lesson({
             {block.kind === "audio" && <LessonAudio content={block.content} />}
             {block.kind === "vocabulary" && <CharacterPractice text={block.content.words.map((word) => word.hanzi).join("")} />}
           </article>
-          {lesson.quiz && lesson.progress.nextBlock === lesson.blocks.length && index === lesson.blocks.length - 1 && <QuizPanel key={`${lesson.id}-${lesson.revision}`} slug={slug} userId={userId} onPassed={at => setLesson(current => current ? { ...current, progress: { ...current.progress, completedAt: current.progress.completedAt ?? at } } : current)} />}
+          {lesson.quiz && lesson.progress.nextBlock === lesson.blocks.length && index === lesson.blocks.length - 1 && <QuizPanel key={`${lesson.id}-${lesson.revision}`} slug={slug} userId={userId} onReviewMistakes={onReviewMistakes} onPassed={at => setLesson(current => current ? { ...current, progress: { ...current.progress, completedAt: current.progress.completedAt ?? at } } : current)} />}
           <div className="flex justify-between gap-3">
             <button
               disabled={index === 0 || saving}

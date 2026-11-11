@@ -18,11 +18,11 @@ function Feedback({ attempt }: { attempt: Attempt }) {
     })}</div>;
 }
 
-type Props = { slug: string; userId: string; onPassed: (at: string) => void };
+type Props = { slug: string; userId: string; onPassed: (at: string) => void; onReviewMistakes?: () => void };
 export default function QuizPanel(props: Props) {
   return <QuizSession key={`${props.userId}:${props.slug}`} {...props} />;
 }
-function QuizSession({ slug, userId, onPassed }: Props) {
+function QuizSession({ slug, userId, onPassed, onReviewMistakes }: Props) {
   const { t, language } = useLanguage();
   const [quiz, setQuiz] = useState<QuizData | null>(null);
   const [answers, setAnswers] = useState<Record<string, Answer>>({});
@@ -109,7 +109,7 @@ function QuizSession({ slug, userId, onPassed }: Props) {
     {error && <div role="alert"><p>{t(error)}</p><button disabled={busy || accountChanged} className="underline" onClick={() => setReload(n => n + 1)}>{t('Обновить тест')}</button></div>}
     {!quiz && !error && <p role="status">{t('Загрузка…')}</p>}
     {quiz && <><p>{t('Порог прохождения')}: {quiz.passPercent}% · {t('Нужно верных ответов')}: {Math.ceil(quiz.questions.length * quiz.passPercent / 100)}/{quiz.questions.length}</p>
-      {result ? <><Feedback attempt={result} /><button type="button" className="border border-border rounded-xl px-5 py-3" onClick={() => { setResult(null); setAnswers({}); setRetrying(false); persist(makeDraft(userId, quiz, {})); setError(''); }}>{t('Пройти заново')}</button></> : <form className="space-y-6" onSubmit={e => { e.preventDefault(); void submit(); }}>
+      {result ? <><Feedback attempt={result} />{onReviewMistakes && result.id === quiz.attempts[0]?.id && result.result.items.some(item => !item.correct) && <button type="button" className="bg-primary text-primary-foreground rounded-xl px-5 py-3 mr-3" onClick={onReviewMistakes}>{t('Разобрать ошибки с ИИ')}</button>}<button type="button" className="border border-border rounded-xl px-5 py-3" onClick={() => { setResult(null); setAnswers({}); setRetrying(false); persist(makeDraft(userId, quiz, {})); setError(''); }}>{t('Пройти заново')}</button></> : <form className="space-y-6" onSubmit={e => { e.preventDefault(); void submit(); }}>
         {quiz.questions.map((q, i) => <QuizQuestion key={q.id} question={q} number={i + 1} disabled={busy || retrying || accountChanged} value={answers[q.id]} onChange={value => changeAnswer(q.id, value)} />)}
         <p className="text-sm text-foreground/65">{t('Ответы автоматически сохраняются в этом браузере.')}</p>
         <button disabled={!ready || busy || accountChanged} className="bg-primary text-primary-foreground rounded-xl px-6 py-3 disabled:opacity-40">{t(busy ? 'Сохранение…' : retrying ? 'Повторить отправку' : 'Проверить ответы')}</button>

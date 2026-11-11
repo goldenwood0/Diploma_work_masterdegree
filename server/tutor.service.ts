@@ -10,6 +10,27 @@ const errorSummary = z.object({ items: z.array(z.object({ correct: z.boolean(), 
   topic: z.enum(['greetings', 'introductions', 'courtesy']).optional(),
   skill: z.enum(['vocabulary', 'grammar', 'reading', 'listening', 'writing']).optional(),
 }) })).max(30) });
+// The graded snapshot the learner already sees after submitting a quiz.
+const localizedText = z.object({ ru: z.string(), kk: z.string(), en: z.string() });
+const answerOption = z.object({ id: z.string(), text: localizedText });
+const gradedAttempt = z.object({ items: z.array(z.object({
+  correct: z.boolean(), value: z.union([z.string(), z.array(z.string())]),
+  expected: z.union([z.string(), localizedText, z.array(localizedText)]), explanation: localizedText,
+  question: z.object({ kind: z.string(), prompt: localizedText, options: z.array(answerOption).optional(), right: z.array(answerOption).optional() }),
+})).max(30) });
+type Language = 'ru' | 'kk' | 'en';
+export function describeMistakes(result: unknown, language: Language) {
+  const parsed = gradedAttempt.safeParse(result);
+  if (!parsed.success) return [];
+  const short = (value: string) => redact(value).slice(0, 300);
+  return parsed.data.items.filter(item => !item.correct).slice(0, 5).map(item => {
+    const choices = item.question.options ?? item.question.right ?? [];
+    const show = (id: string) => choices.find(option => option.id === id)?.text[language] ?? id;
+    const expected = typeof item.expected === 'string' ? item.expected : Array.isArray(item.expected) ? item.expected.map(text => text[language]).join(' · ') : item.expected[language];
+    return { kind: item.question.kind, prompt: short(item.question.prompt[language]), given: short(Array.isArray(item.value) ? item.value.map(show).join(' · ') : show(item.value)),
+      expected: short(expected), explanation: short(item.explanation[language]) };
+  });
+}
 const fail = (code: string, status: number): never => { throw new HttpException({ message: code }, status); };
 export function redact(value: string) {
   return value.replace(/\b[\w.+-]+@[\w.-]+\.[a-z]{2,}\b/gi, '[redacted]')
@@ -43,7 +64,8 @@ export class TutorService {
     const reached = lesson.blocks.slice(0, index + 1);
     const query = input.text.toLocaleLowerCase();
     const related = query ? reached.filter((b, i) => i !== index && searchableContent([b]).toLocaleLowerCase().includes(query)).slice(-2) : [];
-    const material = redact(searchableContent([reached[index], ...related])).slice(0, 8000);
+    // A mistake review needs the whole reached lesson, not only the current block.
+    const material = redact(searchableContent(input.mode === 'mistakes' ? reached : [reached[index], ...related])).slice(0, 8000);
     const attempts = lesson.quiz ? await this.db.quizAttempt.findMany({
       where: { userId, quizId: lesson.quiz.id, lessonRevision: lesson.revision, quizRevision: lesson.quiz.revision },
       orderBy: { createdAt: 'desc' }, take: 3, select: { result: true },
@@ -52,7 +74,11 @@ export class TutorService {
       const parsed = errorSummary.safeParse(a.result);
       return parsed.success ? parsed.data.items.filter(i => !i.correct).map(i => i.question) : [];
     }).slice(0, 10);
-    return { level: settings?.startLevel ?? 1, language: ['ru', 'kk', 'en'].includes(settings?.explanationLanguage ?? '') ? settings!.explanationLanguage : 'ru',
+    const language = (['ru', 'kk', 'en'].includes(settings?.explanationLanguage ?? '') ? settings!.explanationLanguage : 'ru') as Language;
+    // Latest attempt of the current revisions only; nothing to review is an explicit state.
+    const mistakes = input.mode === 'mistakes' ? describeMistakes(attempts[0]?.result, language) : undefined;
+    if (mistakes && !mistakes.length) fail('TUTOR_NO_MISTAKES', 409);
+    return { level: settings?.startLevel ?? 1, language, ...(mistakes ? { mistakes } : {}),
       mode: input.mode, material, errors, text: redact(input.text), history: input.history.map(m => ({ role: m.role, text: redact(m.text) })) };
   }
   async ask(userId: string, input: TutorInput, signal: AbortSignal, timeoutMs = 20000) {

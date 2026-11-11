@@ -508,4 +508,7 @@ export const learningMessages: Record<string, Record<'en' | 'kk', string>> = {
   "На тест — 20 минут. При выходе или обновлении страницы незавершённые ответы не сохраняются, статусы не меняются.": {"en": "You have 20 minutes for the test. If you leave or refresh the page, unfinished answers are not saved and statuses do not change.", "kk": "Тестке 20 минут беріледі. Беттен шықсаңыз немесе оны жаңартсаңыз, аяқталмаған жауаптар сақталмайды, күйлер өзгермейді."},
   "Вернуться к словарю": {"en": "Back to dictionary", "kk": "Сөздікке оралу"},
   "Выйти без изменений": {"en": "Exit without changes", "kk": "Өзгеріссіз шығу"},
+  "Разбор ошибок теста": {"en": "Quiz mistake review", "kk": "Тест қателерін талдау"},
+  "Разобрать ошибки с ИИ": {"en": "Review mistakes with AI", "kk": "Қателерді ЖИ-мен талдау"},
+  "В последней попытке теста нет ошибок для разбора.": {"en": "The latest quiz attempt has no mistakes to review.", "kk": "Соңғы тест әрекетінде талдайтын қате жоқ."},
 }

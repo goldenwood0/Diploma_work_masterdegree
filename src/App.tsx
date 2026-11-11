@@ -23,6 +23,7 @@ export default function App() {
   const { t } = useLanguage();
   const [currentScreen, setCurrentScreen, lessonSlug] = useRoute();
   const [isAiTutorOpen, setIsAiTutorOpen] = useState(false);
+  const [reviewMistakes, setReviewMistakes] = useState(false);
   const { account, loading, error, refresh, accept } = useAccount();
 
   const mobileNav = useRef<HTMLElement>(null);
@@ -101,7 +102,7 @@ export default function App() {
                 title={t("Открыть ИИ-помощника")}
                 aria-haspopup="dialog"
                 aria-expanded={isAiTutorOpen}
-                onClick={() => setIsAiTutorOpen(true)}
+                onClick={() => { setReviewMistakes(false); setIsAiTutorOpen(true); }}
                 className="flex size-11 shrink-0 items-center justify-center rounded-full bg-accent text-accent-foreground hover:bg-secondary transition-colors"
               >
                 <Sparkles size={24} aria-hidden="true" />
@@ -128,7 +129,7 @@ export default function App() {
         {currentScreen === 'content' && <ContentAdmin role={account.role} />}
         {currentScreen === 'dashboard' && <Dashboard name={account.name} onNavigate={setCurrentScreen} />}
         {currentScreen === 'catalog' && <Catalog onNavigate={setCurrentScreen} />}
-        {currentScreen === 'lesson' && <Lesson key={`${account.id}:${lessonSlug}`} userId={account.id} slug={lessonSlug} onNavigate={setCurrentScreen} />}
+        {currentScreen === 'lesson' && <Lesson key={`${account.id}:${lessonSlug}`} userId={account.id} slug={lessonSlug} onNavigate={setCurrentScreen} onReviewMistakes={() => { setReviewMistakes(true); setIsAiTutorOpen(true); }} />}
         {currentScreen === 'profile' && <Profile account={account} onSignedOut={refresh} onSaved={accept} />}
         {currentScreen === 'reviews' && <Reviews />}
         {currentScreen === 'dictionary' && <Dictionary key={account.id} />}
@@ -137,7 +138,7 @@ export default function App() {
 
       {/* AI Tutor Sidebar */}
       {isAiTutorOpen && (
-        <AiTutorPanel key={`${account.id}:${currentScreen}:${lessonSlug}`} lessonSlug={currentScreen === 'lesson' ? lessonSlug : undefined} onClose={() => setIsAiTutorOpen(false)} />
+        <AiTutorPanel key={`${account.id}:${currentScreen}:${lessonSlug}:${reviewMistakes}`} initialMode={reviewMistakes ? 'mistakes' : 'explain'} autoSend={reviewMistakes} lessonSlug={currentScreen === 'lesson' ? lessonSlug : undefined} onClose={() => setIsAiTutorOpen(false)} />
       )}
 
       {/* Mobile Bottom Nav */}

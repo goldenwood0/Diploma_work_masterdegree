@@ -1,6 +1,6 @@
 import { z } from 'zod';
 import { request, ApiError } from './client';
-export type TutorMode = 'explain' | 'check' | 'dialogue' | 'practice';
+export type TutorMode = 'explain' | 'check' | 'dialogue' | 'practice' | 'mistakes';
 export type TutorTurn = { role: 'user' | 'assistant'; text: string };
 const provider = z.enum(['unconfigured', 'test', 'live']);
 const response = z.object({ text: z.string().min(1).max(6000), provider });
@@ -18,6 +18,7 @@ export function tutorError(error: unknown) {
   if (error.status === 504) return 'Помощник не успел ответить. Попробуйте ещё раз.';
   if (error.status === 401) return 'Сессия завершена. Войдите ещё раз.';
   if (error.status === 403 || error.status === 404) return 'Этот урок недоступен для помощника.';
+  if (error.status === 409) return 'В последней попытке теста нет ошибок для разбора.';
   if (error.status === 413) return 'Слишком много текста. Сократите сообщение или начните заново.';
   return 'Не удалось получить ответ помощника. Повторите запрос.';
 }

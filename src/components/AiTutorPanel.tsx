@@ -3,11 +3,12 @@ import { X, Sparkles } from 'lucide-react';
 import { useLanguage } from '../i18n/LanguageProvider';
 import { askTutor, tutorError, tutorStatus, type TutorMode, type TutorTurn } from '../api/tutor';
 
-const modes: Array<[TutorMode, string]> = [['explain', 'Объясни правило'], ['check', 'Проверь мою фразу'], ['dialogue', 'Начать диалог'], ['practice', 'Тренировочные вопросы']];
-export default function AiTutorPanel({ onClose, lessonSlug }: { onClose: () => void; lessonSlug?: string }) {
+const modes: Array<[TutorMode, string]> = [['explain', 'Объясни правило'], ['check', 'Проверь мою фразу'], ['dialogue', 'Начать диалог'], ['practice', 'Тренировочные вопросы'], ['mistakes', 'Разбор ошибок теста']];
+// autoSend: opened from a quiz result, so the first request goes out without extra clicks.
+export default function AiTutorPanel({ onClose, lessonSlug, initialMode = 'explain', autoSend = false }: { onClose: () => void; lessonSlug?: string; initialMode?: TutorMode; autoSend?: boolean }) {
   const { t, explanationLanguage } = useLanguage();
   const [provider, setProvider] = useState<'unconfigured' | 'test' | 'live' | null>(null);
-  const [mode, setMode] = useState<TutorMode>('explain');
+  const [mode, setMode] = useState<TutorMode>(initialMode);
   const [text, setText] = useState('');
   const [turns, setTurns] = useState<TutorTurn[]>([]);
   const [error, setError] = useState('');
@@ -16,6 +17,7 @@ export default function AiTutorPanel({ onClose, lessonSlug }: { onClose: () => v
   const [retry, setRetry] = useState(0);
   const active = useRef<AbortController | null>(null);
   const close = useRef<HTMLButtonElement>(null);
+  const autoSent = useRef(false);
   useEffect(() => {
     const previous = document.activeElement as HTMLElement | null;
     close.current?.focus();
@@ -43,6 +45,10 @@ export default function AiTutorPanel({ onClose, lessonSlug }: { onClose: () => v
     } catch (e) { if (!controller.signal.aborted) setError(tutorError(e)); }
     finally { if (active.current === controller) { active.current = null; setLoading(false); } }
   }
+  useEffect(() => {
+    if (!autoSend || autoSent.current || !provider || provider === 'unconfigured') return;
+    autoSent.current = true; void send();
+  }, [provider]);
   return <div className="fixed inset-0 z-50 bg-dark-green/20 flex justify-end" onClick={onClose}>
     <section role="dialog" aria-modal="true" aria-labelledby="tutor-title" className="tutor-panel w-full max-w-sm h-dvh bg-background shadow-xl flex flex-col min-w-0" onClick={e => e.stopPropagation()} onKeyDown={e => {
       if (e.key === 'Escape') onClose();

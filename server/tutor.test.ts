@@ -71,6 +71,31 @@ test('all modes and ru/kk/en reach adapter as data, injection cannot overwrite s
     assert.deepEqual(Object.keys(f.calls[0]).sort(), ['data', 'maxOutputTokens', 'system']);
   }
 });
+test('mistakes mode: latest own graded answers in the explanation language, whole reached lesson, bounded and explicit when empty', async () => {
+  const f = fixture();
+  const text = (value: string) => ({ ru: `${value} ru`, kk: `${value} kk`, en: `${value} en` });
+  const item = (n: number, correct: boolean) => ({ correct, value: 'b', expected: text(`expected${n}`), explanation: text(`why${n}`),
+    question: { kind: 'choice', prompt: text(`prompt${n}`), options: [{ id: 'a', text: text('optionA') }, { id: 'b', text: text('optionB') }] } });
+  const latest = { items: [item(1, false), item(2, true), { ...item(3, false), value: 'mail a@example.test', question: { kind: 'input', prompt: text('prompt3') }, expected: '你好' },
+    ...[4, 5, 6, 7, 8].map(n => item(n, false))] };
+  const queries: any[] = [];
+  (f.db.quizAttempt as any).findMany = async (q: any) => { queries.push(q); return q.where.userId === 'alice' ? [{ result: latest }, { result: { items: [item(99, false)] } }] : []; };
+  f.db.lessonProgress.findUnique = async () => ({ completedAt: new Date(), revision: 2, nextBlock: 0 }) as any;
+  await f.service.ask('alice', { ...input(), mode: 'mistakes' }, signal());
+  const data = f.calls[0].data;
+  assert.equal(queries[0].where.userId, 'alice'); assert.equal(queries[0].orderBy.createdAt, 'desc');
+  assert.equal(data.mode, 'mistakes'); assert.equal(data.language, 'kk'); assert.equal(data.mistakes?.length, 5);
+  assert.deepEqual(data.mistakes?.[0], { kind: 'choice', prompt: 'prompt1 kk', given: 'optionB kk', expected: 'expected1 kk', explanation: 'why1 kk' });
+  assert.deepEqual(data.mistakes?.[1], { kind: 'input', prompt: 'prompt3 kk', given: 'mail [redacted]', expected: '你好', explanation: 'why3 kk' });
+  assert.doesNotMatch(JSON.stringify(data.mistakes), /prompt2|prompt99|example\.test| ru| en/);
+  assert.doesNotMatch(data.material, /UNREACHED/); assert.match(data.material, /你好/);
+  // Other modes never receive answers; another learner and a clean attempt have nothing to review.
+  await f.service.ask('alice', input(), signal()); assert.equal(f.calls[1].data.mistakes, undefined);
+  await rejectsStatus(f.service.ask('bob', { ...input(), mode: 'mistakes' }, signal()), 409);
+  (f.db.quizAttempt as any).findMany = async () => [{ result: { items: [item(1, true)] } }, { result: latest }];
+  await rejectsStatus(f.service.ask('carol', { ...input(), mode: 'mistakes' }, signal()), 409);
+  assert.equal(f.calls.length, 2);
+});
 test('credential/contact redaction covers user text, history and material', async () => {
   const f = fixture(); const sensitive = `a@example.test password=secret token=secret Bearer abcdef sk-examplekey ${'a'.repeat(64)}`;
   f.lesson.blocks[0].content.hanzi = sensitive;
