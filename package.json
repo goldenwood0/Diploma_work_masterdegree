@@ -15,7 +15,7 @@
     "db:deploy": "prisma migrate deploy",
     "db:migrate": "prisma migrate dev",
     "db:seed": "node --env-file=.env dist-server/seed.js",
-    "test:server": "node --env-file=.env --test --test-concurrency=1 dist-server/auth.test.js dist-server/learning.test.js dist-server/quiz.test.js dist-server/analytics.test.js",
+    "test:server": "node --env-file=.env --test --test-concurrency=1 dist-server/auth.test.js dist-server/learning.test.js dist-server/quiz.test.js dist-server/analytics.test.js dist-server/tutor.test.js dist-server/tutor-openai.test.js",
     "test:excel": "node scripts/test-vocabulary-excel.cjs",
     "test:voice": "node --test scripts/test-voice.cjs",
     "test:dashboard": "node scripts/test-dashboard.cjs",
