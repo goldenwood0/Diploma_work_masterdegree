@@ -1,0 +1,1574 @@
+{
+  "checkedAt": "2026-10-15T19:59:10.745Z",
+  "pages": [
+    {
+      "pageid": 3052739,
+      "ns": 6,
+      "title": "File:Zh-nǐ.ogg",
+      "imagerepository": "local",
+      "imageinfo": [
+        {
+          "size": 15096,
+          "width": 0,
+          "height": 0,
+          "duration": 1.15,
+          "url": "https://upload.wikimedia.org/wikipedia/commons/7/73/Zh-n%C7%90.ogg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+          "descriptionurl": "https://commons.wikimedia.org/wiki/File:Zh-n%C7%90.ogg",
+          "descriptionshorturl": "https://commons.wikimedia.org/w/index.php?curid=3052739",
+          "sha1": "5d3f4d22d7463d215c97d0b5e71828f9506cabfa",
+          "extmetadata": {
+            "DateTime": {
+              "value": "2007-11-08 19:45:42",
+              "source": "mediawiki-metadata",
+              "hidden": ""
+            },
+            "ObjectName": {
+              "value": "Zh-nǐ",
+              "source": "mediawiki-metadata"
+            },
+            "CommonsMetadataExtension": {
+              "value": 1.2,
+              "source": "extension",
+              "hidden": ""
+            },
+            "Categories": {
+              "value": "Chinese pronunciation",
+              "source": "commons-categories",
+              "hidden": ""
+            },
+            "Assessments": {
+              "value": "",
+              "source": "commons-categories",
+              "hidden": ""
+            },
+            "ImageDescription": {
+              "value": "Pronunciation of \"nǐ\" (你) in Chinese. Male voice. Speaker from Pekin, China.",
+              "source": "commons-desc-page"
+            },
+            "DateTimeOriginal": {
+              "value": "2006-10-29",
+              "source": "commons-desc-page"
+            },
+            "Credit": {
+              "value": "<a href=\"//commons.wikimedia.org/wiki/Commons:Shtooka\" title=\"Commons:Shtooka\">The Shtooka Project</a>",
+              "source": "commons-desc-page"
+            },
+            "Artist": {
+              "value": "Wei Gao, Vion Nicolas",
+              "source": "commons-desc-page"
+            },
+            "Permission": {
+              "value": "<a rel=\"nofollow\" class=\"external free\" href=\"http://packs.shtooka.net/chi-balm-hsk1/readme.txt\">http://packs.shtooka.net/chi-balm-hsk1/readme.txt</a>",
+              "source": "commons-desc-page",
+              "hidden": ""
+            },
+            "LicenseShortName": {
+              "value": "CC BY 2.0 fr",
+              "source": "commons-desc-page",
+              "hidden": ""
+            },
+            "UsageTerms": {
+              "value": "Creative Commons Attribution 2.0 fr",
+              "source": "commons-desc-page"
+            },
+            "AttributionRequired": {
+              "value": "true",
+              "source": "commons-desc-page",
+              "hidden": ""
+            },
+            "LicenseUrl": {
+              "value": "https://creativecommons.org/licenses/by/2.0/fr/deed.en",
+              "source": "commons-desc-page"
+            },
+            "Copyrighted": {
+              "value": "True",
+              "source": "commons-desc-page",
+              "hidden": ""
+            },
+            "Restrictions": {
+              "value": "",
+              "source": "commons-desc-page",
+              "hidden": ""
+            },
+            "License": {
+              "value": "cc-by-2.0-fr",
+              "source": "commons-templates",
+              "hidden": ""
+            }
+          }
+        }
+      ],
+      "revisions": [
+        {
+          "revid": 447926552,
+          "parentid": 132074383,
+          "timestamp": "2020-09-04T11:08:29Z"
+        }
+      ]
+    },
+    {
+      "pageid": 3052746,
+      "ns": 6,
+      "title": "File:Zh-jiào.ogg",
+      "imagerepository": "local",
+      "imageinfo": [
+        {
+          "size": 14498,
+          "width": 0,
+          "height": 0,
+          "duration": 1.05,
+          "url": "https://upload.wikimedia.org/wikipedia/commons/3/3e/Zh-ji%C3%A0o.ogg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+          "descriptionurl": "https://commons.wikimedia.org/wiki/File:Zh-ji%C3%A0o.ogg",
+          "descriptionshorturl": "https://commons.wikimedia.org/w/index.php?curid=3052746",
+          "sha1": "8c786377dd9110f809051fc3cdf4d622e6d0a89f",
+          "extmetadata": {
+            "DateTime": {
+              "value": "2007-11-08 19:46:06",
+              "source": "mediawiki-metadata",
+              "hidden": ""
+            },
+            "ObjectName": {
+              "value": "Zh-jiào",
+              "source": "mediawiki-metadata"
+            },
+            "CommonsMetadataExtension": {
+              "value": 1.2,
+              "source": "extension",
+              "hidden": ""
+            },
+            "Categories": {
+              "value": "Chinese pronunciation",
+              "source": "commons-categories",
+              "hidden": ""
+            },
+            "Assessments": {
+              "value": "",
+              "source": "commons-categories",
+              "hidden": ""
+            },
+            "ImageDescription": {
+              "value": "Pronunciation of \"jiào\" (叫) in Chinese. Male voice. Speaker from Pekin, China.",
+              "source": "commons-desc-page"
+            },
+            "DateTimeOriginal": {
+              "value": "2006-10-29",
+              "source": "commons-desc-page"
+            },
+            "Credit": {
+              "value": "<a href=\"//commons.wikimedia.org/wiki/Commons:Shtooka\" title=\"Commons:Shtooka\">The Shtooka Project</a>",
+              "source": "commons-desc-page"
+            },
+            "Artist": {
+              "value": "Wei Gao, Vion Nicolas",
+              "source": "commons-desc-page"
+            },
+            "Permission": {
+              "value": "<a rel=\"nofollow\" class=\"external free\" href=\"http://packs.shtooka.net/chi-balm-hsk1/readme.txt\">http://packs.shtooka.net/chi-balm-hsk1/readme.txt</a>",
+              "source": "commons-desc-page",
+              "hidden": ""
+            },
+            "LicenseShortName": {
+              "value": "CC BY 2.0 fr",
+              "source": "commons-desc-page",
+              "hidden": ""
+            },
+            "UsageTerms": {
+              "value": "Creative Commons Attribution 2.0 fr",
+              "source": "commons-desc-page"
+            },
+            "AttributionRequired": {
+              "value": "true",
+              "source": "commons-desc-page",
+              "hidden": ""
+            },
+            "LicenseUrl": {
+              "value": "https://creativecommons.org/licenses/by/2.0/fr/deed.en",
+              "source": "commons-desc-page"
+            },
+            "Copyrighted": {
+              "value": "True",
+              "source": "commons-desc-page",
+              "hidden": ""
+            },
+            "Restrictions": {
+              "value": "",
+              "source": "commons-desc-page",
+              "hidden": ""
+            },
+            "License": {
+              "value": "cc-by-2.0-fr",
+              "source": "commons-templates",
+              "hidden": ""
+            }
+          }
+        }
+      ],
+      "revisions": [
+        {
+          "revid": 1151638408,
+          "parentid": 447924619,
+          "timestamp": "2026-01-23T06:31:29Z"
+        }
+      ]
+    },
+    {
+      "pageid": 3052760,
+      "ns": 6,
+      "title": "File:Zh-shénme.ogg",
+      "imagerepository": "local",
+      "imageinfo": [
+        {
+          "size": 14085,
+          "width": 0,
+          "height": 0,
+          "duration": 1.05,
+          "url": "https://upload.wikimedia.org/wikipedia/commons/0/00/Zh-sh%C3%A9nme.ogg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+          "descriptionurl": "https://commons.wikimedia.org/wiki/File:Zh-sh%C3%A9nme.ogg",
+          "descriptionshorturl": "https://commons.wikimedia.org/w/index.php?curid=3052760",
+          "sha1": "7b93032edfd20270788538dadf3691de0adb4d07",
+          "extmetadata": {
+            "DateTime": {
+              "value": "2007-11-08 19:46:40",
+              "source": "mediawiki-metadata",
+              "hidden": ""
+            },
+            "ObjectName": {
+              "value": "Zh-shénme",
+              "source": "mediawiki-metadata"
+            },
+            "CommonsMetadataExtension": {
+              "value": 1.2,
+              "source": "extension",
+              "hidden": ""
+            },
+            "Categories": {
+              "value": "Chinese pronunciation",
+              "source": "commons-categories",
+              "hidden": ""
+            },
+            "Assessments": {
+              "value": "",
+              "source": "commons-categories",
+              "hidden": ""
+            },
+            "ImageDescription": {
+              "value": "Pronunciation of \"shénme\" (什么) in Chinese. Male voice. Speaker from Pekin, China.",
+              "source": "commons-desc-page"
+            },
+            "DateTimeOriginal": {
+              "value": "2006-10-29",
+              "source": "commons-desc-page"
+            },
+            "Credit": {
+              "value": "<a href=\"//commons.wikimedia.org/wiki/Commons:Shtooka\" title=\"Commons:Shtooka\">The Shtooka Project</a>",
+              "source": "commons-desc-page"
+            },
+            "Artist": {
+              "value": "Wei Gao, Vion Nicolas",
+              "source": "commons-desc-page"
+            },
+            "Permission": {
+              "value": "<a rel=\"nofollow\" class=\"external free\" href=\"http://packs.shtooka.net/chi-balm-hsk1/readme.txt\">http://packs.shtooka.net/chi-balm-hsk1/readme.txt</a>",
+              "source": "commons-desc-page",
+              "hidden": ""
+            },
+            "LicenseShortName": {
+              "value": "CC BY 2.0 fr",
+              "source": "commons-desc-page",
+              "hidden": ""
+            },
+            "UsageTerms": {
+              "value": "Creative Commons Attribution 2.0 fr",
+              "source": "commons-desc-page"
+            },
+            "AttributionRequired": {
+              "value": "true",
+              "source": "commons-desc-page",
+              "hidden": ""
+            },
+            "LicenseUrl": {
+              "value": "https://creativecommons.org/licenses/by/2.0/fr/deed.en",
+              "source": "commons-desc-page"
+            },
+            "Copyrighted": {
+              "value": "True",
+              "source": "commons-desc-page",
+              "hidden": ""
+            },
+            "Restrictions": {
+              "value": "",
+              "source": "commons-desc-page",
+              "hidden": ""
+            },
+            "License": {
+              "value": "cc-by-2.0-fr",
+              "source": "commons-templates",
+              "hidden": ""
+            }
+          }
+        }
+      ],
+      "revisions": [
+        {
+          "revid": 957769916,
+          "parentid": 447927565,
+          "timestamp": "2024-11-16T12:23:01Z"
+        }
+      ]
+    },
+    {
+      "pageid": 3052968,
+      "ns": 6,
+      "title": "File:Zh-zàijiàn.ogg",
+      "imagerepository": "local",
+      "imageinfo": [
+        {
+          "size": 13805,
+          "width": 0,
+          "height": 0,
+          "duration": 1.05,
+          "url": "https://upload.wikimedia.org/wikipedia/commons/a/a0/Zh-z%C3%A0iji%C3%A0n.ogg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+          "descriptionurl": "https://commons.wikimedia.org/wiki/File:Zh-z%C3%A0iji%C3%A0n.ogg",
+          "descriptionshorturl": "https://commons.wikimedia.org/w/index.php?curid=3052968",
+          "sha1": "0d3ac2ab6797011e252cac74e3c438ff2465ea92",
+          "extmetadata": {
+            "DateTime": {
+              "value": "2007-11-08 19:54:24",
+              "source": "mediawiki-metadata",
+              "hidden": ""
+            },
+            "ObjectName": {
+              "value": "Zh-zàijiàn",
+              "source": "mediawiki-metadata"
+            },
+            "CommonsMetadataExtension": {
+              "value": 1.2,
+              "source": "extension",
+              "hidden": ""
+            },
+            "Categories": {
+              "value": "Chinese pronunciation",
+              "source": "commons-categories",
+              "hidden": ""
+            },
+            "Assessments": {
+              "value": "",
+              "source": "commons-categories",
+              "hidden": ""
+            },
+            "ImageDescription": {
+              "value": "Pronunciation of \"zàijiàn\" (再见) in Chinese. Male voice. Speaker from Pekin, China.",
+              "source": "commons-desc-page"
+            },
+            "DateTimeOriginal": {
+              "value": "2006-10-29",
+              "source": "commons-desc-page"
+            },
+            "Credit": {
+              "value": "<a href=\"//commons.wikimedia.org/wiki/Commons:Shtooka\" title=\"Commons:Shtooka\">The Shtooka Project</a>",
+              "source": "commons-desc-page"
+            },
+            "Artist": {
+              "value": "Wei Gao, Vion Nicolas",
+              "source": "commons-desc-page"
+            },
+            "Permission": {
+              "value": "<a rel=\"nofollow\" class=\"external free\" href=\"http://packs.shtooka.net/chi-balm-hsk1/readme.txt\">http://packs.shtooka.net/chi-balm-hsk1/readme.txt</a>",
+              "source": "commons-desc-page",
+              "hidden": ""
+            },
+            "LicenseShortName": {
+              "value": "CC BY 2.0 fr",
+              "source": "commons-desc-page",
+              "hidden": ""
+            },
+            "UsageTerms": {
+              "value": "Creative Commons Attribution 2.0 fr",
+              "source": "commons-desc-page"
+            },
+            "AttributionRequired": {
+              "value": "true",
+              "source": "commons-desc-page",
+              "hidden": ""
+            },
+            "LicenseUrl": {
+              "value": "https://creativecommons.org/licenses/by/2.0/fr/deed.en",
+              "source": "commons-desc-page"
+            },
+            "Copyrighted": {
+              "value": "True",
+              "source": "commons-desc-page",
+              "hidden": ""
+            },
+            "Restrictions": {
+              "value": "",
+              "source": "commons-desc-page",
+              "hidden": ""
+            },
+            "License": {
+              "value": "cc-by-2.0-fr",
+              "source": "commons-templates",
+              "hidden": ""
+            }
+          }
+        }
+      ],
+      "revisions": [
+        {
+          "revid": 447931176,
+          "parentid": 132082389,
+          "timestamp": "2020-09-04T11:25:30Z"
+        }
+      ]
+    },
+    {
+      "pageid": 3053092,
+      "ns": 6,
+      "title": "File:Zh-míngzi.ogg",
+      "imagerepository": "local",
+      "imageinfo": [
+        {
+          "size": 18464,
+          "width": 0,
+          "height": 0,
+          "duration": 1.5,
+          "url": "https://upload.wikimedia.org/wikipedia/commons/c/cf/Zh-m%C3%ADngzi.ogg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+          "descriptionurl": "https://commons.wikimedia.org/wiki/File:Zh-m%C3%ADngzi.ogg",
+          "descriptionshorturl": "https://commons.wikimedia.org/w/index.php?curid=3053092",
+          "sha1": "faf9ac54c835b8ac0477d18eaf248b2a07e6516f",
+          "extmetadata": {
+            "DateTime": {
+              "value": "2007-11-08 20:00:03",
+              "source": "mediawiki-metadata",
+              "hidden": ""
+            },
+            "ObjectName": {
+              "value": "Zh-míngzi",
+              "source": "mediawiki-metadata"
+            },
+            "CommonsMetadataExtension": {
+              "value": 1.2,
+              "source": "extension",
+              "hidden": ""
+            },
+            "Categories": {
+              "value": "Chinese pronunciation",
+              "source": "commons-categories",
+              "hidden": ""
+            },
+            "Assessments": {
+              "value": "",
+              "source": "commons-categories",
+              "hidden": ""
+            },
+            "ImageDescription": {
+              "value": "Pronunciation of \"míngzi\" (名字) in Chinese. Male voice. Speaker from Pekin, China.",
+              "source": "commons-desc-page"
+            },
+            "DateTimeOriginal": {
+              "value": "2006-10-29",
+              "source": "commons-desc-page"
+            },
+            "Credit": {
+              "value": "<a href=\"//commons.wikimedia.org/wiki/Commons:Shtooka\" title=\"Commons:Shtooka\">The Shtooka Project</a>",
+              "source": "commons-desc-page"
+            },
+            "Artist": {
+              "value": "Wei Gao, Vion Nicolas",
+              "source": "commons-desc-page"
+            },
+            "Permission": {
+              "value": "<a rel=\"nofollow\" class=\"external free\" href=\"http://packs.shtooka.net/chi-balm-hsk1/readme.txt\">http://packs.shtooka.net/chi-balm-hsk1/readme.txt</a>",
+              "source": "commons-desc-page",
+              "hidden": ""
+            },
+            "LicenseShortName": {
+              "value": "CC BY 2.0 fr",
+              "source": "commons-desc-page",
+              "hidden": ""
+            },
+            "UsageTerms": {
+              "value": "Creative Commons Attribution 2.0 fr",
+              "source": "commons-desc-page"
+            },
+            "AttributionRequired": {
+              "value": "true",
+              "source": "commons-desc-page",
+              "hidden": ""
+            },
+            "LicenseUrl": {
+              "value": "https://creativecommons.org/licenses/by/2.0/fr/deed.en",
+              "source": "commons-desc-page"
+            },
+            "Copyrighted": {
+              "value": "True",
+              "source": "commons-desc-page",
+              "hidden": ""
+            },
+            "Restrictions": {
+              "value": "",
+              "source": "commons-desc-page",
+              "hidden": ""
+            },
+            "License": {
+              "value": "cc-by-2.0-fr",
+              "source": "commons-templates",
+              "hidden": ""
+            }
+          }
+        }
+      ],
+      "revisions": [
+        {
+          "revid": 447926153,
+          "parentid": 132074016,
+          "timestamp": "2020-09-04T11:06:44Z"
+        }
+      ]
+    },
+    {
+      "pageid": 3053186,
+      "ns": 6,
+      "title": "File:Zh-wǒ.ogg",
+      "imagerepository": "local",
+      "imageinfo": [
+        {
+          "size": 13186,
+          "width": 0,
+          "height": 0,
+          "duration": 0.95,
+          "url": "https://upload.wikimedia.org/wikipedia/commons/4/42/Zh-w%C7%92.ogg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+          "descriptionurl": "https://commons.wikimedia.org/wiki/File:Zh-w%C7%92.ogg",
+          "descriptionshorturl": "https://commons.wikimedia.org/w/index.php?curid=3053186",
+          "sha1": "257f23e027889d5b891f508ed03e782fe12b16ee",
+          "extmetadata": {
+            "DateTime": {
+              "value": "2007-11-08 20:04:24",
+              "source": "mediawiki-metadata",
+              "hidden": ""
+            },
+            "ObjectName": {
+              "value": "Zh-wǒ",
+              "source": "mediawiki-metadata"
+            },
+            "CommonsMetadataExtension": {
+              "value": 1.2,
+              "source": "extension",
+              "hidden": ""
+            },
+            "Categories": {
+              "value": "Chinese pronunciation",
+              "source": "commons-categories",
+              "hidden": ""
+            },
+            "Assessments": {
+              "value": "",
+              "source": "commons-categories",
+              "hidden": ""
+            },
+            "ImageDescription": {
+              "value": "Pronunciation of \"wǒ\" (我) in Chinese. Male voice. Speaker from Pekin, China.",
+              "source": "commons-desc-page"
+            },
+            "DateTimeOriginal": {
+              "value": "2006-10-29",
+              "source": "commons-desc-page"
+            },
+            "Credit": {
+              "value": "<a href=\"//commons.wikimedia.org/wiki/Commons:Shtooka\" title=\"Commons:Shtooka\">The Shtooka Project</a>",
+              "source": "commons-desc-page"
+            },
+            "Artist": {
+              "value": "Wei Gao, Vion Nicolas",
+              "source": "commons-desc-page"
+            },
+            "Permission": {
+              "value": "<a rel=\"nofollow\" class=\"external free\" href=\"http://packs.shtooka.net/chi-balm-hsk1/readme.txt\">http://packs.shtooka.net/chi-balm-hsk1/readme.txt</a>",
+              "source": "commons-desc-page",
+              "hidden": ""
+            },
+            "LicenseShortName": {
+              "value": "CC BY 2.0 fr",
+              "source": "commons-desc-page",
+              "hidden": ""
+            },
+            "UsageTerms": {
+              "value": "Creative Commons Attribution 2.0 fr",
+              "source": "commons-desc-page"
+            },
+            "AttributionRequired": {
+              "value": "true",
+              "source": "commons-desc-page",
+              "hidden": ""
+            },
+            "LicenseUrl": {
+              "value": "https://creativecommons.org/licenses/by/2.0/fr/deed.en",
+              "source": "commons-desc-page"
+            },
+            "Copyrighted": {
+              "value": "True",
+              "source": "commons-desc-page",
+              "hidden": ""
+            },
+            "Restrictions": {
+              "value": "",
+              "source": "commons-desc-page",
+              "hidden": ""
+            },
+            "License": {
+              "value": "cc-by-2.0-fr",
+              "source": "commons-templates",
+              "hidden": ""
+            }
+          }
+        }
+      ],
+      "revisions": [
+        {
+          "revid": 1184082340,
+          "parentid": 447928967,
+          "timestamp": "2026-03-20T17:00:39Z"
+        }
+      ]
+    },
+    {
+      "pageid": 3053482,
+      "ns": 6,
+      "title": "File:Zh-hǎo.ogg",
+      "imagerepository": "local",
+      "imageinfo": [
+        {
+          "size": 13835,
+          "width": 0,
+          "height": 0,
+          "duration": 1.05,
+          "url": "https://upload.wikimedia.org/wikipedia/commons/2/22/Zh-h%C7%8Eo.ogg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+          "descriptionurl": "https://commons.wikimedia.org/wiki/File:Zh-h%C7%8Eo.ogg",
+          "descriptionshorturl": "https://commons.wikimedia.org/w/index.php?curid=3053482",
+          "sha1": "ba2ae7e4ab2df9b653c95f3ac5442aa3688a1a5b",
+          "extmetadata": {
+            "DateTime": {
+              "value": "2007-11-08 20:17:06",
+              "source": "mediawiki-metadata",
+              "hidden": ""
+            },
+            "ObjectName": {
+              "value": "Zh-hǎo",
+              "source": "mediawiki-metadata"
+            },
+            "CommonsMetadataExtension": {
+              "value": 1.2,
+              "source": "extension",
+              "hidden": ""
+            },
+            "Categories": {
+              "value": "Chinese pronunciation",
+              "source": "commons-categories",
+              "hidden": ""
+            },
+            "Assessments": {
+              "value": "",
+              "source": "commons-categories",
+              "hidden": ""
+            },
+            "ImageDescription": {
+              "value": "Pronunciation of \"hǎo\" (好) in Chinese. Male voice. Speaker from Pekin, China.",
+              "source": "commons-desc-page"
+            },
+            "DateTimeOriginal": {
+              "value": "2006-10-29",
+              "source": "commons-desc-page"
+            },
+            "Credit": {
+              "value": "<a href=\"//commons.wikimedia.org/wiki/Commons:Shtooka\" title=\"Commons:Shtooka\">The Shtooka Project</a>",
+              "source": "commons-desc-page"
+            },
+            "Artist": {
+              "value": "Wei Gao, Vion Nicolas",
+              "source": "commons-desc-page"
+            },
+            "Permission": {
+              "value": "<a rel=\"nofollow\" class=\"external free\" href=\"http://packs.shtooka.net/chi-balm-hsk1/readme.txt\">http://packs.shtooka.net/chi-balm-hsk1/readme.txt</a>",
+              "source": "commons-desc-page",
+              "hidden": ""
+            },
+            "LicenseShortName": {
+              "value": "CC BY 2.0 fr",
+              "source": "commons-desc-page",
+              "hidden": ""
+            },
+            "UsageTerms": {
+              "value": "Creative Commons Attribution 2.0 fr",
+              "source": "commons-desc-page"
+            },
+            "AttributionRequired": {
+              "value": "true",
+              "source": "commons-desc-page",
+              "hidden": ""
+            },
+            "LicenseUrl": {
+              "value": "https://creativecommons.org/licenses/by/2.0/fr/deed.en",
+              "source": "commons-desc-page"
+            },
+            "Copyrighted": {
+              "value": "True",
+              "source": "commons-desc-page",
+              "hidden": ""
+            },
+            "Restrictions": {
+              "value": "",
+              "source": "commons-desc-page",
+              "hidden": ""
+            },
+            "License": {
+              "value": "cc-by-2.0-fr",
+              "source": "commons-templates",
+              "hidden": ""
+            }
+          }
+        }
+      ],
+      "revisions": [
+        {
+          "revid": 447924525,
+          "parentid": 132070841,
+          "timestamp": "2020-09-04T11:00:17Z"
+        }
+      ]
+    },
+    {
+      "pageid": 3053650,
+      "ns": 6,
+      "title": "File:Zh-xièxie.ogg",
+      "imagerepository": "local",
+      "imageinfo": [
+        {
+          "size": 16824,
+          "width": 0,
+          "height": 0,
+          "duration": 0.9207272727272727,
+          "url": "https://upload.wikimedia.org/wikipedia/commons/1/1f/Zh-xi%C3%A8xie.ogg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+          "descriptionurl": "https://commons.wikimedia.org/wiki/File:Zh-xi%C3%A8xie.ogg",
+          "descriptionshorturl": "https://commons.wikimedia.org/w/index.php?curid=3053650",
+          "sha1": "6459e3923176d59332120d2a7ff3dd90829c5a10",
+          "extmetadata": {
+            "DateTime": {
+              "value": "2007-11-08 20:24:27",
+              "source": "mediawiki-metadata",
+              "hidden": ""
+            },
+            "ObjectName": {
+              "value": "Zh-xièxie",
+              "source": "mediawiki-metadata"
+            },
+            "CommonsMetadataExtension": {
+              "value": 1.2,
+              "source": "extension",
+              "hidden": ""
+            },
+            "Categories": {
+              "value": "Chinese pronunciation",
+              "source": "commons-categories",
+              "hidden": ""
+            },
+            "Assessments": {
+              "value": "",
+              "source": "commons-categories",
+              "hidden": ""
+            },
+            "ImageDescription": {
+              "value": "Pronunciation of \"xièxie\" (谢谢) in Chinese. Male voice. Speaker from Pekin, China.",
+              "source": "commons-desc-page"
+            },
+            "DateTimeOriginal": {
+              "value": "2006-10-29",
+              "source": "commons-desc-page"
+            },
+            "Credit": {
+              "value": "<a href=\"//commons.wikimedia.org/wiki/Commons:Shtooka\" title=\"Commons:Shtooka\">The Shtooka Project</a>",
+              "source": "commons-desc-page"
+            },
+            "Artist": {
+              "value": "Wei Gao, Vion Nicolas",
+              "source": "commons-desc-page"
+            },
+            "Permission": {
+              "value": "<a rel=\"nofollow\" class=\"external free\" href=\"http://packs.shtooka.net/chi-balm-hsk1/readme.txt\">http://packs.shtooka.net/chi-balm-hsk1/readme.txt</a>",
+              "source": "commons-desc-page",
+              "hidden": ""
+            },
+            "LicenseShortName": {
+              "value": "CC BY 2.0 fr",
+              "source": "commons-desc-page",
+              "hidden": ""
+            },
+            "UsageTerms": {
+              "value": "Creative Commons Attribution 2.0 fr",
+              "source": "commons-desc-page"
+            },
+            "AttributionRequired": {
+              "value": "true",
+              "source": "commons-desc-page",
+              "hidden": ""
+            },
+            "LicenseUrl": {
+              "value": "https://creativecommons.org/licenses/by/2.0/fr/deed.en",
+              "source": "commons-desc-page"
+            },
+            "Copyrighted": {
+              "value": "True",
+              "source": "commons-desc-page",
+              "hidden": ""
+            },
+            "Restrictions": {
+              "value": "",
+              "source": "commons-desc-page",
+              "hidden": ""
+            },
+            "License": {
+              "value": "cc-by-2.0-fr",
+              "source": "commons-templates",
+              "hidden": ""
+            }
+          }
+        }
+      ],
+      "revisions": [
+        {
+          "revid": 1129948464,
+          "parentid": 447929139,
+          "timestamp": "2025-12-12T18:56:19Z"
+        }
+      ]
+    },
+    {
+      "pageid": 13307125,
+      "ns": 6,
+      "title": "File:Zh nǐ hǎo.ogg",
+      "imagerepository": "local",
+      "imageinfo": [
+        {
+          "size": 9462,
+          "width": 0,
+          "height": 0,
+          "duration": 1.0565532879818593,
+          "url": "https://upload.wikimedia.org/wikipedia/commons/7/7d/Zh_n%C7%90_h%C7%8Eo.ogg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+          "descriptionurl": "https://commons.wikimedia.org/wiki/File:Zh_n%C7%90_h%C7%8Eo.ogg",
+          "descriptionshorturl": "https://commons.wikimedia.org/w/index.php?curid=13307125",
+          "sha1": "fe6ceb1eae191c00075a47991c63cd79742209f8",
+          "extmetadata": {
+            "DateTime": {
+              "value": "2011-02-15 09:14:09",
+              "source": "mediawiki-metadata",
+              "hidden": ""
+            },
+            "ObjectName": {
+              "value": "Zh nǐ hǎo",
+              "source": "mediawiki-metadata"
+            },
+            "CommonsMetadataExtension": {
+              "value": 1.2,
+              "source": "extension",
+              "hidden": ""
+            },
+            "Categories": {
+              "value": "Mandarin pronunciation|Self-published work|Files from Sjors Provoost Flickr stream",
+              "source": "commons-categories",
+              "hidden": ""
+            },
+            "Assessments": {
+              "value": "",
+              "source": "commons-categories",
+              "hidden": ""
+            },
+            "ImageDescription": {
+              "value": "Pronunciation of \t你好\t/ Nǐ hǎo (Hello)",
+              "source": "commons-desc-page"
+            },
+            "DateTimeOriginal": {
+              "value": "2011-02-15",
+              "source": "commons-desc-page"
+            },
+            "Credit": {
+              "value": "<a rel=\"nofollow\" class=\"external free\" href=\"http://isimplifiedchinese.com/lessons\">http://isimplifiedchinese.com/lessons</a>",
+              "source": "commons-desc-page"
+            },
+            "Artist": {
+              "value": "Sjors Provoost",
+              "source": "commons-desc-page"
+            },
+            "LicenseShortName": {
+              "value": "CC BY-SA 3.0",
+              "source": "commons-desc-page",
+              "hidden": ""
+            },
+            "UsageTerms": {
+              "value": "Creative Commons Attribution-Share Alike 3.0",
+              "source": "commons-desc-page"
+            },
+            "AttributionRequired": {
+              "value": "true",
+              "source": "commons-desc-page",
+              "hidden": ""
+            },
+            "LicenseUrl": {
+              "value": "https://creativecommons.org/licenses/by-sa/3.0",
+              "source": "commons-desc-page"
+            },
+            "Copyrighted": {
+              "value": "True",
+              "source": "commons-desc-page",
+              "hidden": ""
+            },
+            "Restrictions": {
+              "value": "",
+              "source": "commons-desc-page",
+              "hidden": ""
+            },
+            "License": {
+              "value": "cc-by-sa-3.0",
+              "source": "commons-templates",
+              "hidden": ""
+            }
+          }
+        }
+      ],
+      "revisions": [
+        {
+          "revid": 505535912,
+          "parentid": 166809534,
+          "timestamp": "2020-10-28T20:37:19Z"
+        }
+      ]
+    }
+  ],
+  "searches": [
+    {
+      "term": "不客气 filetype:audio",
+      "pages": [
+        {
+          "pageid": 90410151,
+          "ns": 6,
+          "title": "File:LL-Q9186 (yue)-Luilui6666-不客气.wav",
+          "index": 1,
+          "imagerepository": "local",
+          "imageinfo": [
+            {
+              "size": 124180,
+              "width": 0,
+              "height": 0,
+              "duration": 1.407437641723356,
+              "url": "https://upload.wikimedia.org/wikipedia/commons/3/3e/LL-Q9186_%28yue%29-Luilui6666-%E4%B8%8D%E5%AE%A2%E6%B0%94.wav?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+              "descriptionurl": "https://commons.wikimedia.org/wiki/File:LL-Q9186_(yue)-Luilui6666-%E4%B8%8D%E5%AE%A2%E6%B0%94.wav",
+              "descriptionshorturl": "https://commons.wikimedia.org/w/index.php?curid=90410151",
+              "sha1": "fb7d7dc3fd4259c2622e10b7bef349ebcc48cc6f",
+              "extmetadata": {
+                "DateTime": {
+                  "value": "2020-05-18 11:31:37",
+                  "source": "mediawiki-metadata",
+                  "hidden": ""
+                },
+                "ObjectName": {
+                  "value": "LL-Q9186 (yue)-Luilui6666-不客气",
+                  "source": "mediawiki-metadata"
+                },
+                "CommonsMetadataExtension": {
+                  "value": 1.2,
+                  "source": "extension",
+                  "hidden": ""
+                },
+                "Categories": {
+                  "value": "CC-Zero|Lingua Libre pronunciation by Luilui6666|Lingua Libre pronunciation-other (Q9186)",
+                  "source": "commons-categories",
+                  "hidden": ""
+                },
+                "Assessments": {
+                  "value": "",
+                  "source": "commons-categories",
+                  "hidden": ""
+                },
+                "ImageDescription": {
+                  "value": "<span class=\"plainlinks\">Audio pronunciation file from the <b><a rel=\"mw:ExtLink nofollow\" href=\"https://lingualibre.org\" class=\"external text\">Lingua Libre</a></b> <span typeof=\"mw:File\"><a href=\"https://lingualibre.org\" rel=\"nofollow\"><img resource=\"https://commons.wikimedia.org/wiki/File:Lingualibre-logo-no-text.svg\" src=\"https://thumb.wikimedia.org/wikipedia/commons/thumb/5/55/Lingualibre-logo-no-text.svg/40px-Lingualibre-logo-no-text.svg.png?utm_source=commons.wikimedia.org&amp;utm_campaign=parser&amp;utm_content=thumbnail\" decoding=\"async\" loading=\"lazy\" srcset=\"https://thumb.wikimedia.org/wikipedia/commons/thumb/5/55/Lingualibre-logo-no-text.svg/60px-Lingualibre-logo-no-text.svg.png?utm_source=commons.wikimedia.org&amp;utm_campaign=parser&amp;utm_content=thumbnail 2x\" alt=\"Lingua Libre\" data-file-width=\"185\" data-file-height=\"185\" data-file-type=\"drawing\" height=\"22\" width=\"22\" class=\"mw-file-element\"></a></span> project. </span>",
+                  "source": "commons-desc-page"
+                },
+                "DateTimeOriginal": {
+                  "value": "2020-05-15",
+                  "source": "commons-desc-page"
+                },
+                "Credit": {
+                  "value": "<span class=\"int-own-work\" lang=\"en\">Own work</span> (<a rel=\"mw:WikiLink/Interwiki\" href=\"//lingualibre.org/wiki/Q302525\" title=\"lingualibre:Q302525\" class=\"extiw\">Lingua Libre</a>)",
+                  "source": "commons-desc-page"
+                },
+                "Artist": {
+                  "value": "<ul><li>Speaker: <a rel=\"mw:WikiLink/Interwiki\" href=\"//lingualibre.org/wiki/Q301531\" title=\"lingualibre:Q301531\" class=\"extiw\">Luilui6666</a></li>\n<li>Recorder: <a rel=\"mw:WikiLink\" href=\"https://commons.wikimedia.org/wiki/User:Luilui6666\" title=\"User:Luilui6666\">Luilui6666</a></li></ul>",
+                  "source": "commons-desc-page"
+                },
+                "LicenseShortName": {
+                  "value": "CC BY-SA 4.0",
+                  "source": "commons-desc-page",
+                  "hidden": ""
+                },
+                "UsageTerms": {
+                  "value": "Creative Commons Attribution-Share Alike 4.0",
+                  "source": "commons-desc-page"
+                },
+                "AttributionRequired": {
+                  "value": "true",
+                  "source": "commons-desc-page",
+                  "hidden": ""
+                },
+                "LicenseUrl": {
+                  "value": "https://creativecommons.org/licenses/by-sa/4.0",
+                  "source": "commons-desc-page"
+                },
+                "Copyrighted": {
+                  "value": "True",
+                  "source": "commons-desc-page",
+                  "hidden": ""
+                },
+                "Restrictions": {
+                  "value": "",
+                  "source": "commons-desc-page",
+                  "hidden": ""
+                },
+                "License": {
+                  "value": "cc-by-sa-4.0",
+                  "source": "commons-templates",
+                  "hidden": ""
+                }
+              }
+            }
+          ],
+          "revisions": [
+            {
+              "revid": 1243840696,
+              "parentid": 837486560,
+              "timestamp": "2026-07-05T07:50:56Z"
+            }
+          ]
+        },
+        {
+          "pageid": 113936138,
+          "ns": 6,
+          "title": "File:LL-Q9192 (cmn)-Luilui6666-不客气.wav",
+          "index": 2,
+          "imagerepository": "local",
+          "imageinfo": [
+            {
+              "size": 117548,
+              "width": 0,
+              "height": 0,
+              "duration": 1.224,
+              "url": "https://upload.wikimedia.org/wikipedia/commons/5/52/LL-Q9192_%28cmn%29-Luilui6666-%E4%B8%8D%E5%AE%A2%E6%B0%94.wav?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+              "descriptionurl": "https://commons.wikimedia.org/wiki/File:LL-Q9192_(cmn)-Luilui6666-%E4%B8%8D%E5%AE%A2%E6%B0%94.wav",
+              "descriptionshorturl": "https://commons.wikimedia.org/w/index.php?curid=113936138",
+              "sha1": "3361c47bc22ad154df0a825e387c655e35a2093b",
+              "extmetadata": {
+                "DateTime": {
+                  "value": "2022-01-03 04:59:26",
+                  "source": "mediawiki-metadata",
+                  "hidden": ""
+                },
+                "ObjectName": {
+                  "value": "LL-Q9192 (cmn)-Luilui6666-不客气",
+                  "source": "mediawiki-metadata"
+                },
+                "CommonsMetadataExtension": {
+                  "value": 1.2,
+                  "source": "extension",
+                  "hidden": ""
+                },
+                "Categories": {
+                  "value": "CC-Zero|Lingua Libre pronunciation by Luilui6666|Lingua Libre pronunciation-cmn",
+                  "source": "commons-categories",
+                  "hidden": ""
+                },
+                "Assessments": {
+                  "value": "",
+                  "source": "commons-categories",
+                  "hidden": ""
+                },
+                "ImageDescription": {
+                  "value": "<span class=\"plainlinks\">Audio pronunciation file from the <b><a rel=\"nofollow\" class=\"external text\" href=\"https://lingualibre.org\">Lingua Libre</a></b> <span typeof=\"mw:File\"><a href=\"https://lingualibre.org\" rel=\"nofollow\"><img alt=\"Lingua Libre\" src=\"https://thumb.wikimedia.org/wikipedia/commons/thumb/5/55/Lingualibre-logo-no-text.svg/40px-Lingualibre-logo-no-text.svg.png?utm_source=commons.wikimedia.org&amp;utm_campaign=parser&amp;utm_content=thumbnail\" decoding=\"async\" loading=\"lazy\" width=\"22\" height=\"22\" class=\"mw-file-element\" srcset=\"https://thumb.wikimedia.org/wikipedia/commons/thumb/5/55/Lingualibre-logo-no-text.svg/60px-Lingualibre-logo-no-text.svg.png?utm_source=commons.wikimedia.org&amp;utm_campaign=parser&amp;utm_content=thumbnail 2x\" data-file-width=\"185\" data-file-height=\"185\"></a></span> project. </span>",
+                  "source": "commons-desc-page"
+                },
+                "DateTimeOriginal": {
+                  "value": "2022-01-03",
+                  "source": "commons-desc-page"
+                },
+                "Credit": {
+                  "value": "<span class=\"int-own-work\" lang=\"en\">Own work</span> (<a href=\"//lingualibre.org/wiki/Q735379\" class=\"extiw\" title=\"lingualibre:Q735379\">Lingua Libre</a>)",
+                  "source": "commons-desc-page"
+                },
+                "Artist": {
+                  "value": "<ul><li>Speaker: <a href=\"//lingualibre.org/wiki/Q301531\" class=\"extiw\" title=\"lingualibre:Q301531\">Luilui6666</a></li>\n<li>Recorder: <a href=\"//commons.wikimedia.org/wiki/User:Luilui6666\" title=\"User:Luilui6666\">Luilui6666</a></li></ul>",
+                  "source": "commons-desc-page"
+                },
+                "LicenseShortName": {
+                  "value": "CC BY-SA 4.0",
+                  "source": "commons-desc-page",
+                  "hidden": ""
+                },
+                "UsageTerms": {
+                  "value": "Creative Commons Attribution-Share Alike 4.0",
+                  "source": "commons-desc-page"
+                },
+                "AttributionRequired": {
+                  "value": "true",
+                  "source": "commons-desc-page",
+                  "hidden": ""
+                },
+                "LicenseUrl": {
+                  "value": "https://creativecommons.org/licenses/by-sa/4.0",
+                  "source": "commons-desc-page"
+                },
+                "Copyrighted": {
+                  "value": "True",
+                  "source": "commons-desc-page",
+                  "hidden": ""
+                },
+                "Restrictions": {
+                  "value": "",
+                  "source": "commons-desc-page",
+                  "hidden": ""
+                },
+                "License": {
+                  "value": "cc-by-sa-4.0",
+                  "source": "commons-templates",
+                  "hidden": ""
+                }
+              }
+            }
+          ],
+          "revisions": [
+            {
+              "revid": 806463311,
+              "parentid": 736361065,
+              "timestamp": "2023-09-30T01:57:01Z"
+            }
+          ]
+        },
+        {
+          "pageid": 130624874,
+          "ns": 6,
+          "title": "File:LL-Q9192 (cmn)-Assassas77-不客气.wav",
+          "index": 4,
+          "imagerepository": "local",
+          "imageinfo": [
+            {
+              "size": 117548,
+              "width": 0,
+              "height": 0,
+              "duration": 1.224,
+              "url": "https://upload.wikimedia.org/wikipedia/commons/c/ca/LL-Q9192_%28cmn%29-Assassas77-%E4%B8%8D%E5%AE%A2%E6%B0%94.wav?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+              "descriptionurl": "https://commons.wikimedia.org/wiki/File:LL-Q9192_(cmn)-Assassas77-%E4%B8%8D%E5%AE%A2%E6%B0%94.wav",
+              "descriptionshorturl": "https://commons.wikimedia.org/w/index.php?curid=130624874",
+              "sha1": "32fc2f67296ced1bba470e1d42ba57248529dbce",
+              "extmetadata": {
+                "DateTime": {
+                  "value": "2023-04-11 15:05:22",
+                  "source": "mediawiki-metadata",
+                  "hidden": ""
+                },
+                "ObjectName": {
+                  "value": "LL-Q9192 (cmn)-Assassas77-不客气",
+                  "source": "mediawiki-metadata"
+                },
+                "CommonsMetadataExtension": {
+                  "value": 1.2,
+                  "source": "extension",
+                  "hidden": ""
+                },
+                "Categories": {
+                  "value": "Lingua Libre pronunciation by Assassas77|Lingua Libre pronunciation-cmn",
+                  "source": "commons-categories",
+                  "hidden": ""
+                },
+                "Assessments": {
+                  "value": "",
+                  "source": "commons-categories",
+                  "hidden": ""
+                },
+                "ImageDescription": {
+                  "value": "<span class=\"plainlinks\">Audio pronunciation file from the <b><a rel=\"nofollow\" class=\"external text\" href=\"https://lingualibre.org\">Lingua Libre</a></b> <span typeof=\"mw:File\"><a href=\"https://lingualibre.org\" rel=\"nofollow\"><img alt=\"Lingua Libre\" src=\"https://thumb.wikimedia.org/wikipedia/commons/thumb/5/55/Lingualibre-logo-no-text.svg/40px-Lingualibre-logo-no-text.svg.png?utm_source=commons.wikimedia.org&amp;utm_campaign=parser&amp;utm_content=thumbnail\" decoding=\"async\" loading=\"lazy\" width=\"22\" height=\"22\" class=\"mw-file-element\" srcset=\"https://thumb.wikimedia.org/wikipedia/commons/thumb/5/55/Lingualibre-logo-no-text.svg/60px-Lingualibre-logo-no-text.svg.png?utm_source=commons.wikimedia.org&amp;utm_campaign=parser&amp;utm_content=thumbnail 2x\" data-file-width=\"185\" data-file-height=\"185\"></a></span> project. </span>",
+                  "source": "commons-desc-page"
+                },
+                "DateTimeOriginal": {
+                  "value": "2023-04-11",
+                  "source": "commons-desc-page"
+                },
+                "Credit": {
+                  "value": "<span class=\"int-own-work\" lang=\"en\">Own work</span> (<a href=\"//lingualibre.org/wiki/Q901669\" class=\"extiw\" title=\"lingualibre:Q901669\">Lingua Libre</a>)",
+                  "source": "commons-desc-page"
+                },
+                "Artist": {
+                  "value": "<ul><li>Speaker: <a href=\"//lingualibre.org/wiki/Q4250\" class=\"extiw\" title=\"lingualibre:Q4250\">Assassas77</a></li>\n<li>Recorder: <a href=\"//commons.wikimedia.org/wiki/User:Assassas77\" title=\"User:Assassas77\">Assassas77</a></li></ul>",
+                  "source": "commons-desc-page"
+                },
+                "LicenseShortName": {
+                  "value": "CC BY-SA 4.0",
+                  "source": "commons-desc-page",
+                  "hidden": ""
+                },
+                "UsageTerms": {
+                  "value": "Creative Commons Attribution-Share Alike 4.0",
+                  "source": "commons-desc-page"
+                },
+                "AttributionRequired": {
+                  "value": "true",
+                  "source": "commons-desc-page",
+                  "hidden": ""
+                },
+                "LicenseUrl": {
+                  "value": "https://creativecommons.org/licenses/by-sa/4.0",
+                  "source": "commons-desc-page"
+                },
+                "Copyrighted": {
+                  "value": "True",
+                  "source": "commons-desc-page",
+                  "hidden": ""
+                },
+                "Restrictions": {
+                  "value": "",
+                  "source": "commons-desc-page",
+                  "hidden": ""
+                },
+                "License": {
+                  "value": "cc-by-sa-4.0",
+                  "source": "commons-templates",
+                  "hidden": ""
+                }
+              }
+            }
+          ],
+          "revisions": [
+            {
+              "revid": 931679090,
+              "parentid": 909790212,
+              "timestamp": "2024-10-02T16:38:44Z"
+            }
+          ]
+        },
+        {
+          "pageid": 147758034,
+          "ns": 6,
+          "title": "File:LL-Q9192 (cmn)-Jouketou-不客气.wav",
+          "index": 3,
+          "imagerepository": "local",
+          "imageinfo": [
+            {
+              "size": 118060,
+              "width": 0,
+              "height": 0,
+              "duration": 1.2293333333333334,
+              "url": "https://upload.wikimedia.org/wikipedia/commons/8/80/LL-Q9192_%28cmn%29-Jouketou-%E4%B8%8D%E5%AE%A2%E6%B0%94.wav?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+              "descriptionurl": "https://commons.wikimedia.org/wiki/File:LL-Q9192_(cmn)-Jouketou-%E4%B8%8D%E5%AE%A2%E6%B0%94.wav",
+              "descriptionshorturl": "https://commons.wikimedia.org/w/index.php?curid=147758034",
+              "sha1": "9212813830902b606d3db18110b417c3c8aee832",
+              "extmetadata": {
+                "DateTime": {
+                  "value": "2024-04-26 18:22:40",
+                  "source": "mediawiki-metadata",
+                  "hidden": ""
+                },
+                "ObjectName": {
+                  "value": "LL-Q9192 (cmn)-Jouketou-不客气",
+                  "source": "mediawiki-metadata"
+                },
+                "CommonsMetadataExtension": {
+                  "value": 1.2,
+                  "source": "extension",
+                  "hidden": ""
+                },
+                "Categories": {
+                  "value": "Lingua Libre pronunciation-cmn|Lingua Libre pronunciation by Jouketou",
+                  "source": "commons-categories",
+                  "hidden": ""
+                },
+                "Assessments": {
+                  "value": "",
+                  "source": "commons-categories",
+                  "hidden": ""
+                },
+                "ImageDescription": {
+                  "value": "<span class=\"plainlinks\">Audio pronunciation file from the <b><a rel=\"nofollow\" class=\"external text\" href=\"https://lingualibre.org\">Lingua Libre</a></b> <span typeof=\"mw:File\"><a href=\"https://lingualibre.org\" rel=\"nofollow\"><img alt=\"Lingua Libre\" src=\"https://thumb.wikimedia.org/wikipedia/commons/thumb/5/55/Lingualibre-logo-no-text.svg/40px-Lingualibre-logo-no-text.svg.png?utm_source=commons.wikimedia.org&amp;utm_campaign=parser&amp;utm_content=thumbnail\" decoding=\"async\" loading=\"lazy\" width=\"22\" height=\"22\" class=\"mw-file-element\" srcset=\"https://thumb.wikimedia.org/wikipedia/commons/thumb/5/55/Lingualibre-logo-no-text.svg/60px-Lingualibre-logo-no-text.svg.png?utm_source=commons.wikimedia.org&amp;utm_campaign=parser&amp;utm_content=thumbnail 2x\" data-file-width=\"185\" data-file-height=\"185\"></a></span> project. </span>",
+                  "source": "commons-desc-page"
+                },
+                "DateTimeOriginal": {
+                  "value": "2024-04-26",
+                  "source": "commons-desc-page"
+                },
+                "Credit": {
+                  "value": "<span class=\"int-own-work\" lang=\"en\">Own work</span> (<a href=\"//lingualibre.org/wiki/Q1332892\" class=\"extiw\" title=\"lingualibre:Q1332892\">Lingua Libre</a>)",
+                  "source": "commons-desc-page"
+                },
+                "Artist": {
+                  "value": "<ul><li>Speaker: <a href=\"//lingualibre.org/wiki/Q1332695\" class=\"extiw\" title=\"lingualibre:Q1332695\">Jouketou</a></li>\n<li>Recorder: <a href=\"//commons.wikimedia.org/w/index.php?title=User:Jouketou&amp;action=edit&amp;redlink=1\" class=\"new\" title=\"User:Jouketou (page does not exist)\">Jouketou</a></li></ul>",
+                  "source": "commons-desc-page"
+                },
+                "LicenseShortName": {
+                  "value": "CC BY-SA 4.0",
+                  "source": "commons-desc-page",
+                  "hidden": ""
+                },
+                "UsageTerms": {
+                  "value": "Creative Commons Attribution-Share Alike 4.0",
+                  "source": "commons-desc-page"
+                },
+                "AttributionRequired": {
+                  "value": "true",
+                  "source": "commons-desc-page",
+                  "hidden": ""
+                },
+                "LicenseUrl": {
+                  "value": "https://creativecommons.org/licenses/by-sa/4.0",
+                  "source": "commons-desc-page"
+                },
+                "Copyrighted": {
+                  "value": "True",
+                  "source": "commons-desc-page",
+                  "hidden": ""
+                },
+                "Restrictions": {
+                  "value": "",
+                  "source": "commons-desc-page",
+                  "hidden": ""
+                },
+                "License": {
+                  "value": "cc-by-sa-4.0",
+                  "source": "commons-templates",
+                  "hidden": ""
+                }
+              }
+            }
+          ],
+          "revisions": [
+            {
+              "revid": 909790636,
+              "parentid": 874748580,
+              "timestamp": "2024-08-15T16:47:46Z"
+            }
+          ]
+        },
+        {
+          "pageid": 165574778,
+          "ns": 6,
+          "title": "File:LL-Q9192 (cmn)-CanonNi-不客气.wav",
+          "index": 5,
+          "imagerepository": "local",
+          "imageinfo": [
+            {
+              "size": 73004,
+              "width": 0,
+              "height": 0,
+              "duration": 0.76,
+              "url": "https://upload.wikimedia.org/wikipedia/commons/1/1b/LL-Q9192_%28cmn%29-CanonNi-%E4%B8%8D%E5%AE%A2%E6%B0%94.wav?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+              "descriptionurl": "https://commons.wikimedia.org/wiki/File:LL-Q9192_(cmn)-CanonNi-%E4%B8%8D%E5%AE%A2%E6%B0%94.wav",
+              "descriptionshorturl": "https://commons.wikimedia.org/w/index.php?curid=165574778",
+              "sha1": "c5b2c456bf6ac8984dca29109eff43e42cc8dacc",
+              "extmetadata": {
+                "DateTime": {
+                  "value": "2025-05-19 03:29:22",
+                  "source": "mediawiki-metadata",
+                  "hidden": ""
+                },
+                "ObjectName": {
+                  "value": "LL-Q9192 (cmn)-CanonNi-不客气",
+                  "source": "mediawiki-metadata"
+                },
+                "CommonsMetadataExtension": {
+                  "value": 1.2,
+                  "source": "extension",
+                  "hidden": ""
+                },
+                "Categories": {
+                  "value": "CC-Zero|Lingua Libre pronunciation-cmn|Lingua Libre pronunciation by CanonNi",
+                  "source": "commons-categories",
+                  "hidden": ""
+                },
+                "Assessments": {
+                  "value": "",
+                  "source": "commons-categories",
+                  "hidden": ""
+                },
+                "ImageDescription": {
+                  "value": "<span class=\"plainlinks\">Audio pronunciation file from the <b><a rel=\"nofollow\" class=\"external text\" href=\"https://lingualibre.org\">Lingua Libre</a></b> <span typeof=\"mw:File\"><a href=\"https://lingualibre.org\" rel=\"nofollow\"><img alt=\"Lingua Libre\" src=\"https://thumb.wikimedia.org/wikipedia/commons/thumb/5/55/Lingualibre-logo-no-text.svg/40px-Lingualibre-logo-no-text.svg.png?utm_source=commons.wikimedia.org&amp;utm_campaign=parser&amp;utm_content=thumbnail\" decoding=\"async\" loading=\"lazy\" width=\"22\" height=\"22\" class=\"mw-file-element\" srcset=\"https://thumb.wikimedia.org/wikipedia/commons/thumb/5/55/Lingualibre-logo-no-text.svg/60px-Lingualibre-logo-no-text.svg.png?utm_source=commons.wikimedia.org&amp;utm_campaign=parser&amp;utm_content=thumbnail 2x\" data-file-width=\"185\" data-file-height=\"185\"></a></span> project. </span>",
+                  "source": "commons-desc-page"
+                },
+                "DateTimeOriginal": {
+                  "value": "2025-05-19",
+                  "source": "commons-desc-page"
+                },
+                "Credit": {
+                  "value": "<span class=\"int-own-work\" lang=\"en\">Own work</span>",
+                  "source": "commons-desc-page"
+                },
+                "Artist": {
+                  "value": "<ul><li>Speaker: <a href=\"//lingualibre.org/wiki/Q1431140\" class=\"extiw\" title=\"lingualibre:Q1431140\">CanonNi</a></li>\n<li>Recorder: <a href=\"//commons.wikimedia.org/wiki/User:CanonNi\" title=\"User:CanonNi\">CanonNi</a></li></ul>",
+                  "source": "commons-desc-page"
+                },
+                "LicenseShortName": {
+                  "value": "CC0",
+                  "source": "commons-desc-page",
+                  "hidden": ""
+                },
+                "UsageTerms": {
+                  "value": "Creative Commons Zero, Public Domain Dedication",
+                  "source": "commons-desc-page"
+                },
+                "AttributionRequired": {
+                  "value": "false",
+                  "source": "commons-desc-page",
+                  "hidden": ""
+                },
+                "LicenseUrl": {
+                  "value": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+                  "source": "commons-desc-page"
+                },
+                "Copyrighted": {
+                  "value": "True",
+                  "source": "commons-desc-page",
+                  "hidden": ""
+                },
+                "Restrictions": {
+                  "value": "",
+                  "source": "commons-desc-page",
+                  "hidden": ""
+                },
+                "License": {
+                  "value": "cc0",
+                  "source": "commons-templates",
+                  "hidden": ""
+                }
+              }
+            }
+          ],
+          "revisions": [
+            {
+              "revid": 1033106871,
+              "parentid": 1033101507,
+              "timestamp": "2025-05-19T04:24:17Z"
+            }
+          ]
+        },
+        {
+          "pageid": 178720934,
+          "ns": 6,
+          "title": "File:LL-Q9192 (cmn)-Levi Highway (列维劳德)-不客气.wav",
+          "index": 6,
+          "imagerepository": "local",
+          "imageinfo": [
+            {
+              "size": 117292,
+              "width": 0,
+              "height": 0,
+              "duration": 1.2213333333333334,
+              "url": "https://upload.wikimedia.org/wikipedia/commons/0/00/LL-Q9192_%28cmn%29-Levi_Highway_%28%E5%88%97%E7%BB%B4%E5%8A%B3%E5%BE%B7%29-%E4%B8%8D%E5%AE%A2%E6%B0%94.wav?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+              "descriptionurl": "https://commons.wikimedia.org/wiki/File:LL-Q9192_(cmn)-Levi_Highway_(%E5%88%97%E7%BB%B4%E5%8A%B3%E5%BE%B7)-%E4%B8%8D%E5%AE%A2%E6%B0%94.wav",
+              "descriptionshorturl": "https://commons.wikimedia.org/w/index.php?curid=178720934",
+              "sha1": "fb64140d15690af333a74f723eecaf5c1f0746ee",
+              "extmetadata": {
+                "DateTime": {
+                  "value": "2025-11-19 16:58:37",
+                  "source": "mediawiki-metadata",
+                  "hidden": ""
+                },
+                "ObjectName": {
+                  "value": "LL-Q9192 (cmn)-Levi Highway (列维劳德)-不客气",
+                  "source": "mediawiki-metadata"
+                },
+                "CommonsMetadataExtension": {
+                  "value": 1.2,
+                  "source": "extension",
+                  "hidden": ""
+                },
+                "Categories": {
+                  "value": "CC-Zero|Lingua Libre pronunciation-cmn|Lingua Libre pronunciation by 列维劳德",
+                  "source": "commons-categories",
+                  "hidden": ""
+                },
+                "Assessments": {
+                  "value": "",
+                  "source": "commons-categories",
+                  "hidden": ""
+                },
+                "ImageDescription": {
+                  "value": "<span class=\"plainlinks\">Audio pronunciation file from the <b><a rel=\"nofollow\" class=\"external text\" href=\"https://lingualibre.org\">Lingua Libre</a></b> <span typeof=\"mw:File\"><a href=\"https://lingualibre.org\" rel=\"nofollow\"><img alt=\"Lingua Libre\" src=\"https://thumb.wikimedia.org/wikipedia/commons/thumb/5/55/Lingualibre-logo-no-text.svg/40px-Lingualibre-logo-no-text.svg.png?utm_source=commons.wikimedia.org&amp;utm_campaign=parser&amp;utm_content=thumbnail\" decoding=\"async\" loading=\"lazy\" width=\"22\" height=\"22\" class=\"mw-file-element\" srcset=\"https://thumb.wikimedia.org/wikipedia/commons/thumb/5/55/Lingualibre-logo-no-text.svg/60px-Lingualibre-logo-no-text.svg.png?utm_source=commons.wikimedia.org&amp;utm_campaign=parser&amp;utm_content=thumbnail 2x\" data-file-width=\"185\" data-file-height=\"185\"></a></span> project. </span>",
+                  "source": "commons-desc-page"
+                },
+                "DateTimeOriginal": {
+                  "value": "2025-11-20",
+                  "source": "commons-desc-page"
+                },
+                "Credit": {
+                  "value": "<span class=\"int-own-work\" lang=\"en\">Own work</span>",
+                  "source": "commons-desc-page"
+                },
+                "Artist": {
+                  "value": "<ul><li>Speaker: <a href=\"//lingualibre.org/wiki/Q1573006\" class=\"extiw\" title=\"lingualibre:Q1573006\">Levi Highway</a></li>\n<li>Recorder: <a href=\"//commons.wikimedia.org/w/index.php?title=User:%E5%88%97%E7%BB%B4%E5%8A%B3%E5%BE%B7&amp;action=edit&amp;redlink=1\" class=\"new\" title=\"User:列维劳德 (page does not exist)\">列维劳德</a></li></ul>",
+                  "source": "commons-desc-page"
+                },
+                "LicenseShortName": {
+                  "value": "CC0",
+                  "source": "commons-desc-page",
+                  "hidden": ""
+                },
+                "UsageTerms": {
+                  "value": "Creative Commons Zero, Public Domain Dedication",
+                  "source": "commons-desc-page"
+                },
+                "AttributionRequired": {
+                  "value": "false",
+                  "source": "commons-desc-page",
+                  "hidden": ""
+                },
+                "LicenseUrl": {
+                  "value": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+                  "source": "commons-desc-page"
+                },
+                "Copyrighted": {
+                  "value": "True",
+                  "source": "commons-desc-page",
+                  "hidden": ""
+                },
+                "Restrictions": {
+                  "value": "",
+                  "source": "commons-desc-page",
+                  "hidden": ""
+                },
+                "License": {
+                  "value": "cc0",
+                  "source": "commons-templates",
+                  "hidden": ""
+                }
+              }
+            }
+          ],
+          "revisions": [
+            {
+              "revid": 1211143285,
+              "parentid": 1118477846,
+              "timestamp": "2026-05-09T11:39:38Z"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "term": "\"你叫什么名字\" filetype:audio",
+      "pages": []
+    },
+    {
+      "term": "\"我叫安娜\" filetype:audio",
+      "pages": []
+    },
+    {
+      "term": "\"你好\" \"dialogue\" filetype:audio",
+      "pages": []
+    },
+    {
+      "term": "\"谢谢\" \"不客气\" filetype:audio",
+      "pages": []
+    }
+  ]
+}

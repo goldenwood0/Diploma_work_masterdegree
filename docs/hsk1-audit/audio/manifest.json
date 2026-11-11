@@ -1,0 +1,324 @@
+{
+  "status": "DRAFT_REQUIRES_HUMAN_REVIEW",
+  "checkedAt": "2026-10-22T18:27:06.431Z",
+  "publish": false,
+  "assets": [
+    {
+      "key": "4f60",
+      "hanzi": "你",
+      "pinyin": "nǐ",
+      "translation": {
+        "en": "you",
+        "kk": "сен",
+        "ru": "ты"
+      },
+      "metadata": {
+        "name": "HSK 1 · 你 · nǐ",
+        "author": "Wei Gao, Vion Nicolas",
+        "license": "CC BY 2.0 fr",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:Zh-n%C7%90.ogg",
+        "licenseUrl": "https://creativecommons.org/licenses/by/2.0/fr/deed.en"
+      },
+      "sourceFile": "File:Zh-nǐ.ogg",
+      "sourceRevision": 447926552,
+      "sourceRevisionUrl": "https://commons.wikimedia.org/w/index.php?oldid=447926552",
+      "sourceAudioUrl": "https://upload.wikimedia.org/wikipedia/commons/7/73/Zh-n%C7%90.ogg",
+      "originalPath": "original/4f60.ogg",
+      "wavPath": "wav/4f60.wav",
+      "downloaded": true,
+      "sourceSha1": "5d3f4d22d7463d215c97d0b5e71828f9506cabfa",
+      "wavSha256": "d4ed938b312907d47f7fd3062273226fbf14bb76dc63e0b162c0508bc3113916",
+      "bytes": 101278,
+      "duration": 1.15,
+      "transformation": "Converted to PCM signed 16-bit WAV; metadata removed. No speech edits, trimming, speed, pitch or volume changes.",
+      "linguisticReview": "PENDING_HUMAN",
+      "sourceEvidence": "Pronunciation of \"nǐ\" (你) in Chinese. Male voice. Speaker from Pekin, China."
+    },
+    {
+      "key": "597d",
+      "hanzi": "好",
+      "pinyin": "hǎo",
+      "translation": {
+        "en": "good; well",
+        "kk": "жақсы",
+        "ru": "хороший; хорошо"
+      },
+      "metadata": {
+        "name": "HSK 1 · 好 · hǎo",
+        "author": "Wei Gao, Vion Nicolas",
+        "license": "CC BY 2.0 fr",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:Zh-h%C7%8Eo.ogg",
+        "licenseUrl": "https://creativecommons.org/licenses/by/2.0/fr/deed.en"
+      },
+      "sourceFile": "File:Zh-hǎo.ogg",
+      "sourceRevision": 447924525,
+      "sourceRevisionUrl": "https://commons.wikimedia.org/w/index.php?oldid=447924525",
+      "sourceAudioUrl": "https://upload.wikimedia.org/wikipedia/commons/2/22/Zh-h%C7%8Eo.ogg",
+      "originalPath": "original/597d.ogg",
+      "wavPath": "wav/597d.wav",
+      "downloaded": true,
+      "sourceSha1": "ba2ae7e4ab2df9b653c95f3ac5442aa3688a1a5b",
+      "wavSha256": "668158588fe161900385f08204872e255d6ec49d92afd4e88229b084dcfa375b",
+      "bytes": 92478,
+      "duration": 1.05,
+      "transformation": "Converted to PCM signed 16-bit WAV; metadata removed. No speech edits, trimming, speed, pitch or volume changes.",
+      "linguisticReview": "PENDING_HUMAN",
+      "sourceEvidence": "Pronunciation of \"hǎo\" (好) in Chinese. Male voice. Speaker from Pekin, China."
+    },
+    {
+      "key": "4f60-597d",
+      "hanzi": "你好",
+      "pinyin": "nǐ hǎo",
+      "translation": {
+        "en": "hello",
+        "kk": "сәлеметсіз бе; сәлем",
+        "ru": "здравствуйте; привет"
+      },
+      "metadata": {
+        "name": "HSK 1 · 你好 · nǐ hǎo",
+        "author": "Sjors Provoost",
+        "license": "CC BY-SA 3.0",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:Zh_n%C7%90_h%C7%8Eo.ogg",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0"
+      },
+      "sourceFile": "File:Zh nǐ hǎo.ogg",
+      "sourceRevision": 505535912,
+      "sourceRevisionUrl": "https://commons.wikimedia.org/w/index.php?oldid=505535912",
+      "sourceAudioUrl": "https://upload.wikimedia.org/wikipedia/commons/7/7d/Zh_n%C7%90_h%C7%8Eo.ogg",
+      "originalPath": "original/4f60-597d.ogg",
+      "wavPath": "wav/4f60-597d.wav",
+      "downloaded": true,
+      "sourceSha1": "fe6ceb1eae191c00075a47991c63cd79742209f8",
+      "wavSha256": "8338f7b0045ce8a52e965122f6b536c6a8595d973b159c67cef4524bb030a52c",
+      "bytes": 46672,
+      "duration": 1.0565532879818593,
+      "transformation": "Converted to PCM signed 16-bit WAV; metadata removed. No speech edits, trimming, speed, pitch or volume changes.",
+      "linguisticReview": "PENDING_HUMAN",
+      "sourceEvidence": "Pronunciation of \t你好\t/ Nǐ hǎo (Hello)"
+    },
+    {
+      "key": "6211",
+      "hanzi": "我",
+      "pinyin": "wǒ",
+      "translation": {
+        "en": "I; me",
+        "kk": "мен",
+        "ru": "я"
+      },
+      "metadata": {
+        "name": "HSK 1 · 我 · wǒ",
+        "author": "Wei Gao, Vion Nicolas",
+        "license": "CC BY 2.0 fr",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:Zh-w%C7%92.ogg",
+        "licenseUrl": "https://creativecommons.org/licenses/by/2.0/fr/deed.en"
+      },
+      "sourceFile": "File:Zh-wǒ.ogg",
+      "sourceRevision": 1184082340,
+      "sourceRevisionUrl": "https://commons.wikimedia.org/w/index.php?oldid=1184082340",
+      "sourceAudioUrl": "https://upload.wikimedia.org/wikipedia/commons/4/42/Zh-w%C7%92.ogg",
+      "originalPath": "original/6211.ogg",
+      "wavPath": "wav/6211.wav",
+      "downloaded": true,
+      "sourceSha1": "257f23e027889d5b891f508ed03e782fe12b16ee",
+      "wavSha256": "31d3476947fc6831f4fde1d7a7bc49ee30d308c7a2bc0ccc5cc7686df276587e",
+      "bytes": 83678,
+      "duration": 0.95,
+      "transformation": "Converted to PCM signed 16-bit WAV; metadata removed. No speech edits, trimming, speed, pitch or volume changes.",
+      "linguisticReview": "PENDING_HUMAN",
+      "sourceEvidence": "Pronunciation of \"wǒ\" (我) in Chinese. Male voice. Speaker from Pekin, China."
+    },
+    {
+      "key": "53eb",
+      "hanzi": "叫",
+      "pinyin": "jiào",
+      "translation": {
+        "en": "to be called",
+        "kk": "аталу",
+        "ru": "зваться"
+      },
+      "metadata": {
+        "name": "HSK 1 · 叫 · jiào",
+        "author": "Wei Gao, Vion Nicolas",
+        "license": "CC BY 2.0 fr",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:Zh-ji%C3%A0o.ogg",
+        "licenseUrl": "https://creativecommons.org/licenses/by/2.0/fr/deed.en"
+      },
+      "sourceFile": "File:Zh-jiào.ogg",
+      "sourceRevision": 1151638408,
+      "sourceRevisionUrl": "https://commons.wikimedia.org/w/index.php?oldid=1151638408",
+      "sourceAudioUrl": "https://upload.wikimedia.org/wikipedia/commons/3/3e/Zh-ji%C3%A0o.ogg",
+      "originalPath": "original/53eb.ogg",
+      "wavPath": "wav/53eb.wav",
+      "downloaded": true,
+      "sourceSha1": "8c786377dd9110f809051fc3cdf4d622e6d0a89f",
+      "wavSha256": "cc86e5abcec9e51dbff96c5a92cf2c5ef9ed88307a2958b375766c2fff3372cb",
+      "bytes": 92478,
+      "duration": 1.05,
+      "transformation": "Converted to PCM signed 16-bit WAV; metadata removed. No speech edits, trimming, speed, pitch or volume changes.",
+      "linguisticReview": "PENDING_HUMAN",
+      "sourceEvidence": "Pronunciation of \"jiào\" (叫) in Chinese. Male voice. Speaker from Pekin, China."
+    },
+    {
+      "key": "540d-5b57",
+      "hanzi": "名字",
+      "pinyin": "míngzi",
+      "translation": {
+        "en": "name",
+        "kk": "есім",
+        "ru": "имя"
+      },
+      "metadata": {
+        "name": "HSK 1 · 名字 · míngzi",
+        "author": "Wei Gao, Vion Nicolas",
+        "license": "CC BY 2.0 fr",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:Zh-m%C3%ADngzi.ogg",
+        "licenseUrl": "https://creativecommons.org/licenses/by/2.0/fr/deed.en"
+      },
+      "sourceFile": "File:Zh-míngzi.ogg",
+      "sourceRevision": 447926153,
+      "sourceRevisionUrl": "https://commons.wikimedia.org/w/index.php?oldid=447926153",
+      "sourceAudioUrl": "https://upload.wikimedia.org/wikipedia/commons/c/cf/Zh-m%C3%ADngzi.ogg",
+      "originalPath": "original/540d-5b57.ogg",
+      "wavPath": "wav/540d-5b57.wav",
+      "downloaded": true,
+      "sourceSha1": "faf9ac54c835b8ac0477d18eaf248b2a07e6516f",
+      "wavSha256": "46f77649b749e2405ebc414b48c58a99dfc6f992060b4a30bbb259d84d239d94",
+      "bytes": 132078,
+      "duration": 1.5,
+      "transformation": "Converted to PCM signed 16-bit WAV; metadata removed. No speech edits, trimming, speed, pitch or volume changes.",
+      "linguisticReview": "PENDING_HUMAN",
+      "sourceEvidence": "Pronunciation of \"míngzi\" (名字) in Chinese. Male voice. Speaker from Pekin, China."
+    },
+    {
+      "key": "4ec0-4e48",
+      "hanzi": "什么",
+      "pinyin": "shénme",
+      "translation": {
+        "en": "what",
+        "kk": "не; қандай",
+        "ru": "что; какой"
+      },
+      "metadata": {
+        "name": "HSK 1 · 什么 · shénme",
+        "author": "Wei Gao, Vion Nicolas",
+        "license": "CC BY 2.0 fr",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:Zh-sh%C3%A9nme.ogg",
+        "licenseUrl": "https://creativecommons.org/licenses/by/2.0/fr/deed.en"
+      },
+      "sourceFile": "File:Zh-shénme.ogg",
+      "sourceRevision": 957769916,
+      "sourceRevisionUrl": "https://commons.wikimedia.org/w/index.php?oldid=957769916",
+      "sourceAudioUrl": "https://upload.wikimedia.org/wikipedia/commons/0/00/Zh-sh%C3%A9nme.ogg",
+      "originalPath": "original/4ec0-4e48.ogg",
+      "wavPath": "wav/4ec0-4e48.wav",
+      "downloaded": true,
+      "sourceSha1": "7b93032edfd20270788538dadf3691de0adb4d07",
+      "wavSha256": "81cf7eff10f639da5655d231eee5cdd974a8035c9544412f0f29993e011d8c1d",
+      "bytes": 92478,
+      "duration": 1.05,
+      "transformation": "Converted to PCM signed 16-bit WAV; metadata removed. No speech edits, trimming, speed, pitch or volume changes.",
+      "linguisticReview": "PENDING_HUMAN",
+      "sourceEvidence": "Pronunciation of \"shénme\" (什么) in Chinese. Male voice. Speaker from Pekin, China."
+    },
+    {
+      "key": "8c22-8c22",
+      "hanzi": "谢谢",
+      "pinyin": "xièxie",
+      "translation": {
+        "en": "thank you",
+        "kk": "рақмет",
+        "ru": "спасибо"
+      },
+      "metadata": {
+        "name": "HSK 1 · 谢谢 · xièxie",
+        "author": "Wei Gao, Vion Nicolas",
+        "license": "CC BY 2.0 fr",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:Zh-xi%C3%A8xie.ogg",
+        "licenseUrl": "https://creativecommons.org/licenses/by/2.0/fr/deed.en"
+      },
+      "sourceFile": "File:Zh-xièxie.ogg",
+      "sourceRevision": 1129948464,
+      "sourceRevisionUrl": "https://commons.wikimedia.org/w/index.php?oldid=1129948464",
+      "sourceAudioUrl": "https://upload.wikimedia.org/wikipedia/commons/1/1f/Zh-xi%C3%A8xie.ogg",
+      "originalPath": "original/8c22-8c22.ogg",
+      "wavPath": "wav/8c22-8c22.wav",
+      "downloaded": true,
+      "sourceSha1": "6459e3923176d59332120d2a7ff3dd90829c5a10",
+      "wavSha256": "7ac861a8b15d9e4face179a102696216e2ddaeb5bba13660535adef031e6eb08",
+      "bytes": 118878,
+      "duration": 1.35,
+      "transformation": "Converted to PCM signed 16-bit WAV; metadata removed. No speech edits, trimming, speed, pitch or volume changes.",
+      "linguisticReview": "PENDING_HUMAN",
+      "sourceEvidence": "Pronunciation of \"xièxie\" (谢谢) in Chinese. Male voice. Speaker from Pekin, China."
+    },
+    {
+      "key": "4e0d-5ba2-6c14",
+      "hanzi": "不客气",
+      "pinyin": "bú kèqi",
+      "translation": {
+        "en": "you are welcome",
+        "kk": "оқасы жоқ (алғысқа жауап)",
+        "ru": "пожалуйста (ответ на благодарность)"
+      },
+      "metadata": {
+        "name": "HSK 1 · 不客气 · bú kèqi",
+        "author": "CanonNi (speaker and recorder)",
+        "license": "CC0",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:LL-Q9192_(cmn)-CanonNi-%E4%B8%8D%E5%AE%A2%E6%B0%94.wav",
+        "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/deed.en"
+      },
+      "sourceFile": "File:LL-Q9192 (cmn)-CanonNi-不客气.wav",
+      "sourceRevision": 1033106871,
+      "sourceRevisionUrl": "https://commons.wikimedia.org/w/index.php?oldid=1033106871",
+      "sourceAudioUrl": "https://upload.wikimedia.org/wikipedia/commons/1/1b/LL-Q9192_%28cmn%29-CanonNi-%E4%B8%8D%E5%AE%A2%E6%B0%94.wav",
+      "originalPath": "original/4e0d-5ba2-6c14.wav",
+      "wavPath": "wav/4e0d-5ba2-6c14.wav",
+      "downloaded": true,
+      "sourceSha1": "c5b2c456bf6ac8984dca29109eff43e42cc8dacc",
+      "wavSha256": "71aa76c9c80cef19557fdaafa123f847fcb32002c6088a45d0641ec86eb68c97",
+      "bytes": 73038,
+      "duration": 0.76,
+      "transformation": "Converted to PCM signed 16-bit WAV; metadata removed. No speech edits, trimming, speed, pitch or volume changes.",
+      "linguisticReview": "PENDING_HUMAN",
+      "sourceEvidence": "cmn (Mandarin) in source title; exact term in source title"
+    },
+    {
+      "key": "518d-89c1",
+      "hanzi": "再见",
+      "pinyin": "zàijiàn",
+      "translation": {
+        "en": "goodbye",
+        "kk": "сау болыңыз",
+        "ru": "до свидания"
+      },
+      "metadata": {
+        "name": "HSK 1 · 再见 · zàijiàn",
+        "author": "Wei Gao, Vion Nicolas",
+        "license": "CC BY 2.0 fr",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:Zh-z%C3%A0iji%C3%A0n.ogg",
+        "licenseUrl": "https://creativecommons.org/licenses/by/2.0/fr/deed.en"
+      },
+      "sourceFile": "File:Zh-zàijiàn.ogg",
+      "sourceRevision": 447931176,
+      "sourceRevisionUrl": "https://commons.wikimedia.org/w/index.php?oldid=447931176",
+      "sourceAudioUrl": "https://upload.wikimedia.org/wikipedia/commons/a/a0/Zh-z%C3%A0iji%C3%A0n.ogg",
+      "originalPath": "original/518d-89c1.ogg",
+      "wavPath": "wav/518d-89c1.wav",
+      "downloaded": true,
+      "sourceSha1": "0d3ac2ab6797011e252cac74e3c438ff2465ea92",
+      "wavSha256": "2c29808ed7aa784d6bd0ffee7aaba720142b3fb55ce70b8915b7f3f966a11428",
+      "bytes": 92478,
+      "duration": 1.05,
+      "transformation": "Converted to PCM signed 16-bit WAV; metadata removed. No speech edits, trimming, speed, pitch or volume changes.",
+      "linguisticReview": "PENDING_HUMAN",
+      "sourceEvidence": "Pronunciation of \"zàijiàn\" (再见) in Chinese. Male voice. Speaker from Pekin, China."
+    }
+  ],
+  "missingDialogues": [
+    "hsk1-greetings",
+    "hsk1-my-name",
+    "hsk1-your-name",
+    "hsk1-courtesy"
+  ],
+  "integration": "Offline drafts reference unchanged Commons originals. WAV files are prepared for media-library upload; replace URLs only after successful authenticated upload."
+}
