@@ -30,6 +30,8 @@ export interface TutorEnvelope {
 }
 export interface TutorProvider {
   readonly kind: 'unconfigured' | 'test' | 'live';
+  // Overrides the default 20 s request limit (local models are slower).
+  readonly timeoutMs?: number;
   generate(input: TutorEnvelope, signal: AbortSignal): Promise<unknown>;
 }
 export const unconfiguredProvider: TutorProvider = {

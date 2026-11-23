@@ -81,7 +81,7 @@ export class TutorService {
     return { level: settings?.startLevel ?? 1, language, ...(mistakes ? { mistakes } : {}),
       mode: input.mode, material, errors, text: redact(input.text), history: input.history.map(m => ({ role: m.role, text: redact(m.text) })) };
   }
-  async ask(userId: string, input: TutorInput, signal: AbortSignal, timeoutMs = 20000) {
+  async ask(userId: string, input: TutorInput, signal: AbortSignal, timeoutMs = this.provider.timeoutMs ?? 20000) {
     const now = Date.now();
     for (const [id, b] of this.buckets) if (b.until <= now) this.buckets.delete(id);
     const bucket = this.buckets.get(userId) ?? { count: 0, until: now + 60000 };

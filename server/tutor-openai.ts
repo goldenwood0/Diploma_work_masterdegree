@@ -2,6 +2,7 @@ import { resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { z } from 'zod';
 import { TutorBudget } from './tutor-budget.js';
+import { DEFAULT_OLLAMA_MODEL, OllamaTutorProvider, localOllamaUrl } from './tutor-ollama.js';
 import { unconfiguredProvider, type TutorEnvelope, type TutorProvider } from './tutor-provider.js';
 
 const responseSchema = z.object({
@@ -56,6 +57,9 @@ export class OpenAiTutorProvider implements TutorProvider {
 }
 export function createTutorProvider(): TutorProvider {
   // Fail closed until server-side activation is explicitly configured. Never VITE_*.
-  if (!process.env.OPENAI_API_KEY || process.env.ZHPATH_TUTOR_ENABLED !== 'true') return unconfiguredProvider;
+  if (process.env.ZHPATH_TUTOR_ENABLED !== 'true') return unconfiguredProvider;
+  const choice = process.env.ZHPATH_TUTOR_PROVIDER || 'openai';
+  if (choice === 'ollama') return new OllamaTutorProvider(localOllamaUrl(process.env.ZHPATH_OLLAMA_URL), process.env.ZHPATH_OLLAMA_MODEL || DEFAULT_OLLAMA_MODEL);
+  if (choice !== 'openai' || !process.env.OPENAI_API_KEY) return unconfiguredProvider;
   return new OpenAiTutorProvider(process.env.OPENAI_API_KEY, new TutorBudget(resolve(fileURLToPath(new URL('../logs/tutor-budget.json', import.meta.url)))));
 }
