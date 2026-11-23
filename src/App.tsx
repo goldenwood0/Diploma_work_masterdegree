@@ -73,7 +73,7 @@ export default function App() {
         {currentScreen === 'media' && <MediaLibrary role={account.role} />}
         {currentScreen === 'users' && <UsersAdmin role={account.role} currentUserId={account.id} />}
         {currentScreen === 'content' && <ContentAdmin role={account.role} />}
-        {currentScreen === 'dashboard' && <Dashboard name={account.name} onNavigate={setCurrentScreen} />}
+        {currentScreen === 'dashboard' && <Dashboard name={account.name} dailyGoalMinutes={account.settings?.dailyGoalMinutes} onNavigate={setCurrentScreen} />}
         {currentScreen === 'catalog' && <Catalog onNavigate={setCurrentScreen} />}
         {currentScreen === 'lesson' && <Lesson key={`${account.id}:${lessonSlug}`} userId={account.id} slug={lessonSlug} onNavigate={setCurrentScreen} onReviewMistakes={() => { setReviewMistakes(true); setIsAiTutorOpen(true); }} />}
         {currentScreen === 'profile' && <Profile account={account} onSignedOut={refresh} onSaved={accept} />}
