@@ -59,13 +59,14 @@ export class TutorService {
     }
     const settings = await this.db.userSettings.findUnique({ where: { userId }, select: { startLevel: true, explanationLanguage: true } });
     const progress = await this.db.lessonProgress.findUnique({ where: { userId_lessonId: { userId, lessonId: lesson.id } } });
+    const language = (['ru', 'kk', 'en'].includes(settings?.explanationLanguage ?? '') ? settings!.explanationLanguage : 'ru') as Language;
     const index = progress?.revision === lesson.revision ? Math.min(progress.nextBlock, lesson.blocks.length - 1) : 0;
     // Retrieval is scoped to this published accessible lesson and reached blocks.
     const reached = lesson.blocks.slice(0, index + 1);
     const query = input.text.toLocaleLowerCase();
     const related = query ? reached.filter((b, i) => i !== index && searchableContent([b]).toLocaleLowerCase().includes(query)).slice(-2) : [];
     // A mistake review needs the whole reached lesson, not only the current block.
-    const material = redact(searchableContent(input.mode === 'mistakes' ? reached : [reached[index], ...related])).slice(0, 8000);
+    const material = redact(searchableContent(input.mode === 'mistakes' ? reached : [reached[index], ...related], { languages: [language], toneless: false })).slice(0, 8000);
     const attempts = lesson.quiz ? await this.db.quizAttempt.findMany({
       where: { userId, quizId: lesson.quiz.id, lessonRevision: lesson.revision, quizRevision: lesson.quiz.revision },
       orderBy: { createdAt: 'desc' }, take: 3, select: { result: true },
@@ -74,7 +75,6 @@ export class TutorService {
       const parsed = errorSummary.safeParse(a.result);
       return parsed.success ? parsed.data.items.filter(i => !i.correct).map(i => i.question) : [];
     }).slice(0, 10);
-    const language = (['ru', 'kk', 'en'].includes(settings?.explanationLanguage ?? '') ? settings!.explanationLanguage : 'ru') as Language;
     // Latest attempt of the current revisions only; nothing to review is an explicit state.
     const mistakes = input.mode === 'mistakes' ? describeMistakes(attempts[0]?.result, language) : undefined;
     if (mistakes && !mistakes.length) fail('TUTOR_NO_MISTAKES', 409);

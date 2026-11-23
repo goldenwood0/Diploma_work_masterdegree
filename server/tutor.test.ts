@@ -41,6 +41,9 @@ test('context: own settings/errors, current block, allowlisted content; no priva
   assert.equal(f.calls[0].data.errors.length, 1); assert.equal(f.calls[1].data.errors.length, 0);
   assert.equal(f.calls[1].data.language, 'en');
   assert.match(f.calls[0].data.material, /你好/);
+  // Only the learner's explanation language reaches the model, and no toneless search copy of pinyin.
+  assert.match(f.calls[0].data.material, /Сәлемдесу/); assert.doesNotMatch(f.calls[0].data.material, /Приветствие|Greeting|ni hao/);
+  assert.match(f.calls[1].data.material, /Greeting/); assert.doesNotMatch(f.calls[1].data.material, /Приветствие|Сәлемдесу/);
   assert.doesNotMatch(JSON.stringify(f.calls), /PRIVATE|UNREACHED|alice|bob/);
   assert.deepEqual(f.service.usage[0], { status: 'ok', provider: 'test' });
 });
