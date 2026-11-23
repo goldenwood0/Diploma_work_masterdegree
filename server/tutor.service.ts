@@ -7,7 +7,7 @@ import { TUTOR_PROVIDER, tutorInstructions, tutorOutput, type TutorInput, type T
 
 const errorSummary = z.object({ items: z.array(z.object({ correct: z.boolean(), question: z.object({
   kind: z.enum(['choice', 'match', 'order', 'gap', 'input', 'dictation']),
-  topic: z.enum(['greetings', 'introductions', 'courtesy']).optional(),
+  topic: z.enum(['greetings', 'introductions', 'courtesy', 'numbers', 'countries', 'age', 'family', 'dates', 'food', 'shopping', 'places']).optional(),
   skill: z.enum(['vocabulary', 'grammar', 'reading', 'listening', 'writing']).optional(),
 }) })).max(30) });
 // The graded snapshot the learner already sees after submitting a quiz.

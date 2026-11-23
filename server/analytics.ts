@@ -1,6 +1,6 @@
 import { z } from "zod"
 
-export const topics = ["greetings", "introductions", "courtesy"] as const
+export const topics = ["greetings", "introductions", "courtesy", "numbers", "countries", "age", "family", "dates", "food", "shopping", "places"] as const
 export const skills = ["vocabulary", "grammar", "reading", "listening", "writing"] as const
 
 export function accuracySummary(results: unknown[]) {
