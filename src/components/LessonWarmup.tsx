@@ -6,8 +6,8 @@ import { useLanguage } from '../i18n/LanguageProvider';
 
 const LIMIT = 3;
 
-// Stage 4: repeat weak words inside a lesson. Shows up to three cards that are due in the
-// spaced-repetition queue and rates them through the same API as the review page.
+// Stage 4: repeat weak words inside a lesson. Shows up to three due cards that were already
+// reviewed before (new words stay on the review page and its daily limit).
 export default function LessonWarmup() {
   const { t, explanationLanguage: lang } = useLanguage();
   const [cards, setCards] = useState<Card[] | null>(null);
@@ -21,7 +21,7 @@ export default function LessonWarmup() {
   useEffect(() => {
     const controller = new AbortController(); lifetime.current = controller;
     loadReviews(controller.signal)
-      .then(data => { if (!controller.signal.aborted) setCards(data.queue.slice(0, LIMIT).map(id => data.cards.find(c => c.id === id)).filter((c): c is Card => !!c)); })
+      .then(data => { if (!controller.signal.aborted) setCards(data.queue.map(id => data.cards.find(c => c.id === id)).filter((c): c is Card => !!c && c.repetitions > 0).slice(0, LIMIT)); })
       // The warm-up is optional: a failure must not block the lesson.
       .catch(() => { if (!controller.signal.aborted) setCards([]); });
     return () => controller.abort();

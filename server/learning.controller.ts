@@ -242,7 +242,7 @@ export class LearningController {
     const requestHash = digest(JSON.stringify({ slug, lessonRevision: input.lessonRevision, quizRevision: input.quizRevision,
       answers: [...input.answers].sort((a, b) => a.questionId.localeCompare(b.questionId)) }));
     try {
-      return await this.db.$transaction(async db => {
+      const saved = await this.db.$transaction(async db => {
         const previous = await db.quizAttempt.findUnique({ where: { userId_requestId: { userId, requestId: input.requestId } } });
         if (previous) {
           if (previous.requestHash !== requestHash) throw new ConflictException('Этот запрос уже содержит другой ответ.');
@@ -265,9 +265,12 @@ export class LearningController {
           await db.lessonProgress.update({ where, data: { completedAt: new Date() } });
           await collectWords(db, userId);
         }
-        this.checks.clear(userId, quiz.id);
-        return { id: attempt.id, createdAt: attempt.createdAt, quizRevision: attempt.quizRevision, lessonRevision: attempt.lessonRevision, result: attempt.result };
+        return { id: attempt.id, createdAt: attempt.createdAt, quizRevision: attempt.quizRevision, lessonRevision: attempt.lessonRevision, result: attempt.result, quizId: quiz.id };
       }, { isolationLevel: Prisma.TransactionIsolationLevel.Serializable });
+      // Only a committed attempt releases the binding of checked answers.
+      const { quizId, ...attempt } = saved as typeof saved & { quizId?: string };
+      if (quizId) this.checks.clear(userId, quizId);
+      return attempt;
     } catch (error) {
       if (error instanceof Prisma.PrismaClientKnownRequestError && ['P2034', 'P2002'].includes(error.code)) throw new ConflictException('Прогресс изменился. Повторите сохранение.');
       throw error;

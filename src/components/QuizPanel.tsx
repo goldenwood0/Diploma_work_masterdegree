@@ -123,6 +123,8 @@ function QuizSession({ slug, userId, onPassed, onReviewMistakes }: Props) {
       if (!signal.aborted) setChecks(old => ({ ...old, [q.id]: value }));
     } catch (err) { if (!signal.aborted) {
       setError(err instanceof ApiError ? err.message : 'Не удалось проверить ответ.');
+      // Another tab or device checked a different answer first: load the binding one.
+      if (err instanceof ApiError && err.status === 409 && err.message === 'Ответ на это задание уже проверен.') setReload(n => n + 1);
       if (err instanceof ApiError && (err.status === 401 || err.message === 'Аккаунт изменился. Перезагрузите страницу.')) setAccountChanged(true);
     } }
     finally { if (!signal.aborted) setChecking(false); }
@@ -147,6 +149,7 @@ function QuizSession({ slug, userId, onPassed, onReviewMistakes }: Props) {
     } catch (err) { if (!signal.aborted) {
       setError(err instanceof ApiError ? err.message : 'Не удалось сохранить результат теста.');
       if (err instanceof ApiError && (err.status === 401 || err.message === 'Аккаунт изменился. Перезагрузите страницу.')) setAccountChanged(true);
+      if (err instanceof ApiError && err.status === 409 && err.message === 'Проверенные ответы нельзя менять.') { persist(makeDraft(userId, quiz, answers)); setRetrying(false); setReload(n => n + 1); }
       if (err instanceof ApiError && err.status === 409 && err.message === 'Урок обновлён. Откройте его заново.') setDraftStatus('Версия урока или теста изменилась. Старый черновик нельзя восстановить: задания могли измениться.');
       // Validation failure is definitive; an ambiguous network/server failure keeps the exact request.
       if (err instanceof ApiError && err.status === 400) { persist(makeDraft(userId, quiz, answers)); setRetrying(false); }

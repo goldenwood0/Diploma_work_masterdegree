@@ -67,7 +67,7 @@ test('provider switch: Ollama needs only the explicit switch; OpenAI still needs
     assert.equal(createTutorProvider().kind, 'unconfigured');
     process.env.ZHPATH_TUTOR_ENABLED = 'true';
     assert.ok(createTutorProvider() instanceof OllamaTutorProvider);
-    process.env.ZHPATH_OLLAMA_URL = 'http://10.0.0.1:11434'; assert.throws(() => createTutorProvider());
+    process.env.ZHPATH_OLLAMA_URL = 'http://10.0.0.1:11434'; assert.equal(createTutorProvider().kind, 'unconfigured');
     delete process.env.ZHPATH_OLLAMA_URL;
     process.env.ZHPATH_TUTOR_PROVIDER = 'something-else'; assert.equal(createTutorProvider().kind, 'unconfigured');
     process.env.ZHPATH_TUTOR_PROVIDER = 'openai'; assert.equal(createTutorProvider().kind, 'unconfigured');

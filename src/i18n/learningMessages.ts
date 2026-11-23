@@ -539,4 +539,5 @@ export const learningMessages: Record<string, Record<'en' | 'kk', string>> = {
   "Не помню": {"en": "Don’t remember", "kk": "Есімде жоқ"},
   "Помню": {"en": "Remember", "kk": "Есімде"},
   "Пропустить": {"en": "Skip", "kk": "Өткізіп жіберу"},
+  "Проверьте ответ ещё раз, затем попросите объяснение.": {"en": "Check the answer again, then ask for an explanation.", "kk": "Жауапты қайта тексеріп, содан кейін түсіндіруді сұраңыз."},
 }

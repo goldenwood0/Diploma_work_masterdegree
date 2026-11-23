@@ -43,7 +43,7 @@ export default function AiTutorPanel({ onClose, lessonSlug, initialMode = 'expla
         setTurns(old => [...old, { role: 'user', text: text || t(mode === 'mistakes' && questionId ? 'Объясни ошибку' : modes.find(m => m[0] === mode)![1]) }, { role: 'assistant', text: result.text }].slice(-20) as TutorTurn[]);
         setText('');
       }
-    } catch (e) { if (!controller.signal.aborted) setError(tutorError(e)); }
+    } catch (e) { if (!controller.signal.aborted) setError(tutorError(e, mode === 'mistakes' && !!questionId)); }
     finally { if (active.current === controller) { active.current = null; setLoading(false); } }
   }
   useEffect(() => {

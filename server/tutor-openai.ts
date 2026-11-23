@@ -59,7 +59,10 @@ export function createTutorProvider(): TutorProvider {
   // Fail closed until server-side activation is explicitly configured. Never VITE_*.
   if (process.env.ZHPATH_TUTOR_ENABLED !== 'true') return unconfiguredProvider;
   const choice = process.env.ZHPATH_TUTOR_PROVIDER || 'openai';
-  if (choice === 'ollama') return new OllamaTutorProvider(localOllamaUrl(process.env.ZHPATH_OLLAMA_URL), process.env.ZHPATH_OLLAMA_MODEL || DEFAULT_OLLAMA_MODEL);
+  if (choice === 'ollama') {
+    try { return new OllamaTutorProvider(localOllamaUrl(process.env.ZHPATH_OLLAMA_URL), process.env.ZHPATH_OLLAMA_MODEL || DEFAULT_OLLAMA_MODEL); }
+    catch (error) { console.error(`AI tutor disabled: ${(error as Error).message}`); return unconfiguredProvider; }
+  }
   if (choice !== 'openai' || !process.env.OPENAI_API_KEY) return unconfiguredProvider;
   return new OpenAiTutorProvider(process.env.OPENAI_API_KEY, new TutorBudget(resolve(fileURLToPath(new URL('../logs/tutor-budget.json', import.meta.url)))));
 }
