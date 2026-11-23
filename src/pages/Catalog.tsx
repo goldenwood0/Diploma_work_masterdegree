@@ -117,7 +117,7 @@ export default function Catalog({
     <section className="space-y-6 tablet:space-y-8">
       <div className="space-y-2">
         <nav aria-label={t("Навигационная цепочка")} className="hidden text-sm uppercase tracking-wide text-muted-foreground tablet:block">
-          <button type="button" className="uppercase hover:underline" onClick={() => onNavigate("dashboard")}>{t("Главная")}</button>
+          <button type="button" className="inline-flex min-h-11 items-center uppercase hover:underline" onClick={() => onNavigate("dashboard")}>{t("Главная")}</button>
           <span aria-hidden="true"> / </span>
           <span aria-current="page">{t("Курсы")}</span>
         </nav>

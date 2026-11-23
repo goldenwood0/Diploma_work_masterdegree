@@ -92,7 +92,7 @@ export default function Lesson({
     <section className="max-w-3xl mx-auto space-y-6">
       {lesson && !error && <StudyTimeTracker source="lesson" lessonSlug={slug} />}
       <button
-        className="flex items-center gap-2 text-primary"
+        className="-ml-2 flex min-h-11 items-center gap-2 rounded-lg px-2 text-primary hover:bg-secondary"
         onClick={() => onNavigate("catalog")}
       >
         <ArrowLeft size={18} />
@@ -143,8 +143,8 @@ export default function Lesson({
                 ? "Результат сохранён. Это итог пилотного модуля, а не всего HSK 1. Следующий шаг — повторение изученных слов."
                 : "Результат сохранён. Откройте каталог, чтобы перейти к следующему уроку, или повторите изученные слова.")}</p>
               <div className="flex flex-wrap gap-4">
-                <button className="underline" onClick={() => onNavigate("reviews")}>{t("Повторить слова")}</button>
-                <button className="underline" onClick={() => onNavigate("catalog")}>{t("Открыть каталог")}</button>
+                <button className="min-h-11 underline" onClick={() => onNavigate("reviews")}>{t("Повторить слова")}</button>
+                <button className="min-h-11 underline" onClick={() => onNavigate("catalog")}>{t("Открыть каталог")}</button>
               </div>
             </div>
           )}
@@ -159,7 +159,7 @@ export default function Lesson({
                 aria-current={i === index ? "step" : undefined}
                 disabled={saving || i > lesson.progress.nextBlock}
                 onClick={() => setIndex(i)}
-                className={`size-10 rounded-full border border-border disabled:opacity-40 ${
+                className={`size-11 rounded-full border border-border disabled:opacity-40 ${
                   index === i ? "bg-primary text-primary-foreground" : "bg-card"
                 }`}
               >
