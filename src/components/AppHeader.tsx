@@ -58,7 +58,7 @@ const AppHeader = forwardRef<HTMLElement, {
         </nav>
 
         <form role="search" onSubmit={search} className="ml-auto hidden min-w-0 flex-1 tablet:flex desktop:max-w-xl">
-          <label className="flex min-h-11 w-full min-w-0 items-center gap-2 rounded-xl border border-border bg-background px-3 focus-within:border-primary">
+          <label className="search-field flex min-h-11 w-full min-w-0 items-center gap-2 rounded-xl border border-border bg-background px-3 focus-within:border-primary">
             <Search size={20} aria-hidden="true" className="shrink-0 text-muted-foreground" />
             <span className="sr-only">{t('Поиск уроков')}</span>
             <input type="search" value={query} maxLength={200} onChange={event => setQuery(event.target.value)}
