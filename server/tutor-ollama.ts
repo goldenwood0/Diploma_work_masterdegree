@@ -23,6 +23,14 @@ export function localOllamaUrl(value: string | undefined) {
   return url.origin;
 }
 
+const languageNames: Record<string, string> = { ru: 'Russian', kk: 'Kazakh', en: 'English' };
+
+// Small local models ignore the bare language code in the data, so name the language explicitly.
+export function languageReminder(code: string) {
+  const name = languageNames[code] ?? 'English';
+  return `Write the whole answer in ${name}. Use Chinese characters only for the Chinese words, phrases and examples themselves, always with pinyin.`;
+}
+
 export class OllamaTutorProvider implements TutorProvider {
   readonly kind = 'live' as const;
   // A local model may need to load into GPU memory first; generation is slower than a hosted API.
@@ -31,7 +39,8 @@ export class OllamaTutorProvider implements TutorProvider {
   async generate(input: TutorEnvelope, signal: AbortSignal) {
     const body = JSON.stringify({
       model: this.model, stream: false, keep_alive: '30m',
-      messages: [{ role: 'system', content: input.system }, { role: 'user', content: JSON.stringify(input.data) }],
+      messages: [{ role: 'system', content: `${input.system}
+${languageReminder(input.data.language)}` }, { role: 'user', content: JSON.stringify(input.data) }],
       options: { num_predict: input.maxOutputTokens, temperature: 0.3 },
     });
     if (Buffer.byteLength(body, 'utf8') > 70000 || signal.aborted) throw new Error('Input unavailable');

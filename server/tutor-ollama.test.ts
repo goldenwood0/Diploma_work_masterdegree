@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { OllamaTutorProvider, localOllamaUrl } from './tutor-ollama.js';
+import { OllamaTutorProvider, languageReminder, localOllamaUrl } from './tutor-ollama.js';
 import { createTutorProvider } from './tutor-openai.js';
 import { tutorInstructions, type TutorEnvelope } from './tutor-provider.js';
 
@@ -17,7 +17,7 @@ test('Ollama transport contract: local /api/chat, system + data messages, token 
     assert.equal(body.model, 'qwen2.5:7b'); assert.equal(body.stream, false); assert.equal(body.options.num_predict, 1200);
     assert.equal(body.tools, undefined);
     assert.deepEqual(body.messages.map((m: { role: string }) => m.role), ['system', 'user']);
-    assert.equal(body.messages[0].content, tutorInstructions);
+    assert.ok(body.messages[0].content.startsWith(tutorInstructions)); assert.match(body.messages[0].content, /whole answer in Russian/);
     assert.equal(JSON.parse(body.messages[1].content).material, '你好');
     return Response.json(response);
   };
@@ -74,4 +74,8 @@ test('provider switch: Ollama needs only the explicit switch; OpenAI still needs
   } finally {
     for (const n of names) { if (saved[n] === undefined) delete process.env[n]; else process.env[n] = saved[n]; }
   }
+});
+
+test('language reminder names the explanation language, English for unknown codes', () => {
+  assert.match(languageReminder('kk'), /Kazakh/); assert.match(languageReminder('en'), /English/); assert.match(languageReminder('xx'), /English/);
 });
