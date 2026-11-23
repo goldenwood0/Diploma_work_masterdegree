@@ -62,10 +62,10 @@ export default function ProfileForm({ account, onboarding = false, onSaved }: {
       </select></label>
       <p className="text-sm text-muted-foreground">{t('Уровень сохранится в профиле. Доступность уроков зависит от опубликованной программы.')}</p>
       <label className="block font-medium">{t('Дневная норма (мин)')}: <output>{form.dailyGoalMinutes}</output>
-        <input type="range" min={5} max={60} step={5} value={form.dailyGoalMinutes} onChange={e => update('dailyGoalMinutes', Number(e.target.value))} className="mt-3 block w-full accent-primary" />
+        <input type="range" min={5} max={60} step={5} value={form.dailyGoalMinutes} onChange={e => update('dailyGoalMinutes', Number(e.target.value))} className="mt-3 block h-11 w-full accent-primary" />
       </label>
       <label className="block font-medium">{t('Часовой пояс')}<select required value={form.timezone} onChange={e => update('timezone', e.target.value)} className={field}>{timezones.map(zone => <option key={zone} value={zone}>{zone.replace(/_/g, ' ')}</option>)}</select></label>
-      <label className="flex gap-3 items-center font-medium"><input type="checkbox" checked={form.remindersEnabled} onChange={e => update('remindersEnabled', e.target.checked)} className="size-5 accent-primary" />{t('Напоминать о ежедневной цели')}</label>
+      <label className="flex min-h-11 cursor-pointer gap-3 items-center font-medium"><input type="checkbox" checked={form.remindersEnabled} onChange={e => update('remindersEnabled', e.target.checked)} className="size-5 accent-primary" />{t('Напоминать о ежедневной цели')}</label>
       <label className="block font-medium">{t('Время напоминания')}<input required type="time" value={form.reminderTime} onChange={e => update('reminderTime', e.target.value)} className={field} /></label>
       <p className="text-sm text-muted-foreground">{t('Письмо на подтверждённый email, на языке интерфейса и по часовому поясу профиля. Если дневная цель выполнена, напоминание не отправляется.')}</p>
       <p className="text-sm text-muted-foreground">{t('Отправка возможна в течение часа после выбранного времени в тот же день. После смены часового пояса между письмами остаётся не менее 20 часов.')}</p>

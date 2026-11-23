@@ -29,6 +29,6 @@ export default function ReminderStatus() {
       <p>{t(value.available ? "Сервис напоминаний включён. Вы можете отключить письма настройкой выше." : "Напоминания временно недоступны. Ваши настройки будут сохранены.")}</p>
       {value.latest && <p>{t(labels[value.latest.status])}</p>}
     </>}
-    <button type="button" className="underline" onClick={() => setAttempt(n => n + 1)}>{t("Обновить статус напоминаний")}</button>
+    <button type="button" className="min-h-11 underline" onClick={() => setAttempt(n => n + 1)}>{t("Обновить статус напоминаний")}</button>
   </div>
 }

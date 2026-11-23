@@ -9,7 +9,7 @@ function ReviewWriting({ text }: { text: string }) {
   const { t } = useLanguage();
   const [open, setOpen] = useState(false);
   return <details className="min-w-0 rounded-xl border border-border bg-card p-4" onToggle={event => setOpen(event.currentTarget.open)}>
-    <summary className="cursor-pointer font-medium text-primary">{t('Практика письма')}</summary>
+    <summary className="cursor-pointer py-2.5 font-medium text-primary">{t('Практика письма')}</summary>
     {open && <div className="mt-4"><CharacterPractice key={text} text={text} /></div>}
   </details>;
 }
@@ -26,9 +26,9 @@ function DictionaryCard({ card, onChange }: { card: Card; onChange: (value: Card
     catch (err) { setError(err instanceof ApiError ? err.message : 'Не удалось сохранить карточку.'); }
     finally { setBusy(false); }
   }
-  return <article className="rounded-xl border border-border bg-card p-5 space-y-3"><div className="flex justify-between gap-3"><div><p lang="zh-CN" className="text-3xl">{card.content.hanzi}</p><HskBadge word={card.content.hanzi} /><p className="text-primary">{card.content.pinyin}</p><p>{card.content.translation[explanationLanguage]}</p></div><button disabled={busy} aria-pressed={card.favorite} onClick={() => void save({ favorite: !card.favorite })} className="self-start border border-border rounded-lg p-2">{card.favorite ? '★' : '☆'} {t('Избранное')}</button></div>
+  return <article className="rounded-xl border border-border bg-card p-5 space-y-3"><div className="flex justify-between gap-3"><div><p lang="zh-CN" className="text-3xl">{card.content.hanzi}</p><HskBadge word={card.content.hanzi} /><p className="text-primary">{card.content.pinyin}</p><p>{card.content.translation[explanationLanguage]}</p></div><button disabled={busy} aria-pressed={card.favorite} onClick={() => void save({ favorite: !card.favorite })} className="self-start min-h-11 border border-border rounded-lg px-3 py-2">{card.favorite ? '★' : '☆'} {t('Избранное')}</button></div>
     <label className="block"><span className="text-sm">{t('Заметка')}</span><textarea maxLength={2000} value={note} onChange={e => { setNote(e.target.value); setSaved(false); }} className="w-full border border-border bg-background rounded-lg p-2" /></label>
-    <button disabled={busy || note === card.note} onClick={() => void save({ note })} className="text-primary underline disabled:opacity-40">{t('Сохранить заметку')}</button>
+    <button disabled={busy || note === card.note} onClick={() => void save({ note })} className="min-h-11 text-primary underline disabled:opacity-40">{t('Сохранить заметку')}</button>
     {saved && <p role="status">{t('Сохранено')}</p>}{error && <p role="alert">{t(error)}</p>}
     <ReviewWriting text={card.content.hanzi} />
   </article>;
@@ -72,7 +72,7 @@ export default function Reviews() {
   const query = search.trim().toLocaleLowerCase();
   const filtered = data?.cards.filter(c => (!favorites || c.favorite) && [c.content.hanzi, c.content.pinyin, ...Object.values(c.content.translation)].some(value => value.toLocaleLowerCase().includes(query))) ?? [];
   const date = (value: string) => new Date(value).toLocaleString(language === 'kk' ? 'kk-KZ' : language, { timeZone: data?.timezone });
-  return <section className="max-w-4xl mx-auto space-y-6"><h1 className="text-3xl font-bold text-dark-green">{t('Словарь и повторение')}</h1><a href="#/dictionary" className="inline-block text-primary underline">{t('Словарь')} →</a>
+  return <section className="max-w-4xl mx-auto space-y-6"><h1 className="text-3xl font-bold text-dark-green">{t('Словарь и повторение')}</h1><a href="#/dictionary" className="inline-flex min-h-11 items-center text-primary underline">{t('Словарь')} →</a>
     {data && data.cards.length > 0 && !error && <StudyTimeTracker source="reviews" />}
     {error && <div role="alert"><p>{t(error)}</p><button disabled={busy} className="underline" onClick={() => setReload(n => n + 1)}>{t('Обновить карточки')}</button></div>}
     {!data && !error && <p role="status">{t('Загрузка…')}</p>}
@@ -85,9 +85,9 @@ export default function Reviews() {
           {(revealed || mode === 'hanzi') && <ReviewWriting key={`${card.id}:${mode}`} text={card.content.hanzi} />}
         </div>}
       </div>
-      <h2 className="text-2xl font-semibold">{t('Мой словарь')} · {data.cards.length}</h2><label className="block">{t('Поиск слова')}<input type="search" value={search} onChange={e => setSearch(e.target.value)} className="block w-full border border-border rounded-xl p-3 mt-2" /></label><label className="flex gap-2"><input type="checkbox" checked={favorites} onChange={e => setFavorites(e.target.checked)} />{t('Только избранное')}</label>
+      <h2 className="text-2xl font-semibold">{t('Мой словарь')} · {data.cards.length}</h2><label className="block">{t('Поиск слова')}<input type="search" value={search} onChange={e => setSearch(e.target.value)} className="block w-full border border-border rounded-xl p-3 mt-2" /></label><label className="flex min-h-11 cursor-pointer items-center gap-2"><input type="checkbox" className="size-5 accent-primary" checked={favorites} onChange={e => setFavorites(e.target.checked)} />{t('Только избранное')}</label>
       {filtered.length === 0 && <p>{t('Слова не найдены.')}</p>}<div className="grid sm:grid-cols-2 gap-4">{filtered.map(c => <DictionaryCard key={c.id} card={c} onChange={value => setData(current => current ? { ...current, cards: current.cards.map(old => old.id === value.id ? { ...old, note: value.note, favorite: value.favorite } : old) } : current)} />)}</div>
-      <details className="border border-border rounded-xl p-4"><summary>{t('Последние 30 повторений')}</summary><ul className="space-y-2 mt-4">{data.history.map(e => <li key={e.id}>{data.cards.find(c => c.id === e.cardId)?.content.hanzi} · {t(labels[e.rating] ?? e.rating)} · {date(e.createdAt)} → {date(e.result.dueAt)}</li>)}</ul></details>
+      <details className="border border-border rounded-xl p-4"><summary className="cursor-pointer py-2.5">{t('Последние 30 повторений')}</summary><ul className="space-y-2 mt-4">{data.history.map(e => <li key={e.id}>{data.cards.find(c => c.id === e.cardId)?.content.hanzi} · {t(labels[e.rating] ?? e.rating)} · {date(e.createdAt)} → {date(e.result.dueAt)}</li>)}</ul></details>
     </>}
   </section>;
 }
