@@ -20,6 +20,7 @@ import { StudyTimeController } from './study-time.controller.js';
 import { ReminderService } from './reminder.service.js';
 import { TutorController } from './tutor.controller.js';
 import { TutorService } from './tutor.service.js';
+import { QuizChecks } from './quiz-checks.js';
 import { TUTOR_PROVIDER } from './tutor-provider.js';
 import { createTutorProvider } from './tutor-openai.js';
 
@@ -30,7 +31,7 @@ class HealthController {
 
 @Module({
   controllers: [TutorController, StudyTimeController, AnalyticsController, MediaController, AuthController, AdminController, HealthController, ProfileController, LearningController, ReviewController, ContentController],
-  providers: [TutorService, { provide: TUTOR_PROVIDER, useFactory: createTutorProvider }, Database, AuthService, Mailer, ReminderService, SessionGuard, AuthRateGuard, { provide: APP_GUARD, useClass: OriginGuard }],
+  providers: [QuizChecks, TutorService, { provide: TUTOR_PROVIDER, useFactory: createTutorProvider }, Database, AuthService, Mailer, ReminderService, SessionGuard, AuthRateGuard, { provide: APP_GUARD, useClass: OriginGuard }],
 })
 class AppModule {}
 

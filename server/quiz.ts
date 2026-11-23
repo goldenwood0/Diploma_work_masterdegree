@@ -50,10 +50,8 @@ export function publicQuestion(q: Question) {
 // Ignore spacing, case, Unicode width and punctuation. Do not erase tone marks,
 // reorder characters or accept synonyms that the editor has not explicitly listed.
 export const normalizeAnswer = (text: string) => text.normalize('NFKC').toLowerCase().replace(/[\s\p{P}]/gu, '');
-export function grade(questions: Question[], answers: Answers, passPercent: number) {
-  if (answers.length !== questions.length || new Set(answers.map(a => a.questionId)).size !== questions.length || answers.some(a => !questions.some(q => q.id === a.questionId))) throw new BadRequestException('Ответьте на все задания.');
-  const result = questions.map(q => {
-    const value = answers.find(a => a.questionId === q.id)!.value;
+// Grade one answer exactly as a full submission would; used by grade() and instant checks.
+export function gradeOne(q: Question, value: Answers[number]['value']) {
     let correct = false;
     if (q.kind === 'match' || q.kind === 'order') {
       const allowed = (q.kind === 'match' ? q.right : q.options).map(o => o.id);
@@ -68,7 +66,10 @@ export function grade(questions: Question[], answers: Answers, passPercent: numb
     }
     const expected = q.kind === 'choice' ? q.options.find(o => o.id === q.correct)!.text : q.kind === 'order' || q.kind === 'match' ? q.correct.map(id => (q.kind === 'match' ? q.right : q.options).find(o => o.id === id)!.text) : q.accepted[0];
     return { question: publicQuestion(q), value, correct, expected, explanation: q.explanation };
-  });
+}
+export function grade(questions: Question[], answers: Answers, passPercent: number) {
+  if (answers.length !== questions.length || new Set(answers.map(a => a.questionId)).size !== questions.length || answers.some(a => !questions.some(q => q.id === a.questionId))) throw new BadRequestException('Ответьте на все задания.');
+  const result = questions.map(q => gradeOne(q, answers.find(a => a.questionId === q.id)!.value));
   const score = result.filter(r => r.correct).length;
   return { score, total: questions.length, passed: score * 100 >= passPercent * questions.length, passPercent, items: result };
 }

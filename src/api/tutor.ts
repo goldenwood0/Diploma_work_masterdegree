@@ -7,7 +7,7 @@ const response = z.object({ text: z.string().min(1).max(6000), provider });
 export async function tutorStatus(signal: AbortSignal) {
   return z.object({ provider }).parse(await request('/tutor/status', { signal }));
 }
-export async function askTutor(input: { lessonSlug: string; mode: TutorMode; text: string; history: TutorTurn[] }, signal: AbortSignal) {
+export async function askTutor(input: { lessonSlug: string; mode: TutorMode; text: string; history: TutorTurn[]; questionId?: string }, signal: AbortSignal) {
   return response.parse(await request('/tutor/ask', { method: 'POST', signal, headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(input) }));
 }
 export function tutorError(error: unknown) {

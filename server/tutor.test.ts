@@ -10,6 +10,8 @@ import { AuthService } from './auth.service.js';
 import { OriginGuard, SessionGuard } from './security.js';
 import { TutorController } from './tutor.controller.js';
 import { TutorService, redact } from './tutor.service.js';
+import { QuizChecks } from './quiz-checks.js';
+import { gradeOne, questionsSchema } from './quiz.js';
 import { TUTOR_PROVIDER, tutorInput, tutorInstructions, unconfiguredProvider, type TutorProvider, type TutorEnvelope } from './tutor-provider.js';
 
 const localized = { ru: 'Приветствие', kk: 'Сәлемдесу', en: 'Greeting' };
@@ -186,4 +188,24 @@ test('HTTP: real Nest routes, SessionGuard/OriginGuard, validation and test adap
     await app?.close();
     for (const [key, value] of Object.entries(previous)) { if (value === undefined) delete process.env[key]; else process.env[key] = value; }
   }
+});
+
+test('mistakes mode with questionId explains one instantly checked wrong answer only', async () => {
+  const checks = new QuizChecks();
+  const f = fixture();
+  const service = new TutorService(f.db as unknown as Database, f.adapter, checks);
+  const text = (value: string) => ({ ru: `${value} ru`, kk: `${value} kk`, en: `${value} en` });
+  const [question] = questionsSchema.parse([{ id: 'q1', kind: 'choice', prompt: text('prompt'), options: [{ id: 'a', text: text('right') }, { id: 'b', text: text('wrong') }], correct: 'a', explanation: text('why') }]);
+  const ask = (questionId: string) => service.ask('alice', tutorInput.parse({ lessonSlug: 'lesson', mode: 'mistakes', questionId }), signal());
+  // Nothing checked yet: the answer key must not leak through the tutor.
+  await rejectsStatus(ask('q1'), 409);
+  checks.record('alice', 'quiz', 3, 'q1', 'b', () => gradeOne(question, 'b'));
+  await ask('q1');
+  assert.deepEqual(f.calls[0].data.mistakes, [{ kind: 'choice', prompt: 'prompt kk', given: 'wrong kk', expected: 'right kk', explanation: 'why kk' }]);
+  // Another learner's check and a correct check give nothing to explain.
+  await rejectsStatus(service.ask('bob', tutorInput.parse({ lessonSlug: 'lesson', mode: 'mistakes', questionId: 'q1' }), signal()), 409);
+  checks.clear('alice', 'quiz'); checks.record('alice', 'quiz', 3, 'q1', 'a', () => gradeOne(question, 'a'));
+  await rejectsStatus(ask('q1'), 409);
+  assert.equal(f.calls.length, 1);
+  assert.throws(() => tutorInput.parse({ lessonSlug: 'lesson', mode: 'explain', questionId: 'q1' }));
 });

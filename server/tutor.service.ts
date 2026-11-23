@@ -1,8 +1,9 @@
-import { Inject, Injectable, HttpException, NotFoundException, ForbiddenException } from '@nestjs/common';
+import { Inject, Injectable, Optional, HttpException, NotFoundException, ForbiddenException } from '@nestjs/common';
 import { z } from 'zod';
 import { Database } from './database.js';
 import { searchableContent } from './content-search.js';
 import { TutorBudgetError } from './tutor-budget.js';
+import { QuizChecks } from './quiz-checks.js';
 import { TUTOR_PROVIDER, tutorInstructions, tutorOutput, type TutorInput, type TutorProvider } from './tutor-provider.js';
 
 const errorSummary = z.object({ items: z.array(z.object({ correct: z.boolean(), question: z.object({
@@ -43,7 +44,7 @@ export class TutorService {
   private active = new Set<string>();
   // Bounded process-local ledger: no prompts or personal data.
   readonly usage: Array<{ status: string; provider: string; inputTokens?: number; outputTokens?: number; cost?: { amount: number; currency: string } }> = [];
-  constructor(private db: Database, @Inject(TUTOR_PROVIDER) private provider: TutorProvider) {}
+  constructor(private db: Database, @Inject(TUTOR_PROVIDER) private provider: TutorProvider, @Optional() private checks?: QuizChecks) {}
   status() { return { provider: this.provider.kind }; }
   async context(userId: string, input: TutorInput) {
     const lesson = await this.db.lesson.findFirst({
@@ -76,7 +77,10 @@ export class TutorService {
       return parsed.success ? parsed.data.items.filter(i => !i.correct).map(i => i.question) : [];
     }).slice(0, 10);
     // Latest attempt of the current revisions only; nothing to review is an explicit state.
-    const mistakes = input.mode === 'mistakes' ? describeMistakes(attempts[0]?.result, language) : undefined;
+    const checked = input.questionId && lesson.quiz ? this.checks?.get(userId, lesson.quiz.id, lesson.quiz.revision, input.questionId) : undefined;
+    const mistakes = input.mode !== 'mistakes' ? undefined
+      : input.questionId ? (checked && !checked.result.correct ? describeMistakes({ items: [checked.result] }, language) : [])
+      : describeMistakes(attempts[0]?.result, language);
     if (mistakes && !mistakes.length) fail('TUTOR_NO_MISTAKES', 409);
     return { level: settings?.startLevel ?? 1, language, ...(mistakes ? { mistakes } : {}),
       mode: input.mode, material, errors, text: redact(input.text), history: input.history.map(m => ({ role: m.role, text: redact(m.text) })) };

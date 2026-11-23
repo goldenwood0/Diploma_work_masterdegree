@@ -24,6 +24,7 @@ export default function App() {
   const [currentScreen, setCurrentScreen, lessonSlug] = useRoute();
   const [isAiTutorOpen, setIsAiTutorOpen] = useState(false);
   const [reviewMistakes, setReviewMistakes] = useState(false);
+  const [reviewQuestion, setReviewQuestion] = useState<string | undefined>();
   const { account, loading, error, refresh, accept } = useAccount();
 
   const mobileNav = useRef<HTMLElement>(null);
@@ -56,7 +57,7 @@ export default function App() {
   return (
     <div className="app-shell flex flex-col min-h-dvh bg-background relative font-sans">
       <AppHeader ref={header} name={account.name} current={currentScreen} aiOpen={isAiTutorOpen}
-        onNavigate={setCurrentScreen} onOpenAi={() => { setReviewMistakes(false); setIsAiTutorOpen(true); }} />
+        onNavigate={setCurrentScreen} onOpenAi={() => { setReviewMistakes(false); setReviewQuestion(undefined); setIsAiTutorOpen(true); }} />
 
       {/* Main Content Area */}
       <main className="page-container min-w-0 flex-1 w-full py-6 tablet:py-10">
@@ -75,7 +76,7 @@ export default function App() {
         {currentScreen === 'content' && <ContentAdmin role={account.role} />}
         {currentScreen === 'dashboard' && <Dashboard name={account.name} dailyGoalMinutes={account.settings?.dailyGoalMinutes} onNavigate={setCurrentScreen} />}
         {currentScreen === 'catalog' && <Catalog onNavigate={setCurrentScreen} />}
-        {currentScreen === 'lesson' && <Lesson key={`${account.id}:${lessonSlug}`} userId={account.id} slug={lessonSlug} onNavigate={setCurrentScreen} onReviewMistakes={() => { setReviewMistakes(true); setIsAiTutorOpen(true); }} />}
+        {currentScreen === 'lesson' && <Lesson key={`${account.id}:${lessonSlug}`} userId={account.id} slug={lessonSlug} onNavigate={setCurrentScreen} onReviewMistakes={(questionId?: string) => { setReviewMistakes(true); setReviewQuestion(questionId); setIsAiTutorOpen(true); }} />}
         {currentScreen === 'profile' && <Profile account={account} onSignedOut={refresh} onSaved={accept} />}
         {currentScreen === 'reviews' && <Reviews />}
         {currentScreen === 'dictionary' && <Dictionary key={account.id} />}
@@ -84,7 +85,7 @@ export default function App() {
 
       {/* AI Tutor Sidebar */}
       {isAiTutorOpen && (
-        <AiTutorPanel key={`${account.id}:${currentScreen}:${lessonSlug}:${reviewMistakes}`} initialMode={reviewMistakes ? 'mistakes' : 'explain'} autoSend={reviewMistakes} lessonSlug={currentScreen === 'lesson' ? lessonSlug : undefined} onClose={() => setIsAiTutorOpen(false)} />
+        <AiTutorPanel key={`${account.id}:${currentScreen}:${lessonSlug}:${reviewMistakes}:${reviewQuestion ?? ''}`} initialMode={reviewMistakes ? 'mistakes' : 'explain'} autoSend={reviewMistakes} questionId={reviewMistakes ? reviewQuestion : undefined} lessonSlug={currentScreen === 'lesson' ? lessonSlug : undefined} onClose={() => setIsAiTutorOpen(false)} />
       )}
 
       {/* Mobile Bottom Nav */}

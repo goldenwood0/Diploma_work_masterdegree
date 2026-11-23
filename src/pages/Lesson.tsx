@@ -19,7 +19,7 @@ export default function Lesson({
   slug: string
   userId: string
   onNavigate: (screen: Screen) => void
-  onReviewMistakes?: () => void
+  onReviewMistakes?: (questionId?: string) => void
 }) {
   const { t, language, explanationLanguage } = useLanguage()
   const [lesson, setLesson] = useState<LessonData | null>(null)

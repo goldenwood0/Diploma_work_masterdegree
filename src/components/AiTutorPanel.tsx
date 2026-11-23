@@ -5,7 +5,8 @@ import { askTutor, tutorError, tutorStatus, type TutorMode, type TutorTurn } fro
 
 const modes: Array<[TutorMode, string]> = [['explain', 'Объясни правило'], ['check', 'Проверь мою фразу'], ['dialogue', 'Начать диалог'], ['practice', 'Тренировочные вопросы'], ['mistakes', 'Разбор ошибок теста']];
 // autoSend: opened from a quiz result, so the first request goes out without extra clicks.
-export default function AiTutorPanel({ onClose, lessonSlug, initialMode = 'explain', autoSend = false }: { onClose: () => void; lessonSlug?: string; initialMode?: TutorMode; autoSend?: boolean }) {
+// questionId: opened under one instantly checked wrong answer; mistakes mode explains only it.
+export default function AiTutorPanel({ onClose, lessonSlug, initialMode = 'explain', autoSend = false, questionId }: { onClose: () => void; lessonSlug?: string; initialMode?: TutorMode; autoSend?: boolean; questionId?: string }) {
   const { t, explanationLanguage } = useLanguage();
   const [provider, setProvider] = useState<'unconfigured' | 'test' | 'live' | null>(null);
   const [mode, setMode] = useState<TutorMode>(initialMode);
@@ -36,10 +37,10 @@ export default function AiTutorPanel({ onClose, lessonSlug, initialMode = 'expla
     const controller = new AbortController(); active.current = controller;
     setLoading(true); setError(''); setNotice('');
     try {
-      const result = await askTutor({ lessonSlug, mode, text, history: mode === 'dialogue' ? turns.slice(-6).map(m => ({ ...m, text: m.text.slice(0, 2000) })) : [] }, controller.signal);
+      const result = await askTutor({ lessonSlug, mode, text, history: mode === 'dialogue' ? turns.slice(-6).map(m => ({ ...m, text: m.text.slice(0, 2000) })) : [], ...(mode === 'mistakes' && questionId ? { questionId } : {}) }, controller.signal);
       if (!controller.signal.aborted) {
         setProvider(result.provider);
-        setTurns(old => [...old, { role: 'user', text: text || t(modes.find(m => m[0] === mode)![1]) }, { role: 'assistant', text: result.text }].slice(-20) as TutorTurn[]);
+        setTurns(old => [...old, { role: 'user', text: text || t(mode === 'mistakes' && questionId ? 'Объясни ошибку' : modes.find(m => m[0] === mode)![1]) }, { role: 'assistant', text: result.text }].slice(-20) as TutorTurn[]);
         setText('');
       }
     } catch (e) { if (!controller.signal.aborted) setError(tutorError(e)); }
