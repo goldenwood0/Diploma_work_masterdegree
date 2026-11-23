@@ -530,4 +530,7 @@ export const learningMessages: Record<string, Record<'en' | 'kk', string>> = {
   "Проверенные ответы нельзя менять.": {"en": "Checked answers cannot be changed.", "kk": "Тексерілген жауаптарды өзгертуге болмайды."},
   "Задание недоступно.": {"en": "The task is unavailable.", "kk": "Тапсырма қолжетімсіз."},
   "Проверка временно недоступна. Ответьте на все задания и отправьте тест.": {"en": "Checking is temporarily unavailable. Answer all tasks and submit the quiz.", "kk": "Тексеру уақытша қолжетімсіз. Барлық тапсырмаға жауап беріп, тестті жіберіңіз."},
+  "Очки": {"en": "Points", "kk": "Ұпай"},
+  "До следующего уровня": {"en": "To the next level", "kk": "Келесі деңгейге дейін"},
+  "Очки: 10 за верный ответ в лучшей попытке теста, 20 за зачёт, 1 за повторение карточки.": {"en": "Points: 10 per correct answer in your best quiz attempt, 20 per passed quiz, 1 per card review.", "kk": "Ұпай: тесттің ең жақсы әрекетіндегі әр дұрыс жауапқа 10, тапсырылған тестке 20, әр карточканы қайталауға 1."},
 }

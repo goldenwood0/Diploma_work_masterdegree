@@ -130,6 +130,14 @@ export default function Dashboard({
             <div aria-hidden="true" className="h-2 rounded-full bg-secondary">
               <div className="h-2 rounded-full bg-primary" style={{ width: `${Math.min(100, Math.round((todayMinutes / Math.max(1, dailyGoalMinutes)) * 100))}%` }} />
             </div>
+            {data?.stats.points && <div className="space-y-2 border-t border-border pt-3">
+              <p className="flex items-baseline justify-between gap-2"><span className="text-lg font-bold text-dark-green">{t("Уровень")} {data.stats.points.level}</span>
+                <span className="tabular-nums text-muted-foreground">{t("Очки")}: {data.stats.points.xp}</span></p>
+              <div role="progressbar" aria-label={t("До следующего уровня")} aria-valuemin={0} aria-valuemax={data.stats.points.nextLevelXp} aria-valuenow={data.stats.points.levelXp} className="h-2 rounded-full bg-secondary">
+                <div className="h-2 rounded-full bg-accent" style={{ width: `${Math.round(data.stats.points.levelXp / data.stats.points.nextLevelXp * 100)}%` }} />
+              </div>
+              <p className="text-sm text-muted-foreground">{t("Очки: 10 за верный ответ в лучшей попытке теста, 20 за зачёт, 1 за повторение карточки.")}</p>
+            </div>}
           </section>
           </div>
           <section aria-labelledby="next-step-title" className="space-y-4">

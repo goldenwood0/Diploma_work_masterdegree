@@ -2,7 +2,7 @@ import { Controller, Get, Req, UseGuards } from "@nestjs/common"
 import { Database } from "./database.js"
 import { Prisma } from "@prisma/client"
 import { SessionGuard, type AuthRequest } from "./security.js"
-import { activitySummary, exerciseSummary, localDay, accuracySummary } from "./analytics.js"
+import { activitySummary, exerciseSummary, localDay, accuracySummary, xpSummary } from "./analytics.js"
 import { timeByDay, type Segment } from "./study-time.js"
 import { shiftDay } from "./analytics.js"
 
@@ -24,7 +24,7 @@ export class AnalyticsController {
       : Prisma.sql`${canonical}::text`
     const now = new Date()
     const since = new Date(now.getTime() - 30 * 86400000)
-    const [days, attempts, timeEntries, timeTotal] = await this.db.$transaction([
+    const [days, attempts, timeEntries, timeTotal, quizBest, reviews] = await this.db.$transaction([
       this.db.$queryRaw<Array<{ day: string }>>`
         SELECT DISTINCT to_char(("createdAt" AT TIME ZONE 'UTC') AT TIME ZONE (${zone}), 'YYYY-MM-DD') AS day
         FROM (
@@ -46,6 +46,10 @@ export class AnalyticsController {
         ORDER BY a."quizId", a."createdAt" DESC, a.id DESC`,
       this.db.studyTimeEntry.findMany({ where: { userId, endAt: { gte: new Date(now.getTime() - 8 * 86400000) } }, select: { segments: true } }),
       this.db.studyTimeEntry.aggregate({ where: { userId }, _sum: { creditedMs: true } }),
+      // Points: best attempt of each quiz on any version, plus whether it was ever passed.
+      this.db.$queryRaw<Array<{ best: number; passed: boolean }>>`
+        SELECT MAX(score)::int AS best, BOOL_OR(passed) AS passed FROM "QuizAttempt" WHERE "userId" = ${userId} GROUP BY "quizId"`,
+      this.db.reviewEvent.count({ where: { userId } }),
     ])
     const today = localDay(now, timezone)
     const dailyTime = timeByDay(timeEntries.flatMap(entry => entry.segments as Segment[]), timezone)
@@ -65,6 +69,7 @@ export class AnalyticsController {
       mistakeLessonIds: attempts.filter(a => exerciseSummary([a.result]).weakAreas.length > 0).map(a => a.lessonId),
       ...exerciseSummary(attempts.map((attempt) => attempt.result)),
       ...accuracySummary(attempts.map((attempt) => attempt.result)),
+      points: xpSummary(quizBest, reviews),
     }
   }
 }
