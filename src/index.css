@@ -111,6 +111,11 @@ html {
   outline-offset: 3px;
 }
 
+/* Test actions stay above the phone bottom navigation. */
+.quiz-actions {
+  bottom: var(--mobile-nav-height, 0px);
+}
+
 /* Search fields with an icon: the ring goes on the wrapper, not on the bare input. */
 .search-field:focus-within {
   outline: 3px solid var(--color-primary);
