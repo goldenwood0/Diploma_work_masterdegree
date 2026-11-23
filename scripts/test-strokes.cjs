@@ -2,7 +2,7 @@ const fs = require('node:fs');
 const assert = require('node:assert/strict');
 const vm = require('node:vm');
 const ts = require('typescript');
-const manifest = require('../public/strokes/manifest.json');
+const manifest = require('../src/api/strokeManifest.json');
 const scope = { exports: {}, require: name => name === 'zod' ? require('zod') : {default:manifest} };
 vm.runInNewContext(ts.transpileModule(fs.readFileSync('src/api/strokes.ts', 'utf8'), { compilerOptions: { module: ts.ModuleKind.CommonJS } }).outputText, scope);
 const { strokeSchema, hasStrokes, getStrokes } = scope.exports;

@@ -1,0 +1,982 @@
+{
+  "capturedAt": "2026-10-15T19:46:57.799Z",
+  "lessons": [
+    {
+      "slug": "hsk1-greetings",
+      "id": "95ad1640-bce6-4dfc-9824-4ae8ea3d3edc",
+      "title": {
+        "en": "Greetings",
+        "kk": "Сәлемдесу",
+        "ru": "Приветствие"
+      },
+      "minutes": 10,
+      "position": 0,
+      "prerequisiteId": null,
+      "published": true,
+      "editorialState": "DRAFT",
+      "revision": 2,
+      "editVersion": 0,
+      "draft": null,
+      "blocks": [
+        {
+          "kind": "vocabulary",
+          "content": {
+            "title": {
+              "en": "New words",
+              "kk": "Жаңа сөздер",
+              "ru": "Новые слова"
+            },
+            "words": [
+              {
+                "hanzi": "你",
+                "pinyin": "nǐ",
+                "translation": {
+                  "en": "you",
+                  "kk": "сен",
+                  "ru": "ты"
+                }
+              },
+              {
+                "hanzi": "好",
+                "pinyin": "hǎo",
+                "translation": {
+                  "en": "good; well",
+                  "kk": "жақсы",
+                  "ru": "хороший; хорошо"
+                }
+              },
+              {
+                "hanzi": "你好",
+                "pinyin": "nǐ hǎo",
+                "translation": {
+                  "en": "hello",
+                  "kk": "сәлеметсіз бе; сәлем",
+                  "ru": "здравствуйте; привет"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "kind": "reading",
+          "content": {
+            "text": {
+              "en": "Tone distinguishes word meanings in Chinese. When two third tones occur together, the first is pronounced like a second tone: nǐ hǎo sounds like ní hǎo. Learning materials retain the underlying tone marks.",
+              "kk": "Қытай тілінде тон сөздердің мағынасын ажыратады. Екі үшінші тон қатар келсе, біріншісі екінші тон сияқты айтылады: nǐ hǎo — ní hǎo болып естіледі. Оқу жазбасында бастапқы тондар сақталады.",
+              "ru": "В китайском языке тон различает значения слов. В сочетании двух третьих тонов первый произносится как второй: nǐ hǎo звучит как ní hǎo. В учебной записи сохраняем исходные тоны."
+            },
+            "hanzi": "你好！",
+            "title": {
+              "en": "Tones in a greeting",
+              "kk": "Сәлемдесудегі тондар",
+              "ru": "Тоны в приветствии"
+            },
+            "pinyin": "Nǐ hǎo!",
+            "translation": {
+              "en": "Hello!",
+              "kk": "Сәлеметсіз бе!",
+              "ru": "Здравствуйте!"
+            }
+          }
+        },
+        {
+          "kind": "audio",
+          "content": {
+            "hanzi": "你好",
+            "title": {
+              "en": "Listen to the greeting",
+              "kk": "Сәлемдесуді тыңдаңыз",
+              "ru": "Послушайте приветствие"
+            },
+            "author": "Sjors Provoost",
+            "pinyin": "Nǐ hǎo",
+            "license": "CC BY-SA 3.0",
+            "audioUrl": "https://upload.wikimedia.org/wikipedia/commons/7/7d/Zh_n%C7%90_h%C7%8Eo.ogg",
+            "sourceUrl": "https://commons.wikimedia.org/wiki/File:Zh_n%C7%90_h%C7%8Eo.ogg",
+            "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0/",
+            "translation": {
+              "en": "Hello",
+              "kk": "Сәлеметсіз бе",
+              "ru": "Здравствуйте"
+            }
+          }
+        }
+      ],
+      "quiz": {
+        "kind": "lesson",
+        "revision": 1,
+        "passPercent": 80,
+        "questions": [
+          {
+            "id": "greeting-choice",
+            "kind": "choice",
+            "prompt": {
+              "en": "How do you say hello in Chinese?",
+              "kk": "Қытайша қалай сәлемдеседі?",
+              "ru": "Как поздороваться по-китайски?"
+            },
+            "correct": "hello",
+            "options": [
+              {
+                "id": "bye",
+                "text": {
+                  "en": "再见",
+                  "kk": "再见",
+                  "ru": "再见"
+                }
+              },
+              {
+                "id": "hello",
+                "text": {
+                  "en": "你好",
+                  "kk": "你好",
+                  "ru": "你好"
+                }
+              },
+              {
+                "id": "thanks",
+                "text": {
+                  "en": "谢谢",
+                  "kk": "谢谢",
+                  "ru": "谢谢"
+                }
+              }
+            ],
+            "explanation": {
+              "en": "你好 means hello; 再见 means goodbye; 谢谢 means thank you.",
+              "kk": "你好 — сәлемдесу. 再见 — сау болыңыз; 谢谢 — рақмет.",
+              "ru": "你好 — приветствие. 再见 — до свидания; 谢谢 — спасибо."
+            }
+          },
+          {
+            "id": "greeting-dictation",
+            "kind": "dictation",
+            "author": "Sjors Provoost",
+            "prompt": {
+              "en": "Listen and write the greeting in Chinese characters.",
+              "kk": "Тыңдап, естіген сәлемдесуді иероглифтермен жазыңыз.",
+              "ru": "Послушайте и запишите иероглифами услышанное приветствие."
+            },
+            "license": "CC BY-SA 3.0",
+            "accepted": [
+              "你好"
+            ],
+            "audioUrl": "https://upload.wikimedia.org/wikipedia/commons/7/7d/Zh_n%C7%90_h%C7%8Eo.ogg",
+            "sourceUrl": "https://commons.wikimedia.org/wiki/File:Zh_n%C7%90_h%C7%8Eo.ogg",
+            "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0/",
+            "explanation": {
+              "en": "The recording says 你好, meaning hello.",
+              "kk": "Жазбада 你好 — «сәлеметсіз бе» айтылады.",
+              "ru": "В записи звучит 你好 — «здравствуйте»."
+            }
+          }
+        ]
+      }
+    },
+    {
+      "slug": "hsk1-my-name",
+      "id": "940e6472-4957-4d4e-b94a-c561f39ba71b",
+      "title": {
+        "en": "My name is…",
+        "kk": "Менің атым…",
+        "ru": "Меня зовут…"
+      },
+      "minutes": 10,
+      "position": 1,
+      "prerequisiteId": "95ad1640-bce6-4dfc-9824-4ae8ea3d3edc",
+      "published": true,
+      "editorialState": "DRAFT",
+      "revision": 2,
+      "editVersion": 0,
+      "draft": null,
+      "blocks": [
+        {
+          "kind": "vocabulary",
+          "content": {
+            "title": {
+              "en": "New words",
+              "kk": "Жаңа сөздер",
+              "ru": "Новые слова"
+            },
+            "words": [
+              {
+                "hanzi": "我",
+                "pinyin": "wǒ",
+                "translation": {
+                  "en": "I; me",
+                  "kk": "мен",
+                  "ru": "я"
+                }
+              },
+              {
+                "hanzi": "叫",
+                "pinyin": "jiào",
+                "translation": {
+                  "en": "to be called",
+                  "kk": "аталу",
+                  "ru": "зваться"
+                }
+              },
+              {
+                "hanzi": "名字",
+                "pinyin": "míngzi",
+                "translation": {
+                  "en": "name",
+                  "kk": "есім",
+                  "ru": "имя"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "kind": "reading",
+          "content": {
+            "text": {
+              "en": "Put a name after 我叫. You do not need to add 是 in this sentence.",
+              "kk": "Есімді 我叫 сөзінен кейін қойыңыз. Бұл сөйлемге 是 қосудың қажеті жоқ.",
+              "ru": "Поставьте имя после 我叫. Для этого предложения не нужно добавлять 是."
+            },
+            "hanzi": "我叫安娜。",
+            "title": {
+              "en": "Introduce yourself",
+              "kk": "Өзіңізді таныстырыңыз",
+              "ru": "Представьтесь"
+            },
+            "pinyin": "Wǒ jiào Ānnà.",
+            "translation": {
+              "en": "My name is Anna.",
+              "kk": "Менің атым Анна.",
+              "ru": "Меня зовут Анна."
+            }
+          }
+        },
+        {
+          "kind": "reading",
+          "content": {
+            "text": {
+              "en": "Read aloud and replace the name with your own.",
+              "kk": "Сөйлемдерді дауыстап оқып, есімді өз есіміңізге ауыстырыңыз.",
+              "ru": "Прочитайте реплики вслух и замените имя своим."
+            },
+            "hanzi": "A：你好！\nB：你好！我叫安娜。",
+            "title": {
+              "en": "Short dialogue",
+              "kk": "Қысқа диалог",
+              "ru": "Мини-диалог"
+            },
+            "pinyin": "A: Nǐ hǎo!\nB: Nǐ hǎo! Wǒ jiào Ānnà.",
+            "translation": {
+              "en": "A: Hello!\nB: Hello! My name is Anna.",
+              "kk": "А: Сәлеметсіз бе!\nБ: Сәлеметсіз бе! Менің атым Анна.",
+              "ru": "А: Здравствуйте!\nБ: Здравствуйте! Меня зовут Анна."
+            }
+          }
+        }
+      ],
+      "quiz": {
+        "kind": "lesson",
+        "revision": 1,
+        "passPercent": 80,
+        "questions": [
+          {
+            "id": "name-match",
+            "kind": "match",
+            "left": [
+              {
+                "id": "wo",
+                "text": {
+                  "en": "我",
+                  "kk": "我",
+                  "ru": "我"
+                }
+              },
+              {
+                "id": "jiao",
+                "text": {
+                  "en": "叫",
+                  "kk": "叫",
+                  "ru": "叫"
+                }
+              },
+              {
+                "id": "mingzi",
+                "text": {
+                  "en": "名字",
+                  "kk": "名字",
+                  "ru": "名字"
+                }
+              }
+            ],
+            "right": [
+              {
+                "id": "name",
+                "text": {
+                  "en": "name",
+                  "kk": "есім",
+                  "ru": "имя"
+                }
+              },
+              {
+                "id": "me",
+                "text": {
+                  "en": "I",
+                  "kk": "мен",
+                  "ru": "я"
+                }
+              },
+              {
+                "id": "called",
+                "text": {
+                  "en": "to be called",
+                  "kk": "аталу",
+                  "ru": "зваться"
+                }
+              }
+            ],
+            "prompt": {
+              "en": "Match the words to their meanings.",
+              "kk": "Сөздер мен аудармаларын сәйкестендіріңіз.",
+              "ru": "Сопоставьте слова и перевод."
+            },
+            "correct": [
+              "me",
+              "called",
+              "name"
+            ],
+            "explanation": {
+              "en": "我 means I; 叫 means to be called; 名字 means name.",
+              "kk": "我 — мен; 叫 — аталу; 名字 — есім.",
+              "ru": "我 — я; 叫 — зваться; 名字 — имя."
+            }
+          },
+          {
+            "id": "name-gap",
+            "kind": "gap",
+            "prompt": {
+              "en": "Fill the gap with one character: 我 ___ 安娜。",
+              "kk": "Бос орынды бір иероглифпен толтырыңыз: 我 ___ 安娜。",
+              "ru": "Заполните пропуск одним иероглифом: 我 ___ 安娜。"
+            },
+            "accepted": [
+              "叫"
+            ],
+            "explanation": {
+              "en": "我叫安娜 means My name is Anna.",
+              "kk": "我叫安娜 — «Менің атым Анна».",
+              "ru": "我叫安娜 означает «Меня зовут Анна»."
+            }
+          }
+        ]
+      }
+    },
+    {
+      "slug": "hsk1-your-name",
+      "id": "7dc6b5bb-a2d9-4c34-b83e-43462cd65d51",
+      "title": {
+        "en": "What is your name?",
+        "kk": "Атыңыз кім?",
+        "ru": "Как вас зовут?"
+      },
+      "minutes": 10,
+      "position": 2,
+      "prerequisiteId": "940e6472-4957-4d4e-b94a-c561f39ba71b",
+      "published": true,
+      "editorialState": "DRAFT",
+      "revision": 2,
+      "editVersion": 0,
+      "draft": null,
+      "blocks": [
+        {
+          "kind": "vocabulary",
+          "content": {
+            "title": {
+              "en": "New words",
+              "kk": "Жаңа сөздер",
+              "ru": "Новые слова"
+            },
+            "words": [
+              {
+                "hanzi": "什么",
+                "pinyin": "shénme",
+                "translation": {
+                  "en": "what",
+                  "kk": "не; қандай",
+                  "ru": "что; какой"
+                }
+              },
+              {
+                "hanzi": "名字",
+                "pinyin": "míngzi",
+                "translation": {
+                  "en": "name",
+                  "kk": "есім",
+                  "ru": "имя"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "kind": "reading",
+          "content": {
+            "text": {
+              "en": "什么 takes the place of the unknown information. The question 你叫什么名字？does not need 吗.",
+              "kk": "什么 белгісіз ақпараттың орнына қойылады. 你叫什么名字？сұрағында 吗 шылауы қажет емес.",
+              "ru": "什么 ставится на место неизвестной информации. В вопросе 你叫什么名字？частица 吗 не нужна."
+            },
+            "hanzi": "你叫什么名字？",
+            "title": {
+              "en": "Questions with 什么",
+              "kk": "什么 арқылы сұрақ",
+              "ru": "Вопрос с 什么"
+            },
+            "pinyin": "Nǐ jiào shénme míngzi?",
+            "translation": {
+              "en": "What is your name?",
+              "kk": "Атыңыз кім?",
+              "ru": "Как вас зовут?"
+            }
+          }
+        },
+        {
+          "kind": "reading",
+          "content": {
+            "text": {
+              "en": "Read the question and answer, then answer with your own name.",
+              "kk": "Сұрақ пен жауапты оқыңыз. Содан кейін өз есіміңізбен жауап беріңіз.",
+              "ru": "Прочитайте вопрос и ответ. Затем ответьте своим именем."
+            },
+            "hanzi": "A：你叫什么名字？\nB：我叫安娜。",
+            "title": {
+              "en": "Meeting someone",
+              "kk": "Танысу",
+              "ru": "Знакомство"
+            },
+            "pinyin": "A: Nǐ jiào shénme míngzi?\nB: Wǒ jiào Ānnà.",
+            "translation": {
+              "en": "A: What is your name?\nB: My name is Anna.",
+              "kk": "А: Атыңыз кім?\nБ: Менің атым Анна.",
+              "ru": "А: Как вас зовут?\nБ: Меня зовут Анна."
+            }
+          }
+        }
+      ],
+      "quiz": {
+        "kind": "lesson",
+        "revision": 1,
+        "passPercent": 80,
+        "questions": [
+          {
+            "id": "name-order",
+            "kind": "order",
+            "prompt": {
+              "en": "Build the question What is your name?",
+              "kk": "«Атыңыз кім?» сұрағын құрастырыңыз.",
+              "ru": "Соберите вопрос «Как вас зовут?»"
+            },
+            "correct": [
+              "you",
+              "called",
+              "what",
+              "name"
+            ],
+            "options": [
+              {
+                "id": "name",
+                "text": {
+                  "en": "名字",
+                  "kk": "名字",
+                  "ru": "名字"
+                }
+              },
+              {
+                "id": "you",
+                "text": {
+                  "en": "你",
+                  "kk": "你",
+                  "ru": "你"
+                }
+              },
+              {
+                "id": "what",
+                "text": {
+                  "en": "什么",
+                  "kk": "什么",
+                  "ru": "什么"
+                }
+              },
+              {
+                "id": "called",
+                "text": {
+                  "en": "叫",
+                  "kk": "叫",
+                  "ru": "叫"
+                }
+              }
+            ],
+            "explanation": {
+              "en": "The correct order is 你叫什么名字？",
+              "kk": "Дұрыс реті: 你叫什么名字？",
+              "ru": "Правильный порядок: 你叫什么名字？"
+            }
+          },
+          {
+            "id": "name-input",
+            "kind": "input",
+            "prompt": {
+              "en": "Write name in Chinese characters.",
+              "kk": "«Есім» сөзін иероглифтермен жазыңыз.",
+              "ru": "Напишите «имя» иероглифами."
+            },
+            "accepted": [
+              "名字"
+            ],
+            "explanation": {
+              "en": "名字 (míngzi) means name.",
+              "kk": "名字 (míngzi) — есім.",
+              "ru": "名字 (míngzi) — имя."
+            }
+          }
+        ]
+      }
+    },
+    {
+      "slug": "hsk1-courtesy",
+      "id": "ee8e9e0a-4f1c-4a14-a285-ed63a8a041ac",
+      "title": {
+        "en": "Polite expressions",
+        "kk": "Сыпайы сөздер",
+        "ru": "Вежливые слова"
+      },
+      "minutes": 10,
+      "position": 3,
+      "prerequisiteId": "7dc6b5bb-a2d9-4c34-b83e-43462cd65d51",
+      "published": true,
+      "editorialState": "DRAFT",
+      "revision": 2,
+      "editVersion": 0,
+      "draft": null,
+      "blocks": [
+        {
+          "kind": "vocabulary",
+          "content": {
+            "title": {
+              "en": "New words",
+              "kk": "Жаңа сөздер",
+              "ru": "Новые слова"
+            },
+            "words": [
+              {
+                "hanzi": "谢谢",
+                "pinyin": "xièxie",
+                "translation": {
+                  "en": "thank you",
+                  "kk": "рақмет",
+                  "ru": "спасибо"
+                }
+              },
+              {
+                "hanzi": "不客气",
+                "pinyin": "bú kèqi",
+                "translation": {
+                  "en": "you are welcome",
+                  "kk": "оқасы жоқ (алғысқа жауап)",
+                  "ru": "пожалуйста (ответ на благодарность)"
+                }
+              },
+              {
+                "hanzi": "再见",
+                "pinyin": "zàijiàn",
+                "translation": {
+                  "en": "goodbye",
+                  "kk": "сау болыңыз",
+                  "ru": "до свидания"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "kind": "reading",
+          "content": {
+            "text": {
+              "en": "You can respond to 谢谢 with 不客气. Before a fourth tone, 不 is pronounced with a second tone: bú.",
+              "kk": "谢谢 дегенге 不客气 деп жауап беруге болады. Төртінші тонның алдында 不 екінші тонмен айтылады: bú.",
+              "ru": "На 谢谢 можно ответить 不客气. Перед четвёртым тоном 不 произносится вторым тоном: bú."
+            },
+            "hanzi": "A：谢谢！\nB：不客气！",
+            "title": {
+              "en": "Responding to thanks",
+              "kk": "Алғысқа жауап",
+              "ru": "Ответ на благодарность"
+            },
+            "pinyin": "A: Xièxie!\nB: Bú kèqi!",
+            "translation": {
+              "en": "A: Thank you!\nB: You are welcome!",
+              "kk": "А: Рақмет!\nБ: Оқасы жоқ!",
+              "ru": "А: Спасибо!\nБ: Пожалуйста!"
+            }
+          }
+        },
+        {
+          "kind": "reading",
+          "content": {
+            "text": {
+              "en": "End the conversation with 再见. Recall how to greet someone and introduce yourself.",
+              "kk": "Әңгімені 再见 сөзімен аяқтаңыз. Сәлемдесу мен өзіңізді таныстыруды еске түсіріңіз.",
+              "ru": "Завершите разговор словом 再见. Вспомните, как поздороваться и представиться."
+            },
+            "hanzi": "再见！",
+            "title": {
+              "en": "Saying goodbye",
+              "kk": "Қоштасу",
+              "ru": "Прощание"
+            },
+            "pinyin": "Zàijiàn!",
+            "translation": {
+              "en": "Goodbye!",
+              "kk": "Сау болыңыз!",
+              "ru": "До свидания!"
+            }
+          }
+        }
+      ],
+      "quiz": {
+        "kind": "lesson",
+        "revision": 1,
+        "passPercent": 80,
+        "questions": [
+          {
+            "id": "thanks-choice",
+            "kind": "choice",
+            "prompt": {
+              "en": "How do you respond to 谢谢?",
+              "kk": "谢谢 сөзіне қалай жауап береді?",
+              "ru": "Что ответить на 谢谢?"
+            },
+            "correct": "welcome",
+            "options": [
+              {
+                "id": "hello",
+                "text": {
+                  "en": "你好",
+                  "kk": "你好",
+                  "ru": "你好"
+                }
+              },
+              {
+                "id": "welcome",
+                "text": {
+                  "en": "不客气",
+                  "kk": "不客气",
+                  "ru": "不客气"
+                }
+              },
+              {
+                "id": "name",
+                "text": {
+                  "en": "名字",
+                  "kk": "名字",
+                  "ru": "名字"
+                }
+              }
+            ],
+            "explanation": {
+              "en": "不客气 is a polite response to thanks.",
+              "kk": "不客气 — алғысқа сыпайы жауап.",
+              "ru": "不客气 — вежливый ответ на благодарность."
+            }
+          },
+          {
+            "id": "goodbye-input",
+            "kind": "input",
+            "prompt": {
+              "en": "Write goodbye in Chinese characters.",
+              "kk": "«Сау болыңыз» сөзін иероглифтермен жазыңыз.",
+              "ru": "Напишите «до свидания» иероглифами."
+            },
+            "accepted": [
+              "再见"
+            ],
+            "explanation": {
+              "en": "再见 (zàijiàn) means goodbye.",
+              "kk": "再见 (zàijiàn) — сау болыңыз.",
+              "ru": "再见 (zàijiàn) — до свидания."
+            }
+          }
+        ]
+      }
+    },
+    {
+      "slug": "hsk1-module-test",
+      "id": "cb031386-4bb3-4a5d-8784-36658ab0003d",
+      "title": {
+        "en": "Module test: First introductions",
+        "kk": "Модуль тесті: Алғашқы танысу",
+        "ru": "Тест модуля: Первое знакомство"
+      },
+      "minutes": 10,
+      "position": 4,
+      "prerequisiteId": "ee8e9e0a-4f1c-4a14-a285-ed63a8a041ac",
+      "published": true,
+      "editorialState": "DRAFT",
+      "revision": 2,
+      "editVersion": 0,
+      "draft": null,
+      "blocks": [
+        {
+          "kind": "reading",
+          "content": {
+            "text": {
+              "en": "There are six questions. Answer at least five correctly to pass. Explanations appear after submission; you can retake the test.",
+              "kk": "Тестте алты тапсырма бар. Өту үшін кемінде бесеуін дұрыс орындаңыз. Жібергеннен кейін түсіндірмелер көрсетіледі; тестті қайта өтуге болады.",
+              "ru": "В тесте шесть заданий. Для зачёта нужно правильно выполнить не менее пяти. После отправки появятся объяснения; тест можно пройти повторно."
+            },
+            "hanzi": "你好！",
+            "title": {
+              "en": "Check your knowledge",
+              "kk": "Өзіңізді тексеріңіз",
+              "ru": "Проверьте себя"
+            },
+            "pinyin": "Nǐ hǎo!",
+            "translation": {
+              "en": "Hello!",
+              "kk": "Сәлеметсіз бе!",
+              "ru": "Здравствуйте!"
+            }
+          }
+        }
+      ],
+      "quiz": {
+        "kind": "module",
+        "revision": 1,
+        "passPercent": 80,
+        "questions": [
+          {
+            "id": "greeting-choice",
+            "kind": "choice",
+            "prompt": {
+              "en": "How do you say hello in Chinese?",
+              "kk": "Қытайша қалай сәлемдеседі?",
+              "ru": "Как поздороваться по-китайски?"
+            },
+            "correct": "hello",
+            "options": [
+              {
+                "id": "bye",
+                "text": {
+                  "en": "再见",
+                  "kk": "再见",
+                  "ru": "再见"
+                }
+              },
+              {
+                "id": "hello",
+                "text": {
+                  "en": "你好",
+                  "kk": "你好",
+                  "ru": "你好"
+                }
+              },
+              {
+                "id": "thanks",
+                "text": {
+                  "en": "谢谢",
+                  "kk": "谢谢",
+                  "ru": "谢谢"
+                }
+              }
+            ],
+            "explanation": {
+              "en": "你好 means hello; 再见 means goodbye; 谢谢 means thank you.",
+              "kk": "你好 — сәлемдесу. 再见 — сау болыңыз; 谢谢 — рақмет.",
+              "ru": "你好 — приветствие. 再见 — до свидания; 谢谢 — спасибо."
+            }
+          },
+          {
+            "id": "name-match",
+            "kind": "match",
+            "left": [
+              {
+                "id": "wo",
+                "text": {
+                  "en": "我",
+                  "kk": "我",
+                  "ru": "我"
+                }
+              },
+              {
+                "id": "jiao",
+                "text": {
+                  "en": "叫",
+                  "kk": "叫",
+                  "ru": "叫"
+                }
+              },
+              {
+                "id": "mingzi",
+                "text": {
+                  "en": "名字",
+                  "kk": "名字",
+                  "ru": "名字"
+                }
+              }
+            ],
+            "right": [
+              {
+                "id": "name",
+                "text": {
+                  "en": "name",
+                  "kk": "есім",
+                  "ru": "имя"
+                }
+              },
+              {
+                "id": "me",
+                "text": {
+                  "en": "I",
+                  "kk": "мен",
+                  "ru": "я"
+                }
+              },
+              {
+                "id": "called",
+                "text": {
+                  "en": "to be called",
+                  "kk": "аталу",
+                  "ru": "зваться"
+                }
+              }
+            ],
+            "prompt": {
+              "en": "Match the words to their meanings.",
+              "kk": "Сөздер мен аудармаларын сәйкестендіріңіз.",
+              "ru": "Сопоставьте слова и перевод."
+            },
+            "correct": [
+              "me",
+              "called",
+              "name"
+            ],
+            "explanation": {
+              "en": "我 means I; 叫 means to be called; 名字 means name.",
+              "kk": "我 — мен; 叫 — аталу; 名字 — есім.",
+              "ru": "我 — я; 叫 — зваться; 名字 — имя."
+            }
+          },
+          {
+            "id": "name-order",
+            "kind": "order",
+            "prompt": {
+              "en": "Build the question What is your name?",
+              "kk": "«Атыңыз кім?» сұрағын құрастырыңыз.",
+              "ru": "Соберите вопрос «Как вас зовут?»"
+            },
+            "correct": [
+              "you",
+              "called",
+              "what",
+              "name"
+            ],
+            "options": [
+              {
+                "id": "name",
+                "text": {
+                  "en": "名字",
+                  "kk": "名字",
+                  "ru": "名字"
+                }
+              },
+              {
+                "id": "you",
+                "text": {
+                  "en": "你",
+                  "kk": "你",
+                  "ru": "你"
+                }
+              },
+              {
+                "id": "what",
+                "text": {
+                  "en": "什么",
+                  "kk": "什么",
+                  "ru": "什么"
+                }
+              },
+              {
+                "id": "called",
+                "text": {
+                  "en": "叫",
+                  "kk": "叫",
+                  "ru": "叫"
+                }
+              }
+            ],
+            "explanation": {
+              "en": "The correct order is 你叫什么名字？",
+              "kk": "Дұрыс реті: 你叫什么名字？",
+              "ru": "Правильный порядок: 你叫什么名字？"
+            }
+          },
+          {
+            "id": "name-gap",
+            "kind": "gap",
+            "prompt": {
+              "en": "Fill the gap with one character: 我 ___ 安娜。",
+              "kk": "Бос орынды бір иероглифпен толтырыңыз: 我 ___ 安娜。",
+              "ru": "Заполните пропуск одним иероглифом: 我 ___ 安娜。"
+            },
+            "accepted": [
+              "叫"
+            ],
+            "explanation": {
+              "en": "我叫安娜 means My name is Anna.",
+              "kk": "我叫安娜 — «Менің атым Анна».",
+              "ru": "我叫安娜 означает «Меня зовут Анна»."
+            }
+          },
+          {
+            "id": "goodbye-input",
+            "kind": "input",
+            "prompt": {
+              "en": "Write goodbye in Chinese characters.",
+              "kk": "«Сау болыңыз» сөзін иероглифтермен жазыңыз.",
+              "ru": "Напишите «до свидания» иероглифами."
+            },
+            "accepted": [
+              "再见"
+            ],
+            "explanation": {
+              "en": "再见 (zàijiàn) means goodbye.",
+              "kk": "再见 (zàijiàn) — сау болыңыз.",
+              "ru": "再见 (zàijiàn) — до свидания."
+            }
+          },
+          {
+            "id": "greeting-dictation",
+            "kind": "dictation",
+            "author": "Sjors Provoost",
+            "prompt": {
+              "en": "Listen and write the greeting in Chinese characters.",
+              "kk": "Тыңдап, естіген сәлемдесуді иероглифтермен жазыңыз.",
+              "ru": "Послушайте и запишите иероглифами услышанное приветствие."
+            },
+            "license": "CC BY-SA 3.0",
+            "accepted": [
+              "你好"
+            ],
+            "audioUrl": "https://upload.wikimedia.org/wikipedia/commons/7/7d/Zh_n%C7%90_h%C7%8Eo.ogg",
+            "sourceUrl": "https://commons.wikimedia.org/wiki/File:Zh_n%C7%90_h%C7%8Eo.ogg",
+            "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0/",
+            "explanation": {
+              "en": "The recording says 你好, meaning hello.",
+              "kk": "Жазбада 你好 — «сәлеметсіз бе» айтылады.",
+              "ru": "В записи звучит 你好 — «здравствуйте»."
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

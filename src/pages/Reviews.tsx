@@ -1,8 +1,18 @@
+import HskBadge from '../components/HskBadge';
 import { useEffect, useRef, useState } from 'react';
 import { useLanguage } from '../i18n/LanguageProvider';
 import { editCard, loadReviews, rateCard, type Card, type ReviewData } from '../api/reviews';
 import { ApiError } from '../api/client';
 import StudyTimeTracker from '../components/StudyTimeTracker';
+import CharacterPractice from '../components/CharacterPractice';
+function ReviewWriting({ text }: { text: string }) {
+  const { t } = useLanguage();
+  const [open, setOpen] = useState(false);
+  return <details className="min-w-0 rounded-xl border border-border bg-card p-4" onToggle={event => setOpen(event.currentTarget.open)}>
+    <summary className="cursor-pointer font-medium text-primary">{t('Практика письма')}</summary>
+    {open && <div className="mt-4"><CharacterPractice key={text} text={text} /></div>}
+  </details>;
+}
 const labels: Record<string, string> = { again: 'Ещё раз', hard: 'Трудно', good: 'Хорошо', easy: 'Легко' };
 function DictionaryCard({ card, onChange }: { card: Card; onChange: (value: Card) => void }) {
   const { t, explanationLanguage } = useLanguage();
@@ -16,10 +26,11 @@ function DictionaryCard({ card, onChange }: { card: Card; onChange: (value: Card
     catch (err) { setError(err instanceof ApiError ? err.message : 'Не удалось сохранить карточку.'); }
     finally { setBusy(false); }
   }
-  return <article className="rounded-xl border border-border bg-card p-5 space-y-3"><div className="flex justify-between gap-3"><div><p lang="zh-CN" className="text-3xl">{card.content.hanzi}</p><p className="text-primary">{card.content.pinyin}</p><p>{card.content.translation[explanationLanguage]}</p></div><button disabled={busy} aria-pressed={card.favorite} onClick={() => void save({ favorite: !card.favorite })} className="self-start border border-border rounded-lg p-2">{card.favorite ? '★' : '☆'} {t('Избранное')}</button></div>
+  return <article className="rounded-xl border border-border bg-card p-5 space-y-3"><div className="flex justify-between gap-3"><div><p lang="zh-CN" className="text-3xl">{card.content.hanzi}</p><HskBadge word={card.content.hanzi} /><p className="text-primary">{card.content.pinyin}</p><p>{card.content.translation[explanationLanguage]}</p></div><button disabled={busy} aria-pressed={card.favorite} onClick={() => void save({ favorite: !card.favorite })} className="self-start border border-border rounded-lg p-2">{card.favorite ? '★' : '☆'} {t('Избранное')}</button></div>
     <label className="block"><span className="text-sm">{t('Заметка')}</span><textarea maxLength={2000} value={note} onChange={e => { setNote(e.target.value); setSaved(false); }} className="w-full border border-border bg-background rounded-lg p-2" /></label>
     <button disabled={busy || note === card.note} onClick={() => void save({ note })} className="text-primary underline disabled:opacity-40">{t('Сохранить заметку')}</button>
     {saved && <p role="status">{t('Сохранено')}</p>}{error && <p role="alert">{t(error)}</p>}
+    <ReviewWriting text={card.content.hanzi} />
   </article>;
 }
 export default function Reviews() {
@@ -61,16 +72,17 @@ export default function Reviews() {
   const query = search.trim().toLocaleLowerCase();
   const filtered = data?.cards.filter(c => (!favorites || c.favorite) && [c.content.hanzi, c.content.pinyin, ...Object.values(c.content.translation)].some(value => value.toLocaleLowerCase().includes(query))) ?? [];
   const date = (value: string) => new Date(value).toLocaleString(language === 'kk' ? 'kk-KZ' : language, { timeZone: data?.timezone });
-  return <section className="max-w-4xl mx-auto space-y-6"><h1 className="text-3xl font-bold text-dark-green">{t('Словарь и повторение')}</h1>
+  return <section className="max-w-4xl mx-auto space-y-6"><h1 className="text-3xl font-bold text-dark-green">{t('Словарь и повторение')}</h1><a href="#/dictionary" className="inline-block text-primary underline">{t('Словарь')} →</a>
     {data && data.cards.length > 0 && !error && <StudyTimeTracker source="reviews" />}
     {error && <div role="alert"><p>{t(error)}</p><button disabled={busy} className="underline" onClick={() => setReload(n => n + 1)}>{t('Обновить карточки')}</button></div>}
     {!data && !error && <p role="status">{t('Загрузка…')}</p>}
-    {data && <><p>{t('Повторений сегодня')}: {data.reviewedToday} · {t('Новых осталось')}: {data.remainingNew}/{data.newLimit} · {data.timezone}</p>
+    {data && <><p>{t('Повторений сегодня')}: {data.reviewedToday} · {t('Новых осталось')}: {data.remainingNew}/{data.newLimit}</p>
       <div className="bg-secondary rounded-2xl p-5 sm:p-8 space-y-5"><h2 className="text-xl font-bold">{t('Очередь повторения')} · {data.queue.length}</h2>
-        <label className="block">{t('Режим')} <select disabled={busy} value={mode} onChange={e => setMode(e.target.value)} className="border border-border rounded-lg p-2 bg-background"><option value="hanzi">{t('Иероглифы')}</option><option value="translation">{t('Перевод')}</option><option value="reading">{t('Чтение пиньинь')}</option><option value="audio">{t('Аудио')}</option></select></label>
+        <label className="flex flex-col items-start gap-3 sm:flex-row sm:items-center"><span className="shrink-0">{t('Режим')}</span><select disabled={busy} value={mode} onChange={e => setMode(e.target.value)} className="min-h-11 max-w-full border border-border rounded-lg px-3 py-2 bg-background"><option value="hanzi">{t('Иероглифы')}</option><option value="translation">{t('Перевод')}</option><option value="reading">{t('Чтение пиньинь')}</option><option value="audio">{t('Аудио')}</option></select></label>
         {!card ? <><p role="status">{t(data.cards.length ? 'Очередь завершена. Возвращайтесь к следующему повторению.' : 'Завершите урок, чтобы добавить слова.')}</p>{data.cards.length > 0 && <p>{t('Ближайшее повторение')}: {date(data.cards.filter(c => c.version > 0).sort((a, b) => a.dueAt.localeCompare(b.dueAt))[0]?.dueAt ?? data.serverNow)}</p>}<button className="underline" onClick={() => setReload(n => n + 1)}>{t('Обновить карточки')}</button><a className="block text-primary underline" href="#/courses">{t('Курсы')}</a></> : <div className="space-y-4" key={card.id}>
           {mode === 'audio' ? card.content.hanzi === '你好' ? <><audio controls preload="none" src="https://upload.wikimedia.org/wikipedia/commons/7/7d/Zh_n%C7%90_h%C7%8Eo.ogg" onError={() => setAudioError(true)} className="w-full" aria-label={t('Аудио')} /><p className="text-xs"><a href="https://commons.wikimedia.org/wiki/File:Zh_n%C7%90_h%C7%8Eo.ogg" target="_blank" rel="noreferrer" className="underline">Sjors Provoost · Wikimedia Commons</a> · <a href="https://creativecommons.org/licenses/by-sa/3.0/" target="_blank" rel="noreferrer" className="underline">CC BY-SA 3.0</a> · {t('Запись без изменений')}</p>{audioError && <p role="alert">{t('Аудио недоступно. Проверьте соединение и повторите.')}</p>}</> : <p>{t('Запись этого слова пока не добавлена. Выберите другой режим.')}</p> : <p className="text-4xl leading-relaxed">{mode === 'translation' ? card.content.translation[lang] : mode === 'reading' ? card.content.pinyin : card.content.hanzi}</p>}
-          {!revealed ? <button disabled={mode === 'audio' && (card.content.hanzi !== '你好' || audioError)} className="rounded-xl bg-primary text-primary-foreground px-6 py-3 disabled:opacity-40" onClick={() => setRevealed(true)}>{t('Показать ответ')}</button> : <><div className="bg-card rounded-xl p-5 space-y-2"><p lang="zh-CN" className="text-3xl">{card.content.hanzi}</p><p>{card.content.pinyin}</p><p>{card.content.translation[lang]}</p></div><p>{t('Оцените, насколько легко вспомнили ответ.')}</p><div className="flex flex-wrap gap-2">{Object.entries(labels).map(([rating, label]) => <button key={rating} disabled={busy} onClick={() => void rate(rating)} className="border border-border bg-card rounded-xl px-4 py-3 disabled:opacity-40">{t(label)}</button>)}</div></>}
+          {!revealed ? <button disabled={mode === 'audio' && (card.content.hanzi !== '你好' || audioError)} className="rounded-xl bg-primary text-primary-foreground px-6 py-3 disabled:opacity-40" onClick={() => setRevealed(true)}>{t('Показать ответ')}</button> : <><div className="bg-card rounded-xl p-5 space-y-2"><p lang="zh-CN" className="text-3xl">{card.content.hanzi}</p><HskBadge word={card.content.hanzi} /><p>{card.content.pinyin}</p><p>{card.content.translation[lang]}</p></div><p>{t('Оцените, насколько легко вспомнили ответ.')}</p><div className="flex flex-wrap gap-2">{Object.entries(labels).map(([rating, label]) => <button key={rating} disabled={busy} onClick={() => void rate(rating)} className="border border-border bg-card rounded-xl px-4 py-3 disabled:opacity-40">{t(label)}</button>)}</div></>}
+          {(revealed || mode === 'hanzi') && <ReviewWriting key={`${card.id}:${mode}`} text={card.content.hanzi} />}
         </div>}
       </div>
       <h2 className="text-2xl font-semibold">{t('Мой словарь')} · {data.cards.length}</h2><label className="block">{t('Поиск слова')}<input type="search" value={search} onChange={e => setSearch(e.target.value)} className="block w-full border border-border rounded-xl p-3 mt-2" /></label><label className="flex gap-2"><input type="checkbox" checked={favorites} onChange={e => setFavorites(e.target.checked)} />{t('Только избранное')}</label>

@@ -11,7 +11,8 @@ Upstream: https://github.com/skishore/makemeahanzi
 Imported 2026-09-14: 14 character JSON files for the ZhPath pilot vocabulary.
 JSON contents are verbatim copies from data/<character>.json in the source
 revision; local filenames use lowercase hexadecimal Unicode codepoints.
-manifest.json records the selected characters. No glyph data was modified.
+src/api/strokeManifest.json in the application source records the selected
+characters. No glyph data was modified.
 
 These data are distributed under the Arphic Public License, without warranty.
 You may redistribute and modify them under that license.

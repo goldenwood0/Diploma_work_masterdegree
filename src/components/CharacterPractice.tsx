@@ -105,7 +105,7 @@ export default function CharacterPractice({ text }: { text: string }) {
         viewBox="0 0 300 300"
         role="img"
         aria-label={`${t("Поле для письма")}: ${characters[selected]}`}
-        className="w-full max-w-80 aspect-square touch-none select-none rounded-xl border border-border bg-white text-dark-green mx-auto"
+        className="w-full max-w-80 aspect-square touch-none select-none rounded-xl border border-border bg-white text-[#164934] mx-auto"
         onPointerDown={(event) => {
           if (
             pointer.current !== null ||
@@ -131,7 +131,10 @@ export default function CharacterPractice({ text }: { text: string }) {
           setCurrent(points.current)
         }}
         onPointerUp={(event) => {
-          if (pointer.current === event.pointerId) finish(true)
+          if (pointer.current !== event.pointerId) return
+          // Pointerup can contain a final position with no preceding pointermove.
+          points.current = [...points.current.slice(0, 1999), point(event)]
+          finish(true)
         }}
         onPointerCancel={(event) => {
           if (pointer.current === event.pointerId) finish(false)

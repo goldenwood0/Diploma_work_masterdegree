@@ -1,0 +1,105 @@
+Prisma schema loaded from prisma\schema.prisma
+Datasource "db": PostgreSQL database "zhpath", schema "hsk1_audit_a8c4fda39d63456c865cf8c396fdc7fc" at "127.0.0.1:5433"
+
+12 migrations found in prisma/migrations
+
+Applying migration `20260909085823_accounts`
+Applying migration `20260909134229_profile_onboarding`
+Applying migration `20260910171603_learning_catalog`
+Applying migration `20260910173927_quiz_attempts`
+Applying migration `20260910180502_spaced_repetition`
+Applying migration `20260911144210_editorial_workflow`
+Applying migration `20260911160450_user_role_audit`
+Applying migration `20260912114356_media_library`
+Applying migration `20260912123000_lesson_draft`
+Applying migration `20260914120000_study_activity`
+Applying migration `20260915160000_study_time`
+Applying migration `20260915180000_reminders`
+
+The following migration(s) have been applied:
+
+migrations/
+  └─ 20260909085823_accounts/
+    └─ migration.sql
+  └─ 20260909134229_profile_onboarding/
+    └─ migration.sql
+  └─ 20260910171603_learning_catalog/
+    └─ migration.sql
+  └─ 20260910173927_quiz_attempts/
+    └─ migration.sql
+  └─ 20260910180502_spaced_repetition/
+    └─ migration.sql
+  └─ 20260911144210_editorial_workflow/
+    └─ migration.sql
+  └─ 20260911160450_user_role_audit/
+    └─ migration.sql
+  └─ 20260912114356_media_library/
+    └─ migration.sql
+  └─ 20260912123000_lesson_draft/
+    └─ migration.sql
+  └─ 20260914120000_study_activity/
+    └─ migration.sql
+  └─ 20260915160000_study_time/
+    └─ migration.sql
+  └─ 20260915180000_reminders/
+    └─ migration.sql
+      
+All migrations have been successfully applied.
+Environment variables loaded from .env
+✔ dictionary knowledge is personal, reversible and independent of lesson completion (456.5179ms)
+✔ catalog and lesson enforce sessions, publication and prerequisite access (207.7418ms)
+✔ catalog search indexes only accessible published learning fields and refreshes after unlocking (293.3154ms)
+✔ checkpoint resumes in a second session and isolates another learner (198.0226ms)
+✔ ordered completion is idempotent and unlocks the next lesson only for its owner (288.7463ms)
+✔ concurrent requests cannot double advance or regress progress (192.1354ms)
+✔ content revision rejects stale writes and restarts the new block sequence (378.1087ms)
+✔ statistics require a session, isolate learners and record only new committed checkpoints (415.8122ms)
+✔ weak areas use latest attempts, exclude old versions and archived lessons, and never reveal answers (475.9558ms)
+✔ quiz and SRS activity count towards streak without checkpoints and retries do not add days (394.834ms)
+✔ quiz gates completion, keeps answer keys private and persists failed and passed attempts (520.9606ms)
+✔ quiz requests reject a changed session before reading or submitting another account answers (316.456ms)
+✔ quiz submissions are idempotent, reject altered retries and retain historical snapshots (371.0805ms)
+✔ review import is additive, isolated and only includes completed lesson vocabulary (342.9919ms)
+✔ completion without a quiz imports words immediately; stale revisions never import new words (368.2761ms)
+✔ review scheduling rejects early and stale writes and repeats idempotently (278.5121ms)
+✔ daily new-card limit is enforced by the server and accounts for profile timezone (577.8999ms)
+✔ review intervals have stable UTC durations, reset on again and remain bounded (117.1862ms)
+✔ editor workflow protects published lessons, rejects stale edits and audits transitions (525.2184ms)
+✔ independent drafts isolate live lessons, publish atomically and restore with version protection (721.5723ms)
+✔ draft quiz changes preserve attempts, no-op publication preserves progress and failed restore is atomic (909.7411ms)
+✔ lesson creation appends drafts, protects roles and rejects duplicate slugs (288.4757ms)
+✔ block editing validates content, versions progress and keeps audited snapshots atomically (507.2972ms)
+✔ publication rejects empty drafts and invalid stored block translations (242.1398ms)
+✔ editor quiz changes preserve attempt history, hide answer keys and version learning atomically (762.9678ms)
+✔ editor can add a quiz to a draft and publication rejects invalid stored questions (228.1349ms)
+✔ admin role management validates permissions, versions, sessions and immutable audit (433.1156ms)
+✔ role changes reject unverified privileged accounts and concurrent stale writes (252.1626ms)
+✔ administrators cannot concurrently demote each other and remove all admin access (176.1287ms)
+✔ media upload validates bytes, protects drafts, streams ranges and audits archive transitions (484.4031ms)
+✔ media references must exist and WAV parsing rejects malformed chunks and unsupported formats (197.8571ms)
+✔ dashboard review summary matches the queue, protects accounts and handles limits and scheduled cards (571.6181ms)
+✔ study time rejects invalid windows and accounts; retries and concurrent overlaps never double count (387.895ms)
+✔ study time checks lesson access and splits credited time at the profile local midnight (244.8676ms)
+✔ study time interval union and DST day splitting preserve credited milliseconds (111.1542ms)
+✔ topic and skill accuracy uses attempt snapshots, latest retakes, current versions and account isolation (419.47ms)
+✔ reminder schedule handles local time, midnight, DST, catch-up and three email languages (113.3286ms)
+✔ reminders claim once across workers, survive restarts and prevent timezone duplicates (222.6665ms)
+[Nest] 38800  - 24.10.2026, 15:49:08    WARN [ReminderService] Reminder delivery failed; automatic retry suppressed
+✔ reminders honor opt-in, verification, onboarding, completed daily goal and uncertain SMTP failure (203.0724ms)
+✔ all six exercise types grade correctly and percentage threshold uses exact arithmetic (6.7609ms)
+✔ grading rejects missing, duplicate, unknown and malformed answers (0.567ms)
+✔ normalization tolerates presentation differences but preserves tone and word order (0.2331ms)
+✔ public questions exclude answers and explanations; invalid editor keys are rejected (0.7597ms)
+✔ editor validation bounds answers to learner limits and rejects incomplete content (2.7228ms)
+✔ assessment metadata is validated and retained in public questions and grading snapshots (0.8831ms)
+✔ HSK1 snapshot: full route, fail/retry, reload, unlock, isolation and ten SRS words (1741.1448ms)
+✔ HSK1 audio-drafts: full route, fail/retry, reload, unlock, isolation and ten SRS words (1928.5141ms)
+✔ offline draft pack: schema, full marks and 8/10 threshold (2.8111ms)
+ℹ tests 48
+ℹ suites 0
+ℹ pass 48
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 20785.2849

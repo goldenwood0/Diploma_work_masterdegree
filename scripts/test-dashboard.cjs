@@ -24,7 +24,7 @@ const cases = [
   [[locked], 0, [], 'catalog', null],
   [[], 0, [], 'catalog', null],
 ];
-const messages = load('src/i18n/learningMessages.ts').learningMessages;
+const messages = load('src/i18n/messages.ts', { './learningMessages': load('src/i18n/learningMessages.ts') }).messages;
 let current, language = 'ru', navigation;
 const Dashboard = load('src/pages/Dashboard.tsx', {
   '../app/useStudyDashboard': { default: () => current },
@@ -47,10 +47,18 @@ for (const [lessons, ready, mistakes, kind, id] of cases) {
   for (language of ['ru', 'kk', 'en']) {
     const tree = Dashboard({ name: 'Learner', onNavigate: (...args) => { navigation = args; } });
     const html = renderToStaticMarkup(tree);
+    if (process.env.DASHBOARD_PREVIEW_DIR) {
+      fs.mkdirSync(process.env.DASHBOARD_PREVIEW_DIR, { recursive: true });
+      fs.writeFileSync(`${process.env.DASHBOARD_PREVIEW_DIR}/${kind}-${language}.html`, `<!doctype html><html lang="${language}"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"></head><body><nav class="h-16 border-b border-border px-4 flex items-center font-bold text-xl">ZhPath</nav><main class="p-4 sm:p-8">${html}</main></body></html>`);
+    }
     assert.ok(html.includes('review-summary-title') && html.includes('next-action-title'));
     const actions = buttons(tree);
-    actions[0].props.onClick(); assert.equal(navigation[0], 'reviews');
-    actions[1].props.onClick();
+    assert.equal(actions.length, 1, 'One primary action without duplicate review buttons');
+    assert.ok(html.indexOf('next-action-title') < html.indexOf('review-summary-title'));
+    assert.ok(html.indexOf('next-action-title') < html.indexOf(language === 'ru' ? 'Опубликовано уроков' : messages['Опубликовано уроков'][language]));
+    if (id) assert.ok(html.includes(action.lesson.title[language]));
+    if (kind === 'reviews') assert.ok(html.slice(0, html.indexOf('review-summary-title')).includes(String(ready)));
+    actions[0].props.onClick();
     assert.equal(navigation[0], kind === 'reviews' ? 'reviews' : id ? 'lesson' : 'catalog');
     if (id) assert.equal(navigation[1], id);
   }

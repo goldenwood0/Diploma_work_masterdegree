@@ -1,0 +1,108 @@
+{
+  "checkedAt": "2026-10-24T10:05:28.955Z",
+  "assets": [
+    {
+      "hanzi": "你",
+      "duration": 1.15,
+      "bytes": 101278,
+      "rmsDb": -13.5,
+      "peak": 29502,
+      "clippedSamples": 0,
+      "status": "STRUCTURE_AND_CHECKSUM_PASS",
+      "linguisticReview": "PENDING_HUMAN"
+    },
+    {
+      "hanzi": "好",
+      "duration": 1.05,
+      "bytes": 92478,
+      "rmsDb": -18,
+      "peak": 29546,
+      "clippedSamples": 0,
+      "status": "STRUCTURE_AND_CHECKSUM_PASS",
+      "linguisticReview": "PENDING_HUMAN"
+    },
+    {
+      "hanzi": "你好",
+      "duration": 1.0565532879818593,
+      "bytes": 46672,
+      "rmsDb": -13.4,
+      "peak": 31067,
+      "clippedSamples": 0,
+      "status": "STRUCTURE_AND_CHECKSUM_PASS",
+      "linguisticReview": "PENDING_HUMAN"
+    },
+    {
+      "hanzi": "我",
+      "duration": 0.95,
+      "bytes": 83678,
+      "rmsDb": -15,
+      "peak": 28482,
+      "clippedSamples": 0,
+      "status": "STRUCTURE_AND_CHECKSUM_PASS",
+      "linguisticReview": "PENDING_HUMAN"
+    },
+    {
+      "hanzi": "叫",
+      "duration": 1.05,
+      "bytes": 92478,
+      "rmsDb": -18.9,
+      "peak": 30137,
+      "clippedSamples": 0,
+      "status": "STRUCTURE_AND_CHECKSUM_PASS",
+      "linguisticReview": "PENDING_HUMAN"
+    },
+    {
+      "hanzi": "名字",
+      "duration": 1.5,
+      "bytes": 132078,
+      "rmsDb": -13.3,
+      "peak": 29298,
+      "clippedSamples": 0,
+      "status": "STRUCTURE_AND_CHECKSUM_PASS",
+      "linguisticReview": "PENDING_HUMAN"
+    },
+    {
+      "hanzi": "什么",
+      "duration": 1.05,
+      "bytes": 92478,
+      "rmsDb": -16.3,
+      "peak": 29179,
+      "clippedSamples": 0,
+      "status": "STRUCTURE_AND_CHECKSUM_PASS",
+      "linguisticReview": "PENDING_HUMAN"
+    },
+    {
+      "hanzi": "谢谢",
+      "duration": 1.35,
+      "bytes": 118878,
+      "rmsDb": -19.4,
+      "peak": 29255,
+      "clippedSamples": 0,
+      "status": "STRUCTURE_AND_CHECKSUM_PASS",
+      "linguisticReview": "PENDING_HUMAN"
+    },
+    {
+      "hanzi": "不客气",
+      "duration": 0.76,
+      "bytes": 73038,
+      "rmsDb": -27.2,
+      "peak": 12765,
+      "clippedSamples": 0,
+      "status": "STRUCTURE_AND_CHECKSUM_PASS",
+      "linguisticReview": "PENDING_HUMAN"
+    },
+    {
+      "hanzi": "再见",
+      "duration": 1.05,
+      "bytes": 92478,
+      "rmsDb": -17,
+      "peak": 29079,
+      "clippedSamples": 0,
+      "status": "STRUCTURE_AND_CHECKSUM_PASS",
+      "linguisticReview": "PENDING_HUMAN"
+    }
+  ],
+  "draftsValidated": 5,
+  "publication": false,
+  "humanAcceptance": false
+}

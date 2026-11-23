@@ -3,6 +3,7 @@ export const routes = {
   catalog: "/courses",
   lesson: "/lessons/hsk1-greetings",
   profile: "/profile",
+  dictionary: "/dictionary",
   reviews: "/reviews",
   content: "/content",
   users: "/users",

@@ -43,7 +43,7 @@ export default function LessonAudio({ content }: { content: AudioContent }) {
         <label>
           {t("Скорость")}{" "}
           <select
-            className="border border-border rounded-lg p-2 bg-background"
+            className="min-h-11 border border-border rounded-lg p-2 bg-background"
             value={speed}
             onChange={(e) => {
               const value = Number(e.target.value)
@@ -56,7 +56,7 @@ export default function LessonAudio({ content }: { content: AudioContent }) {
             <option value={1.25}>1.25×</option>
           </select>
         </label>
-        <label className="flex gap-2">
+        <label className="flex min-h-11 cursor-pointer items-center gap-2">
           <input
             type="checkbox"
             checked={loop}
@@ -64,7 +64,7 @@ export default function LessonAudio({ content }: { content: AudioContent }) {
           />
           {t("Повторять аудио")}
         </label>
-        <label className="flex gap-2">
+        <label className="flex min-h-11 cursor-pointer items-center gap-2">
           <input
             type="checkbox"
             checked={transcript}
@@ -72,7 +72,7 @@ export default function LessonAudio({ content }: { content: AudioContent }) {
           />
           {t("Транскрипт")}
         </label>
-        <label className="flex gap-2">
+        <label className="flex min-h-11 cursor-pointer items-center gap-2">
           <input
             type="checkbox"
             checked={translation}
@@ -97,7 +97,7 @@ export default function LessonAudio({ content }: { content: AudioContent }) {
           rel="noreferrer"
           href={content.sourceUrl}
         >
-          {content.author} · Wikimedia Commons
+          {content.author}
         </a>{" "}
         ·{" "}
         <a

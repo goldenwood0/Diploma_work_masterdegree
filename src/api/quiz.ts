@@ -20,7 +20,7 @@ export type QuizData = z.infer<typeof quiz>;
 export type Question = z.infer<typeof question>;
 export type Attempt = z.infer<typeof attempt>;
 export type Answer = z.infer<typeof value>;
-export async function getQuiz(slug: string, signal: AbortSignal) { return quiz.parse(await request(`/learning/lessons/${encodeURIComponent(slug)}/quiz`, { signal })); }
-export async function submitQuiz(slug: string, body: { requestId: string; lessonRevision: number; quizRevision: number; answers: Array<{ questionId: string; value: Answer }> }, signal: AbortSignal) {
-  return attempt.parse(await request(`/learning/lessons/${encodeURIComponent(slug)}/attempts`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body), signal }));
+export async function getQuiz(slug: string, signal: AbortSignal, userId: string) { return quiz.parse(await request(`/learning/lessons/${encodeURIComponent(slug)}/quiz`, { signal, headers: { "X-ZhPath-User": userId } })); }
+export async function submitQuiz(slug: string, body: { requestId: string; lessonRevision: number; quizRevision: number; answers: Array<{ questionId: string; value: Answer }> }, signal: AbortSignal, userId: string) {
+  return attempt.parse(await request(`/learning/lessons/${encodeURIComponent(slug)}/attempts`, { method: 'POST', headers: { 'Content-Type': 'application/json', 'X-ZhPath-User': userId }, body: JSON.stringify(body), signal }));
 }
