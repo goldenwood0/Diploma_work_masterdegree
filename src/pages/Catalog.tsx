@@ -2,7 +2,10 @@ import { BookOpen, CheckCircle2, Lock } from "lucide-react"
 import { useLanguage } from "../i18n/LanguageProvider"
 import useCatalog from "../app/useCatalog"
 import type { Screen } from "../app/routes"
-import { useState } from "react"
+import { useEffect, useRef, useState } from "react"
+
+const hashParams = () =>
+  new URLSearchParams(window.location.hash.split("?")[1] ?? "")
 
 export default function Catalog({
   onNavigate,
@@ -11,7 +14,19 @@ export default function Catalog({
 }) {
   const { t, language } = useLanguage()
   const { data, error, retry } = useCatalog()
-  const [query, setQuery] = useState("")
+  const [query, setQuery] = useState(() => hashParams().get("q") ?? "")
+  const searchInput = useRef<HTMLInputElement>(null)
+  // The header search and the phone search icon navigate here with ?q= or ?focus=search.
+  useEffect(() => {
+    const apply = () => {
+      const params = hashParams()
+      if (params.has("q")) setQuery(params.get("q") ?? "")
+      if (params.get("focus") === "search") searchInput.current?.focus()
+    }
+    apply()
+    window.addEventListener("hashchange", apply)
+    return () => window.removeEventListener("hashchange", apply)
+  }, [])
   const [levelFilter, setLevelFilter] = useState("")
   const [status, setStatus] = useState("all")
   const normalize = (value: string) =>
@@ -76,6 +91,7 @@ export default function Catalog({
         <label className="block space-y-2">
           <span className="font-semibold">{t("Поиск уроков")}</span>
           <input
+            ref={searchInput}
             type="search"
             value={query}
             onChange={(event) => setQuery(event.target.value)}

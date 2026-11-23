@@ -2,10 +2,10 @@ import Dictionary from './pages/Dictionary';
 import MediaLibrary from './pages/MediaLibrary';
 import { useLanguage } from './i18n/LanguageProvider';
 import ProfileForm from './components/ProfileForm';
-import { Home, BookOpen, RefreshCw, User, Sparkles } from 'lucide-react';
+import { Home, BookOpen, RefreshCw, User, LayoutPanelTop } from 'lucide-react';
 import { useLayoutEffect, useRef, useState } from 'react';
 import useRoute from './app/useRoute';
-import NavButton from './components/NavButton';
+import AppHeader from './components/AppHeader';
 import MobileNavButton from './components/MobileNavButton';
 import Dashboard from './pages/Dashboard';
 import Catalog from './pages/Catalog';
@@ -55,65 +55,11 @@ export default function App() {
 
   return (
     <div className="app-shell flex flex-col min-h-dvh bg-background relative font-sans">
-      {/* Navigation */}
-      <header ref={header} className="app-header sticky top-0 z-40 bg-background/80 backdrop-blur-md border-b border-border">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
-            <button type="button" aria-label={`ZhPath — ${t("Главная")}`} className="flex min-h-11 shrink-0 items-center gap-2 rounded-lg" onClick={() => setCurrentScreen('dashboard')}>
-              <div aria-hidden="true" className="size-8 rounded-lg bg-primary text-primary-foreground flex items-center justify-center font-bold sc-text text-xl">
-                中
-              </div>
-              <span className="font-bold text-xl text-dark-green tracking-tight">ZhPath</span>
-            </button>
-            
-            <nav aria-label={t("Основная навигация")} className="hidden lg:flex gap-1">
-              <NavButton 
-                icon={<Home size={18} />} 
-                label={t("Главная")} 
-                active={currentScreen === 'dashboard'} 
-                onClick={() => setCurrentScreen('dashboard')} 
-              />
-              <NavButton 
-                icon={<BookOpen size={18} />} 
-                label={t("Курсы")} 
-                active={currentScreen === 'catalog' || currentScreen === 'lesson'} 
-                onClick={() => setCurrentScreen('catalog')} 
-              />
-              <NavButton 
-                icon={<RefreshCw size={18} />} 
-                label={t("Повторение")} 
-                active={currentScreen === 'reviews'} 
-                onClick={() => setCurrentScreen('reviews')} 
-              />
-              <NavButton 
-                icon={<User size={18} />} 
-                label={t("Профиль")} 
-                active={currentScreen === 'profile'} 
-                onClick={() => setCurrentScreen('profile')} 
-              />
-              <NavButton icon={<BookOpen size={18} />} label={t("Словарь")} active={currentScreen === 'dictionary'} onClick={() => setCurrentScreen('dictionary')} />
-              <MobileNavButton label={t("Словарь")} icon={<BookOpen size={24} />} active={currentScreen === 'dictionary'} onClick={() => setCurrentScreen('dictionary')} />
-      </nav>
-
-            <div className="flex items-center">
-              <button
-                type="button"
-                aria-label={t("Открыть ИИ-помощника")}
-                title={t("Открыть ИИ-помощника")}
-                aria-haspopup="dialog"
-                aria-expanded={isAiTutorOpen}
-                onClick={() => { setReviewMistakes(false); setIsAiTutorOpen(true); }}
-                className="flex size-11 shrink-0 items-center justify-center rounded-full bg-accent text-accent-foreground hover:bg-secondary transition-colors"
-              >
-                <Sparkles size={24} aria-hidden="true" />
-              </button>
-            </div>
-          </div>
-        </div>
-      </header>
+      <AppHeader ref={header} name={account.name} current={currentScreen} aiOpen={isAiTutorOpen}
+        onNavigate={setCurrentScreen} onOpenAi={() => { setReviewMistakes(false); setIsAiTutorOpen(true); }} />
 
       {/* Main Content Area */}
-      <main className="min-w-0 flex-1 max-w-7xl w-full mx-auto p-4 sm:p-6 lg:p-8 pt-6 sm:pt-10 transition-all duration-300">
+      <main className="page-container min-w-0 flex-1 w-full py-6 tablet:py-10">
         {account.role !== 'STUDENT' && <div className="mb-6 flex flex-wrap justify-end gap-2">
           {([
             ['content', 'Управление уроками'],
@@ -142,12 +88,12 @@ export default function App() {
       )}
 
       {/* Mobile Bottom Nav */}
-      <nav ref={mobileNav} aria-label={t("Основная навигация")} className="mobile-nav lg:hidden fixed bottom-0 inset-x-0 bg-background border-t border-border grid grid-cols-5 gap-1 z-40">
+      <nav ref={mobileNav} aria-label={t("Основная навигация")} className="mobile-nav tablet:hidden fixed bottom-0 inset-x-0 bg-card border-t border-border grid grid-cols-5 gap-1 z-40">
         <MobileNavButton label={t("Главная")} icon={<Home size={24} />} active={currentScreen === 'dashboard'} onClick={() => setCurrentScreen('dashboard')} />
-        <MobileNavButton label={t("Курсы")} icon={<BookOpen size={24} />} active={currentScreen === 'catalog' || currentScreen === 'lesson'} onClick={() => setCurrentScreen('catalog')} />
-        <MobileNavButton label={t("Повторение")} icon={<RefreshCw size={24} />} active={currentScreen === 'reviews'} onClick={() => setCurrentScreen('reviews')} />
-        <MobileNavButton label={t("Профиль")} icon={<User size={24} />} active={currentScreen === 'profile'} onClick={() => setCurrentScreen('profile')} />
+        <MobileNavButton label={t("Курсы")} icon={<LayoutPanelTop size={24} />} active={currentScreen === 'catalog' || currentScreen === 'lesson'} onClick={() => setCurrentScreen('catalog')} />
+        <MobileNavButton label={t("Повтор")} icon={<RefreshCw size={24} />} active={currentScreen === 'reviews'} onClick={() => setCurrentScreen('reviews')} />
         <MobileNavButton label={t("Словарь")} icon={<BookOpen size={24} />} active={currentScreen === 'dictionary'} onClick={() => setCurrentScreen('dictionary')} />
+        <MobileNavButton label={t("Профиль")} icon={<User size={24} />} active={currentScreen === 'profile'} onClick={() => setCurrentScreen('profile')} />
       </nav>
     </div>
   );

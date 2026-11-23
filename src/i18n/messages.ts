@@ -2,6 +2,8 @@
 import { learningMessages } from './learningMessages';
 export const messages: Record<string, { en: string; kk: string }> = {
   ...learningMessages,
+  "Ещё": { en: "More", kk: "Тағы" },
+  "Повтор": { en: "Review", kk: "Қайталау" },
   'Добавить в повторение': { en: 'Add to review', kk: 'Қайталауға қосу' },
   'В личном повторении': { en: 'In your reviews', kk: 'Жеке қайталауда' },
   "Словарь": {"en": "Dictionary", "kk": "Сөздік"},
