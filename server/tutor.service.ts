@@ -4,7 +4,7 @@ import { Database } from './database.js';
 import { searchableContent } from './content-search.js';
 import { TutorBudgetError } from './tutor-budget.js';
 import { QuizChecks } from './quiz-checks.js';
-import { TUTOR_PROVIDER, tutorInstructions, tutorOutput, type TutorInput, type TutorProvider } from './tutor-provider.js';
+import { TUTOR_PROVIDER, chatInstructions, missingHanzi, tutorInstructions, tutorOutput, type TutorInput, type TutorProvider } from './tutor-provider.js';
 
 const errorSummary = z.object({ items: z.array(z.object({ correct: z.boolean(), question: z.object({
   kind: z.enum(['choice', 'match', 'order', 'gap', 'input', 'dictation']),
@@ -47,6 +47,15 @@ export class TutorService {
   constructor(private db: Database, @Inject(TUTOR_PROVIDER) private provider: TutorProvider, @Optional() private checks?: QuizChecks) {}
   status() { return { provider: this.provider.kind }; }
   async context(userId: string, input: TutorInput) {
+    if (input.mode === 'chat') {
+      // Free chat about Chinese: no lesson, material or quiz data, only the learner's own level and language.
+      const settings = await this.db.userSettings.findUnique({ where: { userId }, select: { startLevel: true, explanationLanguage: true } });
+      const language = (['ru', 'kk', 'en'].includes(settings?.explanationLanguage ?? '') ? settings!.explanationLanguage : 'ru') as Language;
+      return { level: settings?.startLevel ?? 1, language, mode: input.mode, material: '', errors: [],
+        text: redact(input.text), history: input.history.map(m => ({ role: m.role, text: redact(m.text) })) };
+    }
+    // An undefined slug would drop the filter and match any published lesson.
+    if (!input.lessonSlug) throw new NotFoundException('TUTOR_LESSON_UNAVAILABLE');
     const lesson = await this.db.lesson.findFirst({
       where: { slug: input.lessonSlug, published: true, blocks: { some: {} } },
       select: { id: true, revision: true, prerequisiteId: true, prerequisite: { select: { revision: true } },
@@ -110,8 +119,14 @@ export class TutorService {
       const data = await Promise.race([this.context(userId, input), aborted]);
       if (this.provider.kind === 'unconfigured') fail('TUTOR_NOT_CONFIGURED', 503);
       if (JSON.stringify(data).length > 16000) fail('TUTOR_CONTEXT_LIMIT', 413);
-      const raw = await Promise.race([this.provider.generate({ system: tutorInstructions, data, maxOutputTokens: 1200 }, controller.signal), aborted]);
-      result = tutorOutput.parse(raw);
+      const envelope = { system: input.mode === 'chat' ? chatInstructions : tutorInstructions, data, maxOutputTokens: 1200 };
+      const generate = async () => tutorOutput.parse(await Promise.race([this.provider.generate(envelope, controller.signal), aborted]));
+      result = await generate();
+      // Small local models sometimes leave only pinyin in chat; ask once more and keep the better answer.
+      if (input.mode === 'chat' && missingHanzi(result.text)) {
+        const second = await generate();
+        if (!missingHanzi(second.text)) result = second;
+      }
       result.text = redact(result.text);
       status = 'ok';
       return { ...result, provider: this.provider.kind };
