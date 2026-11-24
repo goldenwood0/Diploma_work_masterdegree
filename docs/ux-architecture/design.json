@@ -1,0 +1,32 @@
+[
+  {
+    "name": "Sitemap_v2",
+    "group": "00_Architecture_v2",
+    "w": 1600,
+    "h": 1230
+  },
+  {
+    "name": "User_Flow_v2",
+    "group": "00_Architecture_v2",
+    "w": 1600,
+    "h": 2240
+  },
+  {
+    "name": "Wireframe_05_Тест_проверка",
+    "group": "01_Wireframe_v2",
+    "w": 1440,
+    "h": 1024
+  },
+  {
+    "name": "Mobile_Тест_проверка",
+    "group": "01_Wireframe_v2",
+    "w": 390,
+    "h": 844
+  },
+  {
+    "name": "Wireframe_09_Профиль",
+    "group": "01_Wireframe_v2",
+    "w": 1440,
+    "h": 1024
+  }
+]

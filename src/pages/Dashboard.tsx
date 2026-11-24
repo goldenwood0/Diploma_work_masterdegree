@@ -3,7 +3,6 @@ import type { Screen } from "../app/routes"
 import useStudyDashboard from "../app/useStudyDashboard"
 import studyRecommendation from "../app/studyRecommendation"
 import { useLanguage } from "../i18n/LanguageProvider"
-import LearningStats from "../components/LearningStats"
 
 export default function Dashboard({
   name,
@@ -224,7 +223,7 @@ export default function Dashboard({
               </p>
             )}
           </section>
-          <LearningStats data={data.stats} />
+          <a href="#/profile" className="inline-flex min-h-11 items-center gap-2 font-bold text-primary underline">{t("Весь прогресс")} →</a>
         </>
       )}
     </section>

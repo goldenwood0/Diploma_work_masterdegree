@@ -16,6 +16,22 @@ const normalize = (value: string) =>
 const isOpen = (lesson: Lesson) => !lesson.locked && !lesson.progress.completedAt
 const MOBILE_PAGE = 4
 
+// ПР4 user flow: «из урока — к поиску». The search and filters survive a trip to a lesson
+// and back within this browser tab; the header search still wins with its own ?q=.
+const VIEW_KEY = "zhpath:catalog-view"
+type View = { query: string; levels: number[]; status: Status; sort: Sort }
+function readView(): Partial<View> {
+  try {
+    const value = JSON.parse(sessionStorage.getItem(VIEW_KEY) ?? "{}")
+    return {
+      query: typeof value.query === "string" ? value.query.slice(0, 200) : undefined,
+      levels: Array.isArray(value.levels) ? value.levels.filter((n: unknown): n is number => Number.isInteger(n) && (n as number) >= 1 && (n as number) <= 6) : undefined,
+      status: ["all", "available", "completed"].includes(value.status) ? value.status : undefined,
+      sort: ["course", "available"].includes(value.sort) ? value.sort : undefined,
+    }
+  } catch { return {} }
+}
+
 // Catalog per ПР6: desktop (≥1200) has a 282 px filter sidebar and 3 cards per row,
 // tablet has a "Filters · N" button and 2 per row, phone starts with "Continue learning".
 export default function Catalog({
@@ -25,10 +41,14 @@ export default function Catalog({
 }) {
   const { t, language } = useLanguage()
   const { data, error, retry } = useCatalog()
-  const [query, setQuery] = useState(() => hashParams().get("q") ?? "")
-  const [levels, setLevels] = useState<number[]>([])
-  const [status, setStatus] = useState<Status>("all")
-  const [sort, setSort] = useState<Sort>("course")
+  const [saved] = useState(readView)
+  const [query, setQuery] = useState(() => hashParams().get("q") ?? saved.query ?? "")
+  const [levels, setLevels] = useState<number[]>(saved.levels ?? [])
+  const [status, setStatus] = useState<Status>(saved.status ?? "all")
+  const [sort, setSort] = useState<Sort>(saved.sort ?? "course")
+  useEffect(() => {
+    try { sessionStorage.setItem(VIEW_KEY, JSON.stringify({ query, levels, status, sort })) } catch { /* storage unavailable: nothing to restore */ }
+  }, [query, levels, status, sort])
   const [sheetOpen, setSheetOpen] = useState(false)
   const [showAll, setShowAll] = useState(false)
   const asideSearch = useRef<HTMLInputElement>(null)

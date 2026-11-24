@@ -540,4 +540,9 @@ export const learningMessages: Record<string, Record<'en' | 'kk', string>> = {
   "Помню": {"en": "Remember", "kk": "Есімде"},
   "Пропустить": {"en": "Skip", "kk": "Өткізіп жіберу"},
   "Проверьте ответ ещё раз, затем попросите объяснение.": {"en": "Check the answer again, then ask for an explanation.", "kk": "Жауапты қайта тексеріп, содан кейін түсіндіруді сұраңыз."},
+  "Прогресс": {"en": "Progress", "kk": "Прогресс"},
+  "Настройки": {"en": "Settings", "kk": "Баптаулар"},
+  "Весь прогресс": {"en": "All progress", "kk": "Барлық прогресс"},
+  "Мои карточки": {"en": "My cards", "kk": "Менің карточкаларым"},
+  "Весь словарь": {"en": "Full dictionary", "kk": "Толық сөздік"},
 }
