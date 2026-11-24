@@ -37,6 +37,9 @@
 - [REVIEW_SHEET.md](REVIEW_SHEET.md) — лист проверки для преподавателя: все
   слова, пиньинь, переводы, диалоги, задания с ответами и объяснениями;
   `node scripts/hsk1-review-sheet.mjs > docs/hsk1-content/REVIEW_SHEET.md`.
+- [REVIEW_SHEET.docx](REVIEW_SHEET.docx) — тот же лист для печати (Word, A4
+  альбомная, колонка ✓ и место для подписи); `python scripts/hsk1-review-docx.py`
+  (без сторонних пакетов).
 - Резервная копия уроков до загрузки: `output/lessons-backup-2026-11-23.json`
   (вне git).
 
