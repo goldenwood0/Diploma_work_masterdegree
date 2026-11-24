@@ -5,6 +5,11 @@
 
 ## Материалы
 
+- [EXPERT_REVIEW.md](EXPERT_REVIEW.md) — экспертная оценка по принципам Нильсена
+  и когнитивный проход: найденные проблемы и что работает хорошо. Основной
+  метод оценки, пока пилот с участниками не проведён.
+- [TESTER_CHECKLIST.md](TESTER_CHECKLIST.md) — чек-лист для автора-тестировщика.
+
 - [QUESTIONNAIRE.md](QUESTIONNAIRE.md) — анкета ru/kk: SUS (удобство), вопросы
   об обучении и ИИ, открытые вопросы.
 - [responses-template.csv](responses-template.csv) — шаблон для ввода ответов.
