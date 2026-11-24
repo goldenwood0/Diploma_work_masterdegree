@@ -14,6 +14,29 @@
 `localhost:5173` вход и сохранение отклоняются. При первом открытии Vite один
 раз собирает зависимости и сам перезагружает страницу — это не зависание.
 
+## Проверка на телефоне — 24.11.2026
+
+Телефон и ноутбук в одной Wi‑Fi сети. API запускается с адресом ноутбука в сети,
+`.env` не меняется (переменная терминала важнее файла):
+
+```powershell
+$env:APP_ORIGIN = 'http://192.168.15.221:8443'; node --env-file=.env dist-server/main.js
+```
+
+Если сеть в Windows «общедоступная», входящий порт открывают на время проверки
+в PowerShell администратора и затем удаляют:
+
+```powershell
+New-NetFirewallRule -DisplayName "ZhPath phone test 8443 (temporary)" -Direction Inbound -Action Allow -Protocol TCP -LocalPort 8443 -RemoteAddress LocalSubnet -Profile Any
+```
+
+```powershell
+Remove-NetFirewallRule -DisplayName "ZhPath phone test 8443 (temporary)"
+```
+
+Микрофон на http не работает (браузер требует HTTPS). Пока API запущен с этим
+адресом, на ноутбуке приложение открывать по тому же адресу.
+
 ## Проверка 24.10.2026 — текущий способ показа
 
 Подтверждены свежие server:build/typecheck/build, первый и повторный запуск
