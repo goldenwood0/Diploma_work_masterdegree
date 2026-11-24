@@ -12,7 +12,7 @@ import { TutorController } from './tutor.controller.js';
 import { TutorService, redact } from './tutor.service.js';
 import { QuizChecks } from './quiz-checks.js';
 import { gradeOne, questionsSchema } from './quiz.js';
-import { TUTOR_PROVIDER, tutorInput, tutorInstructions, unconfiguredProvider, type TutorProvider, type TutorEnvelope } from './tutor-provider.js';
+import { TUTOR_PROVIDER, chatInstructions, missingHanzi, tutorInput, tutorInstructions, unconfiguredProvider, type TutorProvider, type TutorEnvelope } from './tutor-provider.js';
 
 const localized = { ru: 'Приветствие', kk: 'Сәлемдесу', en: 'Greeting' };
 function fixture(provider?: TutorProvider) {
@@ -208,4 +208,35 @@ test('mistakes mode with questionId explains one instantly checked wrong answer 
   await rejectsStatus(ask('q1'), 409);
   assert.equal(f.calls.length, 1);
   assert.throws(() => tutorInput.parse({ lessonSlug: 'lesson', mode: 'explain', questionId: 'q1' }));
+});
+test('chat mode: free conversation about Chinese without any lesson data, own settings and bounded history', async () => {
+  const f = fixture();
+  const chat = (extra: object = {}) => tutorInput.parse({ mode: 'chat', text: 'How do I say thank you? my token: abc123', ...extra });
+  await f.service.ask('alice', chat({ history: [{ role: 'user', text: 'mail me at a@b.co' }, { role: 'assistant', text: '谢谢 xièxie' }] }), signal());
+  const data = f.calls[0].data;
+  assert.equal(f.calls[0].system, chatInstructions); assert.equal(data.mode, 'chat');
+  assert.equal(data.language, 'kk'); assert.equal(data.level, 2);
+  assert.equal(data.material, ''); assert.deepEqual(data.errors, []); assert.equal(data.mistakes, undefined);
+  assert.equal(data.history.length, 2);
+  assert.doesNotMatch(JSON.stringify(data), /abc123|a@b\.co|PRIVATE|你好/);
+  // No lesson, progress or quiz data is read for chat.
+  assert.deepEqual(f.queries.map(q => Object.keys(q.select ?? {}).sort().join()), ['explanationLanguage,startLevel']);
+  // The rule that keeps chat on Chinese is part of its own fixed system instructions.
+  assert.match(chatInstructions, /Talk only about the Chinese language/);
+  for (const bad of [{ mode: 'chat', text: '' }, { mode: 'chat', text: 'hi', lessonSlug: 'lesson' }, { mode: 'explain' }, { mode: 'chat', text: 'hi', questionId: 'q1' }])
+    assert.equal(tutorInput.safeParse(bad).success, false, JSON.stringify(bad));
+  await rejectsStatus(fixture(unconfiguredProvider).service.ask('alice', chat(), signal()), 503);
+});
+test('chat asks once more when the model drops the characters, and keeps the answer with them', async () => {
+  const replies = ['Say (xièxie) to thank someone.', '谢谢 (xièxie) — thank you.'];
+  const f = fixture({ kind: 'test', async generate() { return { text: replies.shift() ?? 'unused' }; } });
+  const r = await f.service.ask('alice', tutorInput.parse({ mode: 'chat', text: 'How do I say thank you?' }), signal());
+  assert.equal(r?.text, '谢谢 (xièxie) — thank you.'); assert.equal(replies.length, 0);
+  // A second bad answer is still returned rather than failing; lesson modes never retry.
+  let calls = 0;
+  const g = fixture({ kind: 'test', async generate() { calls++; return { text: 'Say "" (xièxie).' }; } });
+  assert.equal((await g.service.ask('alice', tutorInput.parse({ mode: 'chat', text: 'thanks?' }), signal()))?.text, 'Say "" (xièxie).'); assert.equal(calls, 2);
+  calls = 0; await g.service.ask('alice', input(), signal()); assert.equal(calls, 1);
+  for (const bad of ['is (zǎoshang hǎo)', 'Рахмет (xièxiè)', 'we say "" (wǒ ài)', '(nǐ hǎo) means hello']) assert.equal(missingHanzi(bad), true, bad);
+  for (const good of ['谢谢 (xièxie) — thank you', '我爱你（wǒ ài nǐ）', 'No Chinese here (just English).', '你好 (nǐ hǎo), 早上好 (zǎoshang hǎo)', '«中国» (Zhōngguó)', '"中国" (Zhōngguó)']) assert.equal(missingHanzi(good), false, good);
 });

@@ -1,13 +1,13 @@
 import { z } from 'zod';
 import { request, ApiError } from './client';
-export type TutorMode = 'explain' | 'check' | 'dialogue' | 'practice' | 'mistakes';
+export type TutorMode = 'explain' | 'check' | 'dialogue' | 'practice' | 'mistakes' | 'chat';
 export type TutorTurn = { role: 'user' | 'assistant'; text: string };
 const provider = z.enum(['unconfigured', 'test', 'live']);
 const response = z.object({ text: z.string().min(1).max(6000), provider });
 export async function tutorStatus(signal: AbortSignal) {
   return z.object({ provider }).parse(await request('/tutor/status', { signal }));
 }
-export async function askTutor(input: { lessonSlug: string; mode: TutorMode; text: string; history: TutorTurn[]; questionId?: string }, signal: AbortSignal) {
+export async function askTutor(input: { lessonSlug?: string; mode: TutorMode; text: string; history: TutorTurn[]; questionId?: string }, signal: AbortSignal) {
   return response.parse(await request('/tutor/ask', { method: 'POST', signal, headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(input) }));
 }
 export function tutorError(error: unknown, singleQuestion = false) {

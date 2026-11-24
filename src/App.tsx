@@ -85,7 +85,7 @@ export default function App() {
 
       {/* AI Tutor Sidebar */}
       {isAiTutorOpen && (
-        <AiTutorPanel key={`${account.id}:${currentScreen}:${lessonSlug}:${reviewMistakes}:${reviewQuestion ?? ''}`} initialMode={reviewMistakes ? 'mistakes' : 'explain'} autoSend={reviewMistakes} questionId={reviewMistakes ? reviewQuestion : undefined} lessonSlug={currentScreen === 'lesson' ? lessonSlug : undefined} onClose={() => setIsAiTutorOpen(false)} />
+        <AiTutorPanel key={`${account.id}:${currentScreen}:${lessonSlug}:${reviewMistakes}:${reviewQuestion ?? ''}`} initialMode={reviewMistakes ? 'mistakes' : 'chat'} autoSend={reviewMistakes} questionId={reviewMistakes ? reviewQuestion : undefined} lessonSlug={currentScreen === 'lesson' ? lessonSlug : undefined} onClose={() => setIsAiTutorOpen(false)} />
       )}
 
       {/* Mobile Bottom Nav */}
