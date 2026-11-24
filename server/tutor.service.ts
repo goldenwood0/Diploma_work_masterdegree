@@ -1,13 +1,14 @@
-import { Inject, Injectable, HttpException, NotFoundException, ForbiddenException } from '@nestjs/common';
+import { Inject, Injectable, Optional, HttpException, NotFoundException, ForbiddenException } from '@nestjs/common';
 import { z } from 'zod';
 import { Database } from './database.js';
 import { searchableContent } from './content-search.js';
 import { TutorBudgetError } from './tutor-budget.js';
+import { QuizChecks } from './quiz-checks.js';
 import { TUTOR_PROVIDER, tutorInstructions, tutorOutput, type TutorInput, type TutorProvider } from './tutor-provider.js';
 
 const errorSummary = z.object({ items: z.array(z.object({ correct: z.boolean(), question: z.object({
   kind: z.enum(['choice', 'match', 'order', 'gap', 'input', 'dictation']),
-  topic: z.enum(['greetings', 'introductions', 'courtesy']).optional(),
+  topic: z.enum(['greetings', 'introductions', 'courtesy', 'numbers', 'countries', 'age', 'family', 'dates', 'food', 'shopping', 'places']).optional(),
   skill: z.enum(['vocabulary', 'grammar', 'reading', 'listening', 'writing']).optional(),
 }) })).max(30) });
 // The graded snapshot the learner already sees after submitting a quiz.
@@ -43,7 +44,7 @@ export class TutorService {
   private active = new Set<string>();
   // Bounded process-local ledger: no prompts or personal data.
   readonly usage: Array<{ status: string; provider: string; inputTokens?: number; outputTokens?: number; cost?: { amount: number; currency: string } }> = [];
-  constructor(private db: Database, @Inject(TUTOR_PROVIDER) private provider: TutorProvider) {}
+  constructor(private db: Database, @Inject(TUTOR_PROVIDER) private provider: TutorProvider, @Optional() private checks?: QuizChecks) {}
   status() { return { provider: this.provider.kind }; }
   async context(userId: string, input: TutorInput) {
     const lesson = await this.db.lesson.findFirst({
@@ -59,13 +60,14 @@ export class TutorService {
     }
     const settings = await this.db.userSettings.findUnique({ where: { userId }, select: { startLevel: true, explanationLanguage: true } });
     const progress = await this.db.lessonProgress.findUnique({ where: { userId_lessonId: { userId, lessonId: lesson.id } } });
+    const language = (['ru', 'kk', 'en'].includes(settings?.explanationLanguage ?? '') ? settings!.explanationLanguage : 'ru') as Language;
     const index = progress?.revision === lesson.revision ? Math.min(progress.nextBlock, lesson.blocks.length - 1) : 0;
     // Retrieval is scoped to this published accessible lesson and reached blocks.
     const reached = lesson.blocks.slice(0, index + 1);
     const query = input.text.toLocaleLowerCase();
     const related = query ? reached.filter((b, i) => i !== index && searchableContent([b]).toLocaleLowerCase().includes(query)).slice(-2) : [];
     // A mistake review needs the whole reached lesson, not only the current block.
-    const material = redact(searchableContent(input.mode === 'mistakes' ? reached : [reached[index], ...related])).slice(0, 8000);
+    const material = redact(searchableContent(input.mode === 'mistakes' ? reached : [reached[index], ...related], { languages: [language], toneless: false })).slice(0, 8000);
     const attempts = lesson.quiz ? await this.db.quizAttempt.findMany({
       where: { userId, quizId: lesson.quiz.id, lessonRevision: lesson.revision, quizRevision: lesson.quiz.revision },
       orderBy: { createdAt: 'desc' }, take: 3, select: { result: true },
@@ -74,14 +76,16 @@ export class TutorService {
       const parsed = errorSummary.safeParse(a.result);
       return parsed.success ? parsed.data.items.filter(i => !i.correct).map(i => i.question) : [];
     }).slice(0, 10);
-    const language = (['ru', 'kk', 'en'].includes(settings?.explanationLanguage ?? '') ? settings!.explanationLanguage : 'ru') as Language;
     // Latest attempt of the current revisions only; nothing to review is an explicit state.
-    const mistakes = input.mode === 'mistakes' ? describeMistakes(attempts[0]?.result, language) : undefined;
+    const checked = input.questionId && lesson.quiz ? this.checks?.get(userId, lesson.quiz.id, lesson.quiz.revision, input.questionId) : undefined;
+    const mistakes = input.mode !== 'mistakes' ? undefined
+      : input.questionId ? (checked && !checked.result.correct ? describeMistakes({ items: [checked.result] }, language) : [])
+      : describeMistakes(attempts[0]?.result, language);
     if (mistakes && !mistakes.length) fail('TUTOR_NO_MISTAKES', 409);
     return { level: settings?.startLevel ?? 1, language, ...(mistakes ? { mistakes } : {}),
       mode: input.mode, material, errors, text: redact(input.text), history: input.history.map(m => ({ role: m.role, text: redact(m.text) })) };
   }
-  async ask(userId: string, input: TutorInput, signal: AbortSignal, timeoutMs = 20000) {
+  async ask(userId: string, input: TutorInput, signal: AbortSignal, timeoutMs = this.provider.timeoutMs ?? 20000) {
     const now = Date.now();
     for (const [id, b] of this.buckets) if (b.until <= now) this.buckets.delete(id);
     const bucket = this.buckets.get(userId) ?? { count: 0, until: now + 60000 };

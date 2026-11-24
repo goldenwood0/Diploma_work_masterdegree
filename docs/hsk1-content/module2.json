@@ -1,0 +1,3786 @@
+{
+  "status": "DRAFT_REQUIRES_HUMAN_REVIEW",
+  "publish": false,
+  "lessons": [
+    {
+      "slug": "hsk1-numbers",
+      "draft": {
+        "title": {
+          "ru": "Числа",
+          "kk": "Сандар",
+          "en": "Numbers"
+        },
+        "minutes": 15,
+        "blocks": [
+          {
+            "kind": "reading",
+            "content": {
+              "title": {
+                "ru": "Цель и порядок работы",
+                "kk": "Мақсат және жұмыс реті",
+                "en": "Goal and sequence"
+              },
+              "text": {
+                "ru": "Цель: считать от 1 до 10 и составлять числа до 99. Прочитайте слова, разберите правило, затем посчитайте вслух и выполните тест.",
+                "kk": "Мақсат: 1-ден 10-ға дейін санау және 99-ға дейінгі сандарды құрастыру. Сөздерді оқып, ережені талдаңыз, дауыстап санаңыз да, тестті орындаңыз.",
+                "en": "Goal: count from 1 to 10 and build numbers up to 99. Read the words, study the rule, count aloud, then take the quiz."
+              },
+              "hanzi": "一、二、三",
+              "pinyin": "yī, èr, sān",
+              "translation": {
+                "ru": "один, два, три",
+                "kk": "бір, екі, үш",
+                "en": "one, two, three"
+              }
+            }
+          },
+          {
+            "kind": "vocabulary",
+            "content": {
+              "title": {
+                "ru": "Новые слова",
+                "kk": "Жаңа сөздер",
+                "en": "New words"
+              },
+              "words": [
+                {
+                  "hanzi": "一",
+                  "pinyin": "yī",
+                  "translation": {
+                    "ru": "один",
+                    "kk": "бір",
+                    "en": "one"
+                  }
+                },
+                {
+                  "hanzi": "二",
+                  "pinyin": "èr",
+                  "translation": {
+                    "ru": "два",
+                    "kk": "екі",
+                    "en": "two"
+                  }
+                },
+                {
+                  "hanzi": "三",
+                  "pinyin": "sān",
+                  "translation": {
+                    "ru": "три",
+                    "kk": "үш",
+                    "en": "three"
+                  }
+                },
+                {
+                  "hanzi": "四",
+                  "pinyin": "sì",
+                  "translation": {
+                    "ru": "четыре",
+                    "kk": "төрт",
+                    "en": "four"
+                  }
+                },
+                {
+                  "hanzi": "五",
+                  "pinyin": "wǔ",
+                  "translation": {
+                    "ru": "пять",
+                    "kk": "бес",
+                    "en": "five"
+                  }
+                },
+                {
+                  "hanzi": "六",
+                  "pinyin": "liù",
+                  "translation": {
+                    "ru": "шесть",
+                    "kk": "алты",
+                    "en": "six"
+                  }
+                },
+                {
+                  "hanzi": "七",
+                  "pinyin": "qī",
+                  "translation": {
+                    "ru": "семь",
+                    "kk": "жеті",
+                    "en": "seven"
+                  }
+                },
+                {
+                  "hanzi": "八",
+                  "pinyin": "bā",
+                  "translation": {
+                    "ru": "восемь",
+                    "kk": "сегіз",
+                    "en": "eight"
+                  }
+                },
+                {
+                  "hanzi": "九",
+                  "pinyin": "jiǔ",
+                  "translation": {
+                    "ru": "девять",
+                    "kk": "тоғыз",
+                    "en": "nine"
+                  }
+                },
+                {
+                  "hanzi": "十",
+                  "pinyin": "shí",
+                  "translation": {
+                    "ru": "десять",
+                    "kk": "он",
+                    "en": "ten"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "kind": "reading",
+            "content": {
+              "title": {
+                "ru": "Числа до 99",
+                "kk": "99-ға дейінгі сандар",
+                "en": "Numbers up to 99"
+              },
+              "text": {
+                "ru": "Числа от 11 до 19: 十 + единицы (十一 = 11). Десятки: цифра + 十 (二十 = 20). Остальные: цифра + 十 + цифра (二十五 = 25).",
+                "kk": "11-ден 19-ға дейінгі сандар: 十 + бірлік (十一 = 11). Ондықтар: цифр + 十 (二十 = 20). Қалғандары: цифр + 十 + цифр (二十五 = 25).",
+                "en": "Numbers 11–19: 十 + units (十一 = 11). Tens: digit + 十 (二十 = 20). Others: digit + 十 + digit (二十五 = 25)."
+              },
+              "hanzi": "十一　二十　二十五",
+              "pinyin": "shíyī　èrshí　èrshíwǔ",
+              "translation": {
+                "ru": "11　20　25",
+                "kk": "11　20　25",
+                "en": "11　20　25"
+              }
+            }
+          },
+          {
+            "kind": "reading",
+            "content": {
+              "title": {
+                "ru": "Считаем вместе",
+                "kk": "Бірге санаймыз",
+                "en": "Counting together"
+              },
+              "text": {
+                "ru": "Прочитайте счёт вслух. Следите за тонами: yī — ровный высокий, èr — падающий, sān — ровный высокий.",
+                "kk": "Санауды дауыстап оқыңыз. Тондарға назар аударыңыз: yī — биік тегіс, èr — төмендейтін, sān — биік тегіс.",
+                "en": "Read the count aloud. Watch the tones: yī is high and level, èr is falling, sān is high and level."
+              },
+              "hanzi": "一、二、三、四、五，六、七、八、九、十。",
+              "pinyin": "Yī, èr, sān, sì, wǔ, liù, qī, bā, jiǔ, shí.",
+              "translation": {
+                "ru": "Один, два, три, четыре, пять, шесть, семь, восемь, девять, десять.",
+                "kk": "Бір, екі, үш, төрт, бес, алты, жеті, сегіз, тоғыз, он.",
+                "en": "One, two, three, four, five, six, seven, eight, nine, ten."
+              }
+            }
+          }
+        ],
+        "quiz": {
+          "kind": "lesson",
+          "passPercent": 80,
+          "questions": [
+            {
+              "id": "five-choice",
+              "topic": "numbers",
+              "skill": "vocabulary",
+              "prompt": {
+                "ru": "Что означает 五?",
+                "kk": "五 нені білдіреді?",
+                "en": "What does 五 mean?"
+              },
+              "explanation": {
+                "ru": "五 (wǔ) — пять.",
+                "kk": "五 (wǔ) — бес.",
+                "en": "五 (wǔ) means five."
+              },
+              "kind": "choice",
+              "options": [
+                {
+                  "id": "3",
+                  "text": {
+                    "ru": "3",
+                    "kk": "3",
+                    "en": "3"
+                  }
+                },
+                {
+                  "id": "5",
+                  "text": {
+                    "ru": "5",
+                    "kk": "5",
+                    "en": "5"
+                  }
+                },
+                {
+                  "id": "8",
+                  "text": {
+                    "ru": "8",
+                    "kk": "8",
+                    "en": "8"
+                  }
+                }
+              ],
+              "correct": "5"
+            },
+            {
+              "id": "digits-match",
+              "topic": "numbers",
+              "skill": "vocabulary",
+              "prompt": {
+                "ru": "Сопоставьте иероглифы и числа.",
+                "kk": "Иероглифтер мен сандарды сәйкестендіріңіз.",
+                "en": "Match the characters and the numbers."
+              },
+              "explanation": {
+                "ru": "三 — 3, 七 — 7, 九 — 9, 四 — 4.",
+                "kk": "三 — 3, 七 — 7, 九 — 9, 四 — 4.",
+                "en": "三 is 3, 七 is 7, 九 is 9, 四 is 4."
+              },
+              "kind": "match",
+              "left": [
+                {
+                  "id": "l0",
+                  "text": {
+                    "ru": "三",
+                    "kk": "三",
+                    "en": "三"
+                  }
+                },
+                {
+                  "id": "l1",
+                  "text": {
+                    "ru": "七",
+                    "kk": "七",
+                    "en": "七"
+                  }
+                },
+                {
+                  "id": "l2",
+                  "text": {
+                    "ru": "九",
+                    "kk": "九",
+                    "en": "九"
+                  }
+                },
+                {
+                  "id": "l3",
+                  "text": {
+                    "ru": "四",
+                    "kk": "四",
+                    "en": "四"
+                  }
+                }
+              ],
+              "right": [
+                {
+                  "id": "r1",
+                  "text": {
+                    "ru": "7",
+                    "kk": "7",
+                    "en": "7"
+                  }
+                },
+                {
+                  "id": "r2",
+                  "text": {
+                    "ru": "9",
+                    "kk": "9",
+                    "en": "9"
+                  }
+                },
+                {
+                  "id": "r3",
+                  "text": {
+                    "ru": "4",
+                    "kk": "4",
+                    "en": "4"
+                  }
+                },
+                {
+                  "id": "r0",
+                  "text": {
+                    "ru": "3",
+                    "kk": "3",
+                    "en": "3"
+                  }
+                }
+              ],
+              "correct": [
+                "r0",
+                "r1",
+                "r2",
+                "r3"
+              ]
+            },
+            {
+              "id": "ten-input",
+              "topic": "numbers",
+              "skill": "writing",
+              "prompt": {
+                "ru": "Напишите иероглифом число 10.",
+                "kk": "10 санын иероглифпен жазыңыз.",
+                "en": "Write the number 10 as a character."
+              },
+              "explanation": {
+                "ru": "10 — 十 (shí).",
+                "kk": "10 — 十 (shí).",
+                "en": "10 is 十 (shí)."
+              },
+              "kind": "input",
+              "accepted": [
+                "十"
+              ]
+            },
+            {
+              "id": "twenty-gap",
+              "topic": "numbers",
+              "skill": "grammar",
+              "prompt": {
+                "ru": "Дополните число 20: 二___",
+                "kk": "20 санын толықтырыңыз: 二___",
+                "en": "Complete the number 20: 二___"
+              },
+              "explanation": {
+                "ru": "Десятки строятся так: цифра + 十. 二十 = 20.",
+                "kk": "Ондықтар былай құрылады: цифр + 十. 二十 = 20.",
+                "en": "Tens are digit + 十. 二十 = 20."
+              },
+              "kind": "gap",
+              "accepted": [
+                "十"
+              ]
+            },
+            {
+              "id": "twentyfive-order",
+              "topic": "numbers",
+              "skill": "grammar",
+              "prompt": {
+                "ru": "Соберите число 25.",
+                "kk": "25 санын құрастырыңыз.",
+                "en": "Build the number 25."
+              },
+              "explanation": {
+                "ru": "25 = 二 (2) + 十 (десятки) + 五 (5): 二十五.",
+                "kk": "25 = 二 (2) + 十 (ондық) + 五 (5): 二十五.",
+                "en": "25 = 二 (2) + 十 (tens) + 五 (5): 二十五."
+              },
+              "kind": "order",
+              "options": [
+                {
+                  "id": "w2",
+                  "text": {
+                    "ru": "五",
+                    "kk": "五",
+                    "en": "五"
+                  }
+                },
+                {
+                  "id": "w1",
+                  "text": {
+                    "ru": "十",
+                    "kk": "十",
+                    "en": "十"
+                  }
+                },
+                {
+                  "id": "w0",
+                  "text": {
+                    "ru": "二",
+                    "kk": "二",
+                    "en": "二"
+                  }
+                }
+              ],
+              "correct": [
+                "w0",
+                "w1",
+                "w2"
+              ]
+            },
+            {
+              "id": "eighteen-choice",
+              "topic": "numbers",
+              "skill": "reading",
+              "prompt": {
+                "ru": "Какое число записано: 十八?",
+                "kk": "十八 қандай сан?",
+                "en": "Which number is 十八?"
+              },
+              "explanation": {
+                "ru": "十 + 八 = 10 + 8 = 18. Число 80 — это 八十.",
+                "kk": "十 + 八 = 10 + 8 = 18. 80 саны — 八十.",
+                "en": "十 + 八 = 10 + 8 = 18. Eighty is 八十."
+              },
+              "kind": "choice",
+              "options": [
+                {
+                  "id": "80",
+                  "text": {
+                    "ru": "80",
+                    "kk": "80",
+                    "en": "80"
+                  }
+                },
+                {
+                  "id": "18",
+                  "text": {
+                    "ru": "18",
+                    "kk": "18",
+                    "en": "18"
+                  }
+                },
+                {
+                  "id": "8",
+                  "text": {
+                    "ru": "8",
+                    "kk": "8",
+                    "en": "8"
+                  }
+                }
+              ],
+              "correct": "18"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "slug": "hsk1-countries",
+      "draft": {
+        "title": {
+          "ru": "Откуда ты?",
+          "kk": "Қай елдікісің?",
+          "en": "Where are you from?"
+        },
+        "minutes": 15,
+        "blocks": [
+          {
+            "kind": "reading",
+            "content": {
+              "title": {
+                "ru": "Цель и порядок работы",
+                "kk": "Мақсат және жұмыс реті",
+                "en": "Goal and sequence"
+              },
+              "text": {
+                "ru": "Цель: сказать, из какой вы страны, и задать вопрос с 吗. Нужны 我, 你 и 叫 из первого модуля.",
+                "kk": "Мақсат: қай елден екеніңізді айту және 吗 арқылы сұрақ қою. Бірінші модульдегі 我, 你 және 叫 сөздері қажет.",
+                "en": "Goal: say which country you are from and ask a question with 吗. You need 我, 你 and 叫 from module one."
+              },
+              "hanzi": "我是中国人。",
+              "pinyin": "Wǒ shì Zhōngguó rén.",
+              "translation": {
+                "ru": "Я китаец (китаянка).",
+                "kk": "Мен қытаймын.",
+                "en": "I am Chinese."
+              }
+            }
+          },
+          {
+            "kind": "vocabulary",
+            "content": {
+              "title": {
+                "ru": "Новые слова",
+                "kk": "Жаңа сөздер",
+                "en": "New words"
+              },
+              "words": [
+                {
+                  "hanzi": "是",
+                  "pinyin": "shì",
+                  "translation": {
+                    "ru": "быть, являться",
+                    "kk": "болу, болып табылу",
+                    "en": "to be"
+                  }
+                },
+                {
+                  "hanzi": "不",
+                  "pinyin": "bù",
+                  "translation": {
+                    "ru": "не, нет",
+                    "kk": "емес, жоқ",
+                    "en": "not, no"
+                  }
+                },
+                {
+                  "hanzi": "吗",
+                  "pinyin": "ma",
+                  "translation": {
+                    "ru": "вопросительная частица",
+                    "kk": "сұраулық шылау",
+                    "en": "question particle"
+                  }
+                },
+                {
+                  "hanzi": "呢",
+                  "pinyin": "ne",
+                  "translation": {
+                    "ru": "а ты? (встречный вопрос)",
+                    "kk": "ал сен ше? (қарсы сұрақ)",
+                    "en": "and you? (follow-up question)"
+                  }
+                },
+                {
+                  "hanzi": "人",
+                  "pinyin": "rén",
+                  "translation": {
+                    "ru": "человек",
+                    "kk": "адам",
+                    "en": "person"
+                  }
+                },
+                {
+                  "hanzi": "中国",
+                  "pinyin": "Zhōngguó",
+                  "translation": {
+                    "ru": "Китай",
+                    "kk": "Қытай",
+                    "en": "China"
+                  }
+                },
+                {
+                  "hanzi": "哪",
+                  "pinyin": "nǎ",
+                  "translation": {
+                    "ru": "какой, который",
+                    "kk": "қай, қайсы",
+                    "en": "which"
+                  }
+                },
+                {
+                  "hanzi": "国",
+                  "pinyin": "guó",
+                  "translation": {
+                    "ru": "страна",
+                    "kk": "ел, мемлекет",
+                    "en": "country"
+                  }
+                },
+                {
+                  "hanzi": "哈萨克斯坦",
+                  "pinyin": "Hāsàkèsītǎn",
+                  "translation": {
+                    "ru": "Казахстан (дополнительно, не из списка HSK 1)",
+                    "kk": "Қазақстан (қосымша, HSK 1 тізімінде жоқ)",
+                    "en": "Kazakhstan (extra, not on the HSK 1 list)"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "kind": "reading",
+            "content": {
+              "title": {
+                "ru": "Предложения с 是 и вопрос с 吗",
+                "kk": "是 сөйлемдері және 吗 сұрағы",
+                "en": "Sentences with 是 and questions with 吗"
+              },
+              "text": {
+                "ru": "Схема: A 是 B — «A является B». Отрицание: 不是. Перед четвёртым тоном 不 читается вторым тоном: bú shì. Чтобы получить вопрос «да/нет», добавьте 吗 в конец. Страна + 人 = национальность: 中国人 — китаец.",
+                "kk": "Үлгі: A 是 B — «A — B болып табылады». Болымсыз түрі: 不是. Төртінші тонның алдында 不 екінші тонмен оқылады: bú shì. «Иә/жоқ» сұрағы үшін сөйлем соңына 吗 қосыңыз. Ел + 人 = ұлт: 中国人 — қытай.",
+                "en": "Pattern: A 是 B — “A is B”. Negation: 不是. Before a fourth tone 不 is read in the second tone: bú shì. Add 吗 at the end to make a yes/no question. Country + 人 = nationality: 中国人 means Chinese."
+              },
+              "hanzi": "你是中国人吗？　我不是中国人。",
+              "pinyin": "Nǐ shì Zhōngguó rén ma?　Wǒ bú shì Zhōngguó rén.",
+              "translation": {
+                "ru": "Ты китаец?　Я не китаец.",
+                "kk": "Сен қытайсың ба?　Мен қытай емеспін.",
+                "en": "Are you Chinese?　I am not Chinese."
+              }
+            }
+          },
+          {
+            "kind": "reading",
+            "content": {
+              "title": {
+                "ru": "Диалог",
+                "kk": "Диалог",
+                "en": "Dialogue"
+              },
+              "text": {
+                "ru": "Прочитайте диалог по ролям. 呢 в конце задаёт тот же вопрос собеседнику: «А ты?».",
+                "kk": "Диалогты рөлге бөліп оқыңыз. Соңындағы 呢 сол сұрақты әңгімелесушіге қояды: «Ал сен ше?».",
+                "en": "Read the dialogue in roles. 呢 at the end asks the same question back: “And you?”."
+              },
+              "hanzi": "A：你是中国人吗？\nB：不是，我是哈萨克斯坦人。你呢？\nA：我是中国人。",
+              "pinyin": "A: Nǐ shì Zhōngguó rén ma?\nB: Bú shì, wǒ shì Hāsàkèsītǎn rén. Nǐ ne?\nA: Wǒ shì Zhōngguó rén.",
+              "translation": {
+                "ru": "A: Ты китаец?\nB: Нет, я казахстанец. А ты?\nA: Я китаец.",
+                "kk": "A: Сен қытайсың ба?\nB: Жоқ, мен қазақстандықпын. Ал сен ше?\nA: Мен қытаймын.",
+                "en": "A: Are you Chinese?\nB: No, I am from Kazakhstan. And you?\nA: I am Chinese."
+              }
+            }
+          }
+        ],
+        "quiz": {
+          "kind": "lesson",
+          "passPercent": 80,
+          "questions": [
+            {
+              "id": "ma-choice",
+              "topic": "countries",
+              "skill": "grammar",
+              "prompt": {
+                "ru": "Что делает 吗 в конце предложения?",
+                "kk": "Сөйлем соңындағы 吗 не істейді?",
+                "en": "What does 吗 do at the end of a sentence?"
+              },
+              "explanation": {
+                "ru": "吗 превращает утверждение в вопрос «да/нет». Отрицание делает 不.",
+                "kk": "吗 хабарлы сөйлемді «иә/жоқ» сұрағына айналдырады. Болымсыздықты 不 жасайды.",
+                "en": "吗 turns a statement into a yes/no question. 不 makes a negation."
+              },
+              "kind": "choice",
+              "options": [
+                {
+                  "id": "question",
+                  "text": {
+                    "ru": "Делает вопрос «да/нет»",
+                    "kk": "«Иә/жоқ» сұрағын жасайды",
+                    "en": "Makes a yes/no question"
+                  }
+                },
+                {
+                  "id": "negation",
+                  "text": {
+                    "ru": "Делает отрицание",
+                    "kk": "Болымсыз етеді",
+                    "en": "Makes a negation"
+                  }
+                },
+                {
+                  "id": "past",
+                  "text": {
+                    "ru": "Указывает на прошлое",
+                    "kk": "Өткен шақты білдіреді",
+                    "en": "Marks the past"
+                  }
+                }
+              ],
+              "correct": "question"
+            },
+            {
+              "id": "bushi-gap",
+              "topic": "countries",
+              "skill": "grammar",
+              "prompt": {
+                "ru": "Вставьте отрицание: 我___是中国人。",
+                "kk": "Болымсыздықты қойыңыз: 我___是中国人。",
+                "en": "Insert the negation: 我___是中国人。"
+              },
+              "explanation": {
+                "ru": "Глагол 是 отрицается словом 不: 我不是中国人 — я не китаец.",
+                "kk": "是 етістігі 不 арқылы болымсыз болады: 我不是中国人 — мен қытай емеспін.",
+                "en": "是 is negated with 不: 我不是中国人 means I am not Chinese."
+              },
+              "kind": "gap",
+              "accepted": [
+                "不"
+              ]
+            },
+            {
+              "id": "question-order",
+              "topic": "countries",
+              "skill": "grammar",
+              "prompt": {
+                "ru": "Соберите вопрос «Ты китаец?»",
+                "kk": "«Сен қытайсың ба?» сұрағын құрастырыңыз.",
+                "en": "Build the question “Are you Chinese?”"
+              },
+              "explanation": {
+                "ru": "Порядок: 你是中国人 + 吗 в конце.",
+                "kk": "Реті: 你是中国人 + соңында 吗.",
+                "en": "Order: 你是中国人 with 吗 at the end."
+              },
+              "kind": "order",
+              "options": [
+                {
+                  "id": "w3",
+                  "text": {
+                    "ru": "吗",
+                    "kk": "吗",
+                    "en": "吗"
+                  }
+                },
+                {
+                  "id": "w2",
+                  "text": {
+                    "ru": "中国人",
+                    "kk": "中国人",
+                    "en": "中国人"
+                  }
+                },
+                {
+                  "id": "w1",
+                  "text": {
+                    "ru": "是",
+                    "kk": "是",
+                    "en": "是"
+                  }
+                },
+                {
+                  "id": "w0",
+                  "text": {
+                    "ru": "你",
+                    "kk": "你",
+                    "en": "你"
+                  }
+                }
+              ],
+              "correct": [
+                "w0",
+                "w1",
+                "w2",
+                "w3"
+              ]
+            },
+            {
+              "id": "person-input",
+              "topic": "countries",
+              "skill": "writing",
+              "prompt": {
+                "ru": "Напишите иероглиф «человек».",
+                "kk": "«Адам» иероглифін жазыңыз.",
+                "en": "Write the character for “person”."
+              },
+              "explanation": {
+                "ru": "人 (rén) — человек. Страна + 人 обозначает национальность.",
+                "kk": "人 (rén) — адам. Ел + 人 ұлтты білдіреді.",
+                "en": "人 (rén) means person. Country + 人 gives a nationality."
+              },
+              "kind": "input",
+              "accepted": [
+                "人"
+              ]
+            },
+            {
+              "id": "ne-choice",
+              "topic": "countries",
+              "skill": "reading",
+              "prompt": {
+                "ru": "B: 我是哈萨克斯坦人。你呢？ Что спрашивает B?",
+                "kk": "B: 我是哈萨克斯坦人。你呢？ B не сұрайды?",
+                "en": "B: 我是哈萨克斯坦人。你呢？ What is B asking?"
+              },
+              "explanation": {
+                "ru": "呢 повторяет тот же вопрос собеседнику: «А ты?» — то есть «А ты из какой страны?».",
+                "kk": "呢 сол сұрақты әңгімелесушіге қайталайды: «Ал сен ше?» — яғни «Ал сен қай елденсің?».",
+                "en": "呢 asks the same question back: “And you?” — here, “Which country are you from?”."
+              },
+              "kind": "choice",
+              "options": [
+                {
+                  "id": "you",
+                  "text": {
+                    "ru": "«А ты откуда?»",
+                    "kk": "«Ал сен қайдансың?»",
+                    "en": "“And where are you from?”"
+                  }
+                },
+                {
+                  "id": "name",
+                  "text": {
+                    "ru": "«Как тебя зовут?»",
+                    "kk": "«Атың кім?»",
+                    "en": "“What is your name?”"
+                  }
+                },
+                {
+                  "id": "bye",
+                  "text": {
+                    "ru": "«До свидания»",
+                    "kk": "«Сау бол»",
+                    "en": "“Goodbye”"
+                  }
+                }
+              ],
+              "correct": "you"
+            },
+            {
+              "id": "which-choice",
+              "topic": "countries",
+              "skill": "vocabulary",
+              "prompt": {
+                "ru": "Какое слово значит «какой, который»?",
+                "kk": "«Қай, қайсы» деген қай сөз?",
+                "en": "Which word means “which”?"
+              },
+              "explanation": {
+                "ru": "哪 (nǎ) — какой. 你是哪国人？ — Из какой ты страны?",
+                "kk": "哪 (nǎ) — қай. 你是哪国人？ — Қай елдікісің?",
+                "en": "哪 (nǎ) means which. 你是哪国人？ — Which country are you from?"
+              },
+              "kind": "choice",
+              "options": [
+                {
+                  "id": "na",
+                  "text": {
+                    "ru": "哪",
+                    "kk": "哪",
+                    "en": "哪"
+                  }
+                },
+                {
+                  "id": "guo",
+                  "text": {
+                    "ru": "国",
+                    "kk": "国",
+                    "en": "国"
+                  }
+                },
+                {
+                  "id": "ren",
+                  "text": {
+                    "ru": "人",
+                    "kk": "人",
+                    "en": "人"
+                  }
+                }
+              ],
+              "correct": "na"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "slug": "hsk1-age",
+      "draft": {
+        "title": {
+          "ru": "Сколько тебе лет?",
+          "kk": "Нешедесің?",
+          "en": "How old are you?"
+        },
+        "minutes": 15,
+        "blocks": [
+          {
+            "kind": "reading",
+            "content": {
+              "title": {
+                "ru": "Цель и порядок работы",
+                "kk": "Мақсат және жұмыс реті",
+                "en": "Goal and sequence"
+              },
+              "text": {
+                "ru": "Цель: спросить возраст и ответить. Нужны числа и 呢 из прошлых уроков.",
+                "kk": "Мақсат: жасын сұрау және жауап беру. Өткен сабақтардағы сандар мен 呢 қажет.",
+                "en": "Goal: ask and answer about age. You need numbers and 呢 from earlier lessons."
+              },
+              "hanzi": "我二十岁。",
+              "pinyin": "Wǒ èrshí suì.",
+              "translation": {
+                "ru": "Мне двадцать лет.",
+                "kk": "Мен жиырма жастамын.",
+                "en": "I am twenty years old."
+              }
+            }
+          },
+          {
+            "kind": "vocabulary",
+            "content": {
+              "title": {
+                "ru": "Новые слова",
+                "kk": "Жаңа сөздер",
+                "en": "New words"
+              },
+              "words": [
+                {
+                  "hanzi": "几",
+                  "pinyin": "jǐ",
+                  "translation": {
+                    "ru": "сколько (обычно до 10)",
+                    "kk": "неше (әдетте 10-ға дейін)",
+                    "en": "how many (usually under 10)"
+                  }
+                },
+                {
+                  "hanzi": "岁",
+                  "pinyin": "suì",
+                  "translation": {
+                    "ru": "год (о возрасте)",
+                    "kk": "жас (жас туралы)",
+                    "en": "year of age"
+                  }
+                },
+                {
+                  "hanzi": "多",
+                  "pinyin": "duō",
+                  "translation": {
+                    "ru": "много; насколько",
+                    "kk": "көп; қаншалықты",
+                    "en": "many; how (much)"
+                  }
+                },
+                {
+                  "hanzi": "大",
+                  "pinyin": "dà",
+                  "translation": {
+                    "ru": "большой; старший по возрасту",
+                    "kk": "үлкен; жасы үлкен",
+                    "en": "big; old (of age)"
+                  }
+                },
+                {
+                  "hanzi": "了",
+                  "pinyin": "le",
+                  "translation": {
+                    "ru": "частица изменения ситуации",
+                    "kk": "жағдай өзгерісінің шылауы",
+                    "en": "particle of change"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "kind": "reading",
+            "content": {
+              "title": {
+                "ru": "Как спросить возраст",
+                "kk": "Жасын қалай сұрайды",
+                "en": "How to ask about age"
+              },
+              "text": {
+                "ru": "Ребёнка спрашивают 你几岁了？ Взрослого или ровесника — 你多大了？ Отвечают без 是: 我二十岁。 Ошибка: 我是二十岁.",
+                "kk": "Баладан 你几岁了？ деп сұрайды. Ересектен немесе құрдастан — 你多大了？ Жауап 是 сөзінсіз беріледі: 我二十岁。 Қате: 我是二十岁.",
+                "en": "Ask a child 你几岁了？ Ask an adult or peer 你多大了？ Answer without 是: 我二十岁。 Wrong: 我是二十岁."
+              },
+              "hanzi": "你多大了？　我十九岁。",
+              "pinyin": "Nǐ duō dà le?　Wǒ shíjiǔ suì.",
+              "translation": {
+                "ru": "Сколько тебе лет?　Мне девятнадцать.",
+                "kk": "Нешедесің?　Мен он тоғыздамын.",
+                "en": "How old are you?　I am nineteen."
+              }
+            }
+          },
+          {
+            "kind": "reading",
+            "content": {
+              "title": {
+                "ru": "Диалог",
+                "kk": "Диалог",
+                "en": "Dialogue"
+              },
+              "text": {
+                "ru": "Прочитайте по ролям и замените числа своим возрастом.",
+                "kk": "Рөлге бөліп оқып, сандарды өз жасыңызбен ауыстырыңыз.",
+                "en": "Read in roles and replace the numbers with your own age."
+              },
+              "hanzi": "A：你多大了？\nB：我十九岁。你呢？\nA：我二十岁。",
+              "pinyin": "A: Nǐ duō dà le?\nB: Wǒ shíjiǔ suì. Nǐ ne?\nA: Wǒ èrshí suì.",
+              "translation": {
+                "ru": "A: Сколько тебе лет?\nB: Мне девятнадцать. А тебе?\nA: Мне двадцать.",
+                "kk": "A: Нешедесің?\nB: Мен он тоғыздамын. Ал сен ше?\nA: Мен жиырмадамын.",
+                "en": "A: How old are you?\nB: I am nineteen. And you?\nA: I am twenty."
+              }
+            }
+          }
+        ],
+        "quiz": {
+          "kind": "lesson",
+          "passPercent": 80,
+          "questions": [
+            {
+              "id": "child-choice",
+              "topic": "age",
+              "skill": "grammar",
+              "prompt": {
+                "ru": "Как спросить возраст у ребёнка?",
+                "kk": "Баланың жасын қалай сұрайды?",
+                "en": "How do you ask a child’s age?"
+              },
+              "explanation": {
+                "ru": "几 используют, когда ожидают небольшое число, поэтому 你几岁了？ — вопрос к ребёнку.",
+                "kk": "几 кіші сан күтілгенде қолданылады, сондықтан 你几岁了？ — балаға қойылатын сұрақ.",
+                "en": "几 expects a small number, so 你几岁了？ is the question for a child."
+              },
+              "kind": "choice",
+              "options": [
+                {
+                  "id": "ji",
+                  "text": {
+                    "ru": "你几岁了？",
+                    "kk": "你几岁了？",
+                    "en": "你几岁了？"
+                  }
+                },
+                {
+                  "id": "duo",
+                  "text": {
+                    "ru": "你多大了？",
+                    "kk": "你多大了？",
+                    "en": "你多大了？"
+                  }
+                },
+                {
+                  "id": "name",
+                  "text": {
+                    "ru": "你叫什么名字？",
+                    "kk": "你叫什么名字？",
+                    "en": "你叫什么名字？"
+                  }
+                }
+              ],
+              "correct": "ji"
+            },
+            {
+              "id": "sui-input",
+              "topic": "age",
+              "skill": "writing",
+              "prompt": {
+                "ru": "Напишите иероглиф «год (о возрасте)».",
+                "kk": "«Жас» иероглифін жазыңыз.",
+                "en": "Write the character for “year of age”."
+              },
+              "explanation": {
+                "ru": "岁 (suì) ставится после числа: 二十岁 — двадцать лет.",
+                "kk": "岁 (suì) саннан кейін қойылады: 二十岁 — жиырма жас.",
+                "en": "岁 (suì) follows the number: 二十岁 — twenty years old."
+              },
+              "kind": "input",
+              "accepted": [
+                "岁"
+              ]
+            },
+            {
+              "id": "duoda-gap",
+              "topic": "age",
+              "skill": "grammar",
+              "prompt": {
+                "ru": "Дополните вопрос к взрослому: 你多___了？",
+                "kk": "Ересекке қойылатын сұрақты толықтырыңыз: 你多___了？",
+                "en": "Complete the question to an adult: 你多___了？"
+              },
+              "explanation": {
+                "ru": "你多大了？ — Сколько тебе лет? 大 здесь означает возраст.",
+                "kk": "你多大了？ — Нешедесің? 大 мұнда жасты білдіреді.",
+                "en": "你多大了？ — How old are you? Here 大 refers to age."
+              },
+              "kind": "gap",
+              "accepted": [
+                "大"
+              ]
+            },
+            {
+              "id": "age-order",
+              "topic": "age",
+              "skill": "grammar",
+              "prompt": {
+                "ru": "Соберите «Мне двадцать лет».",
+                "kk": "«Мен жиырма жастамын» сөйлемін құрастырыңыз.",
+                "en": "Build “I am twenty years old”."
+              },
+              "explanation": {
+                "ru": "Порядок: 我 + число + 岁, без 是.",
+                "kk": "Реті: 我 + сан + 岁, 是 сөзінсіз.",
+                "en": "Order: 我 + number + 岁, without 是."
+              },
+              "kind": "order",
+              "options": [
+                {
+                  "id": "w2",
+                  "text": {
+                    "ru": "岁",
+                    "kk": "岁",
+                    "en": "岁"
+                  }
+                },
+                {
+                  "id": "w1",
+                  "text": {
+                    "ru": "二十",
+                    "kk": "二十",
+                    "en": "二十"
+                  }
+                },
+                {
+                  "id": "w0",
+                  "text": {
+                    "ru": "我",
+                    "kk": "我",
+                    "en": "我"
+                  }
+                }
+              ],
+              "correct": [
+                "w0",
+                "w1",
+                "w2"
+              ]
+            },
+            {
+              "id": "correct-sentence",
+              "topic": "age",
+              "skill": "grammar",
+              "prompt": {
+                "ru": "Какое предложение правильное?",
+                "kk": "Қай сөйлем дұрыс?",
+                "en": "Which sentence is correct?"
+              },
+              "explanation": {
+                "ru": "Возраст называют без 是: 我二十岁。 Слово 岁 стоит после числа.",
+                "kk": "Жас 是 сөзінсіз айтылады: 我二十岁。 岁 саннан кейін тұрады.",
+                "en": "Age is stated without 是: 我二十岁。 岁 comes after the number."
+              },
+              "kind": "choice",
+              "options": [
+                {
+                  "id": "shi",
+                  "text": {
+                    "ru": "我是二十岁。",
+                    "kk": "我是二十岁。",
+                    "en": "我是二十岁。"
+                  }
+                },
+                {
+                  "id": "ok",
+                  "text": {
+                    "ru": "我二十岁。",
+                    "kk": "我二十岁。",
+                    "en": "我二十岁。"
+                  }
+                },
+                {
+                  "id": "le",
+                  "text": {
+                    "ru": "我岁二十。",
+                    "kk": "我岁二十。",
+                    "en": "我岁二十。"
+                  }
+                }
+              ],
+              "correct": "ok"
+            },
+            {
+              "id": "dialogue-age",
+              "topic": "age",
+              "skill": "reading",
+              "prompt": {
+                "ru": "A: 你多大了？ B: 我十九岁。 Сколько лет B?",
+                "kk": "A: 你多大了？ B: 我十九岁。 B нешеде?",
+                "en": "A: 你多大了？ B: 我十九岁。 How old is B?"
+              },
+              "explanation": {
+                "ru": "十九 = 10 + 9 = 19.",
+                "kk": "十九 = 10 + 9 = 19.",
+                "en": "十九 = 10 + 9 = 19."
+              },
+              "kind": "choice",
+              "options": [
+                {
+                  "id": "19",
+                  "text": {
+                    "ru": "19",
+                    "kk": "19",
+                    "en": "19"
+                  }
+                },
+                {
+                  "id": "90",
+                  "text": {
+                    "ru": "90",
+                    "kk": "90",
+                    "en": "90"
+                  }
+                },
+                {
+                  "id": "9",
+                  "text": {
+                    "ru": "9",
+                    "kk": "9",
+                    "en": "9"
+                  }
+                }
+              ],
+              "correct": "19"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "slug": "hsk1-family",
+      "draft": {
+        "title": {
+          "ru": "Моя семья",
+          "kk": "Менің отбасым",
+          "en": "My family"
+        },
+        "minutes": 15,
+        "blocks": [
+          {
+            "kind": "reading",
+            "content": {
+              "title": {
+                "ru": "Цель и порядок работы",
+                "kk": "Мақсат және жұмыс реті",
+                "en": "Goal and sequence"
+              },
+              "text": {
+                "ru": "Цель: назвать членов семьи и сказать, кто у вас есть. Нужны числа, 几 и 吗.",
+                "kk": "Мақсат: отбасы мүшелерін атау және кімің бар екенін айту. Сандар, 几 және 吗 қажет.",
+                "en": "Goal: name family members and say who you have. You need numbers, 几 and 吗."
+              },
+              "hanzi": "我有一个女儿。",
+              "pinyin": "Wǒ yǒu yí ge nǚ’ér.",
+              "translation": {
+                "ru": "У меня есть дочь.",
+                "kk": "Менің бір қызым бар.",
+                "en": "I have a daughter."
+              }
+            }
+          },
+          {
+            "kind": "vocabulary",
+            "content": {
+              "title": {
+                "ru": "Новые слова",
+                "kk": "Жаңа сөздер",
+                "en": "New words"
+              },
+              "words": [
+                {
+                  "hanzi": "家",
+                  "pinyin": "jiā",
+                  "translation": {
+                    "ru": "семья; дом",
+                    "kk": "отбасы; үй",
+                    "en": "family; home"
+                  }
+                },
+                {
+                  "hanzi": "爸爸",
+                  "pinyin": "bàba",
+                  "translation": {
+                    "ru": "папа",
+                    "kk": "әке",
+                    "en": "dad"
+                  }
+                },
+                {
+                  "hanzi": "妈妈",
+                  "pinyin": "māma",
+                  "translation": {
+                    "ru": "мама",
+                    "kk": "ана",
+                    "en": "mom"
+                  }
+                },
+                {
+                  "hanzi": "儿子",
+                  "pinyin": "érzi",
+                  "translation": {
+                    "ru": "сын",
+                    "kk": "ұл",
+                    "en": "son"
+                  }
+                },
+                {
+                  "hanzi": "女儿",
+                  "pinyin": "nǚ’ér",
+                  "translation": {
+                    "ru": "дочь",
+                    "kk": "қыз (перзент)",
+                    "en": "daughter"
+                  }
+                },
+                {
+                  "hanzi": "有",
+                  "pinyin": "yǒu",
+                  "translation": {
+                    "ru": "иметь; есть",
+                    "kk": "бар болу",
+                    "en": "to have; there is"
+                  }
+                },
+                {
+                  "hanzi": "没有",
+                  "pinyin": "méiyǒu",
+                  "translation": {
+                    "ru": "не иметь; нет",
+                    "kk": "жоқ болу",
+                    "en": "not have; there is not"
+                  }
+                },
+                {
+                  "hanzi": "的",
+                  "pinyin": "de",
+                  "translation": {
+                    "ru": "притяжательная частица",
+                    "kk": "тәуелдік шылау",
+                    "en": "possessive particle"
+                  }
+                },
+                {
+                  "hanzi": "个",
+                  "pinyin": "gè",
+                  "translation": {
+                    "ru": "счётное слово для людей и предметов",
+                    "kk": "адамдар мен заттарға арналған мөлшер сөз",
+                    "en": "measure word for people and things"
+                  }
+                },
+                {
+                  "hanzi": "他",
+                  "pinyin": "tā",
+                  "translation": {
+                    "ru": "он",
+                    "kk": "ол (ер адам)",
+                    "en": "he"
+                  }
+                },
+                {
+                  "hanzi": "她",
+                  "pinyin": "tā",
+                  "translation": {
+                    "ru": "она",
+                    "kk": "ол (әйел адам)",
+                    "en": "she"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "kind": "reading",
+            "content": {
+              "title": {
+                "ru": "有, 没有 и счётное слово 个",
+                "kk": "有, 没有 және 个 мөлшер сөзі",
+                "en": "有, 没有 and the measure word 个"
+              },
+              "text": {
+                "ru": "有 — «иметь». Отрицание только 没有, не 不有. Между числом и существительным нужно счётное слово: 一个女儿. Перед четвёртым тоном 一 читается yí: yí ge. 的 означает принадлежность: 我的家 — моя семья; с родственниками 的 часто опускают: 我妈妈.",
+                "kk": "有 — «бар болу». Болымсыз түрі тек 没有, 不有 емес. Сан мен зат есімнің арасында мөлшер сөз керек: 一个女儿. Төртінші тонның алдында 一 yí болып оқылады: yí ge. 的 тәуелдікті білдіреді: 我的家 — менің отбасым; туыстар туралы 的 жиі түсіріледі: 我妈妈.",
+                "en": "有 means to have. Its negation is only 没有, never 不有. A measure word goes between a number and a noun: 一个女儿. Before a fourth tone 一 is read yí: yí ge. 的 marks possession: 我的家 — my family; with relatives 的 is often dropped: 我妈妈."
+              },
+              "hanzi": "我有一个儿子。　我没有女儿。",
+              "pinyin": "Wǒ yǒu yí ge érzi.　Wǒ méiyǒu nǚ’ér.",
+              "translation": {
+                "ru": "У меня есть сын.　У меня нет дочери.",
+                "kk": "Менің бір ұлым бар.　Менің қызым жоқ.",
+                "en": "I have a son.　I do not have a daughter."
+              }
+            }
+          },
+          {
+            "kind": "reading",
+            "content": {
+              "title": {
+                "ru": "Диалог",
+                "kk": "Диалог",
+                "en": "Dialogue"
+              },
+              "text": {
+                "ru": "Прочитайте по ролям. Обратите внимание: в ответе о возрасте снова нет 是.",
+                "kk": "Рөлге бөліп оқыңыз. Назар аударыңыз: жас туралы жауапта тағы да 是 жоқ.",
+                "en": "Read in roles. Notice again that the answer about age has no 是."
+              },
+              "hanzi": "A：你有儿子吗？\nB：没有。我有一个女儿。\nA：你女儿几岁了？\nB：她五岁了。",
+              "pinyin": "A: Nǐ yǒu érzi ma?\nB: Méiyǒu. Wǒ yǒu yí ge nǚ’ér.\nA: Nǐ nǚ’ér jǐ suì le?\nB: Tā wǔ suì le.",
+              "translation": {
+                "ru": "A: У тебя есть сын?\nB: Нет. У меня есть дочь.\nA: Сколько лет твоей дочери?\nB: Ей пять лет.",
+                "kk": "A: Ұлың бар ма?\nB: Жоқ. Менің бір қызым бар.\nA: Қызың нешеде?\nB: Ол бес жаста.",
+                "en": "A: Do you have a son?\nB: No. I have a daughter.\nA: How old is your daughter?\nB: She is five."
+              }
+            }
+          }
+        ],
+        "quiz": {
+          "kind": "lesson",
+          "passPercent": 80,
+          "questions": [
+            {
+              "id": "family-match",
+              "topic": "family",
+              "skill": "vocabulary",
+              "prompt": {
+                "ru": "Сопоставьте слова и переводы.",
+                "kk": "Сөздер мен аудармаларды сәйкестендіріңіз.",
+                "en": "Match the words and translations."
+              },
+              "explanation": {
+                "ru": "爸爸 — папа, 妈妈 — мама, 儿子 — сын, 女儿 — дочь.",
+                "kk": "爸爸 — әке, 妈妈 — ана, 儿子 — ұл, 女儿 — қыз.",
+                "en": "爸爸 is dad, 妈妈 is mom, 儿子 is son, 女儿 is daughter."
+              },
+              "kind": "match",
+              "left": [
+                {
+                  "id": "l0",
+                  "text": {
+                    "ru": "爸爸",
+                    "kk": "爸爸",
+                    "en": "爸爸"
+                  }
+                },
+                {
+                  "id": "l1",
+                  "text": {
+                    "ru": "妈妈",
+                    "kk": "妈妈",
+                    "en": "妈妈"
+                  }
+                },
+                {
+                  "id": "l2",
+                  "text": {
+                    "ru": "儿子",
+                    "kk": "儿子",
+                    "en": "儿子"
+                  }
+                },
+                {
+                  "id": "l3",
+                  "text": {
+                    "ru": "女儿",
+                    "kk": "女儿",
+                    "en": "女儿"
+                  }
+                }
+              ],
+              "right": [
+                {
+                  "id": "r1",
+                  "text": {
+                    "ru": "мама",
+                    "kk": "ана",
+                    "en": "mom"
+                  }
+                },
+                {
+                  "id": "r2",
+                  "text": {
+                    "ru": "сын",
+                    "kk": "ұл",
+                    "en": "son"
+                  }
+                },
+                {
+                  "id": "r3",
+                  "text": {
+                    "ru": "дочь",
+                    "kk": "қыз",
+                    "en": "daughter"
+                  }
+                },
+                {
+                  "id": "r0",
+                  "text": {
+                    "ru": "папа",
+                    "kk": "әке",
+                    "en": "dad"
+                  }
+                }
+              ],
+              "correct": [
+                "r0",
+                "r1",
+                "r2",
+                "r3"
+              ]
+            },
+            {
+              "id": "meiyou-gap",
+              "topic": "family",
+              "skill": "grammar",
+              "prompt": {
+                "ru": "Вставьте отрицание: 我___有儿子。",
+                "kk": "Болымсыздықты қойыңыз: 我___有儿子。",
+                "en": "Insert the negation: 我___有儿子。"
+              },
+              "explanation": {
+                "ru": "有 отрицается только словом 没: 我没有儿子. Вариант 不有 неверен.",
+                "kk": "有 тек 没 арқылы болымсыз болады: 我没有儿子. 不有 — қате.",
+                "en": "有 is negated only with 没: 我没有儿子. 不有 is wrong."
+              },
+              "kind": "gap",
+              "accepted": [
+                "没"
+              ]
+            },
+            {
+              "id": "daughter-order",
+              "topic": "family",
+              "skill": "grammar",
+              "prompt": {
+                "ru": "Соберите «У меня есть дочь».",
+                "kk": "«Менің бір қызым бар» сөйлемін құрастырыңыз.",
+                "en": "Build “I have a daughter”."
+              },
+              "explanation": {
+                "ru": "我 + 有 + число + 个 + существительное.",
+                "kk": "我 + 有 + сан + 个 + зат есім.",
+                "en": "我 + 有 + number + 个 + noun."
+              },
+              "kind": "order",
+              "options": [
+                {
+                  "id": "w4",
+                  "text": {
+                    "ru": "女儿",
+                    "kk": "女儿",
+                    "en": "女儿"
+                  }
+                },
+                {
+                  "id": "w3",
+                  "text": {
+                    "ru": "个",
+                    "kk": "个",
+                    "en": "个"
+                  }
+                },
+                {
+                  "id": "w2",
+                  "text": {
+                    "ru": "一",
+                    "kk": "一",
+                    "en": "一"
+                  }
+                },
+                {
+                  "id": "w1",
+                  "text": {
+                    "ru": "有",
+                    "kk": "有",
+                    "en": "有"
+                  }
+                },
+                {
+                  "id": "w0",
+                  "text": {
+                    "ru": "我",
+                    "kk": "我",
+                    "en": "我"
+                  }
+                }
+              ],
+              "correct": [
+                "w0",
+                "w1",
+                "w2",
+                "w3",
+                "w4"
+              ]
+            },
+            {
+              "id": "home-input",
+              "topic": "family",
+              "skill": "writing",
+              "prompt": {
+                "ru": "Напишите иероглиф «семья; дом».",
+                "kk": "«Отбасы; үй» иероглифін жазыңыз.",
+                "en": "Write the character for “family; home”."
+              },
+              "explanation": {
+                "ru": "家 (jiā) — семья, дом. 我的家 — моя семья.",
+                "kk": "家 (jiā) — отбасы, үй. 我的家 — менің отбасым.",
+                "en": "家 (jiā) means family or home. 我的家 — my family."
+              },
+              "kind": "input",
+              "accepted": [
+                "家"
+              ]
+            },
+            {
+              "id": "measure-choice",
+              "topic": "family",
+              "skill": "grammar",
+              "prompt": {
+                "ru": "Какое слово нужно в 三___儿子?",
+                "kk": "三___儿子 ішіне қай сөз керек?",
+                "en": "Which word goes in 三___儿子?"
+              },
+              "explanation": {
+                "ru": "Между числом и существительным ставится счётное слово 个: 三个儿子.",
+                "kk": "Сан мен зат есімнің арасына 个 мөлшер сөзі қойылады: 三个儿子.",
+                "en": "A measure word goes between a number and a noun: 三个儿子."
+              },
+              "kind": "choice",
+              "options": [
+                {
+                  "id": "ge",
+                  "text": {
+                    "ru": "个",
+                    "kk": "个",
+                    "en": "个"
+                  }
+                },
+                {
+                  "id": "de",
+                  "text": {
+                    "ru": "的",
+                    "kk": "的",
+                    "en": "的"
+                  }
+                },
+                {
+                  "id": "you",
+                  "text": {
+                    "ru": "有",
+                    "kk": "有",
+                    "en": "有"
+                  }
+                }
+              ],
+              "correct": "ge"
+            },
+            {
+              "id": "family-reading",
+              "topic": "family",
+              "skill": "reading",
+              "prompt": {
+                "ru": "A: 你有儿子吗？ B: 没有。我有一个女儿。 Кто есть у B?",
+                "kk": "A: 你有儿子吗？ B: 没有。我有一个女儿。 B-ның кімі бар?",
+                "en": "A: 你有儿子吗？ B: 没有。我有一个女儿。 Who does B have?"
+              },
+              "explanation": {
+                "ru": "没有 — сына нет; 我有一个女儿 — есть одна дочь.",
+                "kk": "没有 — ұлы жоқ; 我有一个女儿 — бір қызы бар.",
+                "en": "没有 — no son; 我有一个女儿 — one daughter."
+              },
+              "kind": "choice",
+              "options": [
+                {
+                  "id": "daughter",
+                  "text": {
+                    "ru": "Дочь",
+                    "kk": "Қызы",
+                    "en": "A daughter"
+                  }
+                },
+                {
+                  "id": "son",
+                  "text": {
+                    "ru": "Сын",
+                    "kk": "Ұлы",
+                    "en": "A son"
+                  }
+                },
+                {
+                  "id": "both",
+                  "text": {
+                    "ru": "Сын и дочь",
+                    "kk": "Ұлы мен қызы",
+                    "en": "A son and a daughter"
+                  }
+                }
+              ],
+              "correct": "daughter"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "slug": "hsk1-dates",
+      "draft": {
+        "title": {
+          "ru": "Какое сегодня число?",
+          "kk": "Бүгін нешесі?",
+          "en": "What is the date today?"
+        },
+        "minutes": 15,
+        "blocks": [
+          {
+            "kind": "reading",
+            "content": {
+              "title": {
+                "ru": "Цель и порядок работы",
+                "kk": "Мақсат және жұмыс реті",
+                "en": "Goal and sequence"
+              },
+              "text": {
+                "ru": "Цель: назвать день недели и дату, спросить «какое сегодня число». Нужны числа и 几.",
+                "kk": "Мақсат: апта күні мен күнді атау, «бүгін нешесі» деп сұрау. Сандар мен 几 қажет.",
+                "en": "Goal: name the weekday and date, and ask what the date is. You need numbers and 几."
+              },
+              "hanzi": "今天星期一。",
+              "pinyin": "Jīntiān xīngqīyī.",
+              "translation": {
+                "ru": "Сегодня понедельник.",
+                "kk": "Бүгін дүйсенбі.",
+                "en": "Today is Monday."
+              }
+            }
+          },
+          {
+            "kind": "vocabulary",
+            "content": {
+              "title": {
+                "ru": "Новые слова",
+                "kk": "Жаңа сөздер",
+                "en": "New words"
+              },
+              "words": [
+                {
+                  "hanzi": "今天",
+                  "pinyin": "jīntiān",
+                  "translation": {
+                    "ru": "сегодня",
+                    "kk": "бүгін",
+                    "en": "today"
+                  }
+                },
+                {
+                  "hanzi": "明天",
+                  "pinyin": "míngtiān",
+                  "translation": {
+                    "ru": "завтра",
+                    "kk": "ертең",
+                    "en": "tomorrow"
+                  }
+                },
+                {
+                  "hanzi": "昨天",
+                  "pinyin": "zuótiān",
+                  "translation": {
+                    "ru": "вчера",
+                    "kk": "кеше",
+                    "en": "yesterday"
+                  }
+                },
+                {
+                  "hanzi": "星期",
+                  "pinyin": "xīngqī",
+                  "translation": {
+                    "ru": "неделя",
+                    "kk": "апта",
+                    "en": "week"
+                  }
+                },
+                {
+                  "hanzi": "月",
+                  "pinyin": "yuè",
+                  "translation": {
+                    "ru": "месяц",
+                    "kk": "ай",
+                    "en": "month"
+                  }
+                },
+                {
+                  "hanzi": "号",
+                  "pinyin": "hào",
+                  "translation": {
+                    "ru": "число (дата)",
+                    "kk": "күн (айдың күні)",
+                    "en": "day of the month"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "kind": "reading",
+            "content": {
+              "title": {
+                "ru": "Дни недели и даты",
+                "kk": "Апта күндері мен күндер",
+                "en": "Weekdays and dates"
+              },
+              "text": {
+                "ru": "Дни недели: 星期 + номер. 星期一 — понедельник … 星期六 — суббота; воскресенье — 星期天. Месяцы: номер + 月 (十一月 — ноябрь). Дата идёт от большего к меньшему: 十一月二十三号. В ответе 是 обычно опускают: 今天星期三。",
+                "kk": "Апта күндері: 星期 + нөмір. 星期一 — дүйсенбі … 星期六 — сенбі; жексенбі — 星期天. Айлар: нөмір + 月 (十一月 — қараша). Күн үлкеннен кішіге қарай жазылады: 十一月二十三号. Жауапта 是 әдетте түсіріледі: 今天星期三。",
+                "en": "Weekdays: 星期 + number. 星期一 is Monday … 星期六 is Saturday; Sunday is 星期天. Months: number + 月 (十一月 is November). Dates go from larger to smaller: 十一月二十三号. 是 is usually dropped: 今天星期三。"
+              },
+              "hanzi": "今天几月几号？　今天十一月二十三号。",
+              "pinyin": "Jīntiān jǐ yuè jǐ hào?　Jīntiān shíyī yuè èrshísān hào.",
+              "translation": {
+                "ru": "Какое сегодня число?　Сегодня 23 ноября.",
+                "kk": "Бүгін нешесі?　Бүгін 23 қараша.",
+                "en": "What is the date today?　Today is November 23."
+              }
+            }
+          },
+          {
+            "kind": "reading",
+            "content": {
+              "title": {
+                "ru": "Диалог",
+                "kk": "Диалог",
+                "en": "Dialogue"
+              },
+              "text": {
+                "ru": "Прочитайте по ролям и назовите сегодняшнюю дату.",
+                "kk": "Рөлге бөліп оқып, бүгінгі күнді атаңыз.",
+                "en": "Read in roles and say today’s date."
+              },
+              "hanzi": "A：今天几号？\nB：今天九号。\nA：明天星期几？\nB：明天星期五。",
+              "pinyin": "A: Jīntiān jǐ hào?\nB: Jīntiān jiǔ hào.\nA: Míngtiān xīngqī jǐ?\nB: Míngtiān xīngqīwǔ.",
+              "translation": {
+                "ru": "A: Какое сегодня число?\nB: Сегодня девятое.\nA: Какой завтра день недели?\nB: Завтра пятница.",
+                "kk": "A: Бүгін нешесі?\nB: Бүгін тоғызы.\nA: Ертең аптаның қай күні?\nB: Ертең жұма.",
+                "en": "A: What is the date today?\nB: Today is the ninth.\nA: What day is tomorrow?\nB: Tomorrow is Friday."
+              }
+            }
+          }
+        ],
+        "quiz": {
+          "kind": "lesson",
+          "passPercent": 80,
+          "questions": [
+            {
+              "id": "days-match",
+              "topic": "dates",
+              "skill": "vocabulary",
+              "prompt": {
+                "ru": "Сопоставьте слова и переводы.",
+                "kk": "Сөздер мен аудармаларды сәйкестендіріңіз.",
+                "en": "Match the words and translations."
+              },
+              "explanation": {
+                "ru": "今天 — сегодня, 明天 — завтра, 昨天 — вчера.",
+                "kk": "今天 — бүгін, 明天 — ертең, 昨天 — кеше.",
+                "en": "今天 is today, 明天 is tomorrow, 昨天 is yesterday."
+              },
+              "kind": "match",
+              "left": [
+                {
+                  "id": "l0",
+                  "text": {
+                    "ru": "今天",
+                    "kk": "今天",
+                    "en": "今天"
+                  }
+                },
+                {
+                  "id": "l1",
+                  "text": {
+                    "ru": "明天",
+                    "kk": "明天",
+                    "en": "明天"
+                  }
+                },
+                {
+                  "id": "l2",
+                  "text": {
+                    "ru": "昨天",
+                    "kk": "昨天",
+                    "en": "昨天"
+                  }
+                }
+              ],
+              "right": [
+                {
+                  "id": "r1",
+                  "text": {
+                    "ru": "завтра",
+                    "kk": "ертең",
+                    "en": "tomorrow"
+                  }
+                },
+                {
+                  "id": "r2",
+                  "text": {
+                    "ru": "вчера",
+                    "kk": "кеше",
+                    "en": "yesterday"
+                  }
+                },
+                {
+                  "id": "r0",
+                  "text": {
+                    "ru": "сегодня",
+                    "kk": "бүгін",
+                    "en": "today"
+                  }
+                }
+              ],
+              "correct": [
+                "r0",
+                "r1",
+                "r2"
+              ]
+            },
+            {
+              "id": "monday-choice",
+              "topic": "dates",
+              "skill": "vocabulary",
+              "prompt": {
+                "ru": "Как сказать «понедельник»?",
+                "kk": "«Дүйсенбі» қалай айтылады?",
+                "en": "How do you say “Monday”?"
+              },
+              "explanation": {
+                "ru": "星期一 — понедельник. 星期天 — воскресенье, 一月 — январь.",
+                "kk": "星期一 — дүйсенбі. 星期天 — жексенбі, 一月 — қаңтар.",
+                "en": "星期一 is Monday. 星期天 is Sunday, 一月 is January."
+              },
+              "kind": "choice",
+              "options": [
+                {
+                  "id": "1",
+                  "text": {
+                    "ru": "星期一",
+                    "kk": "星期一",
+                    "en": "星期一"
+                  }
+                },
+                {
+                  "id": "7",
+                  "text": {
+                    "ru": "星期天",
+                    "kk": "星期天",
+                    "en": "星期天"
+                  }
+                },
+                {
+                  "id": "m1",
+                  "text": {
+                    "ru": "一月",
+                    "kk": "一月",
+                    "en": "一月"
+                  }
+                }
+              ],
+              "correct": "1"
+            },
+            {
+              "id": "hao-gap",
+              "topic": "dates",
+              "skill": "grammar",
+              "prompt": {
+                "ru": "Дополните вопрос: 今天几___？ (какое число)",
+                "kk": "Сұрақты толықтырыңыз: 今天几___？ (айдың нешесі)",
+                "en": "Complete the question: 今天几___？ (which day of the month)"
+              },
+              "explanation": {
+                "ru": "今天几号？ — Какое сегодня число? 号 обозначает число месяца.",
+                "kk": "今天几号？ — Бүгін нешесі? 号 айдың күнін білдіреді.",
+                "en": "今天几号？ asks the day of the month; 号 marks the date."
+              },
+              "kind": "gap",
+              "accepted": [
+                "号"
+              ]
+            },
+            {
+              "id": "date-order",
+              "topic": "dates",
+              "skill": "grammar",
+              "prompt": {
+                "ru": "Соберите «Сегодня 1 октября».",
+                "kk": "«Бүгін 1 қазан» сөйлемін құрастырыңыз.",
+                "en": "Build “Today is October 1”."
+              },
+              "explanation": {
+                "ru": "Дата от большего к меньшему: 今天 + 十月 + 一号.",
+                "kk": "Күн үлкеннен кішіге қарай: 今天 + 十月 + 一号.",
+                "en": "Dates go from larger to smaller: 今天 + 十月 + 一号."
+              },
+              "kind": "order",
+              "options": [
+                {
+                  "id": "w2",
+                  "text": {
+                    "ru": "一号",
+                    "kk": "一号",
+                    "en": "一号"
+                  }
+                },
+                {
+                  "id": "w1",
+                  "text": {
+                    "ru": "十月",
+                    "kk": "十月",
+                    "en": "十月"
+                  }
+                },
+                {
+                  "id": "w0",
+                  "text": {
+                    "ru": "今天",
+                    "kk": "今天",
+                    "en": "今天"
+                  }
+                }
+              ],
+              "correct": [
+                "w0",
+                "w1",
+                "w2"
+              ]
+            },
+            {
+              "id": "month-input",
+              "topic": "dates",
+              "skill": "writing",
+              "prompt": {
+                "ru": "Напишите иероглиф «месяц».",
+                "kk": "«Ай» иероглифін жазыңыз.",
+                "en": "Write the character for “month”."
+              },
+              "explanation": {
+                "ru": "月 (yuè) — месяц: 三月 — март.",
+                "kk": "月 (yuè) — ай: 三月 — наурыз.",
+                "en": "月 (yuè) means month: 三月 is March."
+              },
+              "kind": "input",
+              "accepted": [
+                "月"
+              ]
+            },
+            {
+              "id": "dates-reading",
+              "topic": "dates",
+              "skill": "reading",
+              "prompt": {
+                "ru": "A: 明天星期几？ B: 明天星期五。 Какой день будет завтра?",
+                "kk": "A: 明天星期几？ B: 明天星期五。 Ертең қай күн?",
+                "en": "A: 明天星期几？ B: 明天星期五。 What day is tomorrow?"
+              },
+              "explanation": {
+                "ru": "星期五 — пятница. Май — 五月, пятое число — 五号.",
+                "kk": "星期五 — жұма. Мамыр — 五月, бесінші күн — 五号.",
+                "en": "星期五 is Friday. May is 五月 and the fifth is 五号."
+              },
+              "kind": "choice",
+              "options": [
+                {
+                  "id": "fri",
+                  "text": {
+                    "ru": "Пятница",
+                    "kk": "Жұма",
+                    "en": "Friday"
+                  }
+                },
+                {
+                  "id": "may",
+                  "text": {
+                    "ru": "Май",
+                    "kk": "Мамыр",
+                    "en": "May"
+                  }
+                },
+                {
+                  "id": "fifth",
+                  "text": {
+                    "ru": "Пятое число",
+                    "kk": "Бесінші күн",
+                    "en": "The fifth"
+                  }
+                }
+              ],
+              "correct": "fri"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "slug": "hsk1-food",
+      "draft": {
+        "title": {
+          "ru": "Что ты хочешь съесть?",
+          "kk": "Не жегің келеді?",
+          "en": "What would you like to eat?"
+        },
+        "minutes": 15,
+        "blocks": [
+          {
+            "kind": "reading",
+            "content": {
+              "title": {
+                "ru": "Цель и порядок работы",
+                "kk": "Мақсат және жұмыс реті",
+                "en": "Goal and sequence"
+              },
+              "text": {
+                "ru": "Цель: сказать, что вы хотите съесть или выпить, и спросить собеседника. Нужны 什么 и 呢.",
+                "kk": "Мақсат: не жегіңіз немесе ішкіңіз келетінін айту және әңгімелесушіден сұрау. 什么 және 呢 қажет.",
+                "en": "Goal: say what you want to eat or drink and ask others. You need 什么 and 呢."
+              },
+              "hanzi": "我想喝茶。",
+              "pinyin": "Wǒ xiǎng hē chá.",
+              "translation": {
+                "ru": "Я хочу выпить чаю.",
+                "kk": "Мен шай ішкім келеді.",
+                "en": "I would like to drink tea."
+              }
+            }
+          },
+          {
+            "kind": "vocabulary",
+            "content": {
+              "title": {
+                "ru": "Новые слова",
+                "kk": "Жаңа сөздер",
+                "en": "New words"
+              },
+              "words": [
+                {
+                  "hanzi": "吃",
+                  "pinyin": "chī",
+                  "translation": {
+                    "ru": "есть (кушать)",
+                    "kk": "жеу",
+                    "en": "to eat"
+                  }
+                },
+                {
+                  "hanzi": "喝",
+                  "pinyin": "hē",
+                  "translation": {
+                    "ru": "пить",
+                    "kk": "ішу",
+                    "en": "to drink"
+                  }
+                },
+                {
+                  "hanzi": "想",
+                  "pinyin": "xiǎng",
+                  "translation": {
+                    "ru": "хотеть; думать",
+                    "kk": "қалау; ойлау",
+                    "en": "to want; to think"
+                  }
+                },
+                {
+                  "hanzi": "茶",
+                  "pinyin": "chá",
+                  "translation": {
+                    "ru": "чай",
+                    "kk": "шай",
+                    "en": "tea"
+                  }
+                },
+                {
+                  "hanzi": "水",
+                  "pinyin": "shuǐ",
+                  "translation": {
+                    "ru": "вода",
+                    "kk": "су",
+                    "en": "water"
+                  }
+                },
+                {
+                  "hanzi": "米饭",
+                  "pinyin": "mǐfàn",
+                  "translation": {
+                    "ru": "варёный рис",
+                    "kk": "пісірілген күріш",
+                    "en": "cooked rice"
+                  }
+                },
+                {
+                  "hanzi": "菜",
+                  "pinyin": "cài",
+                  "translation": {
+                    "ru": "блюдо; овощи",
+                    "kk": "тағам; көкөніс",
+                    "en": "dish; vegetables"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "kind": "reading",
+            "content": {
+              "title": {
+                "ru": "想 + действие",
+                "kk": "想 + әрекет",
+                "en": "想 + action"
+              },
+              "text": {
+                "ru": "想 перед глаголом означает «хотеть сделать»: 我想吃米饭 — я хочу поесть риса. Вопрос: 你想吃什么？ — Что ты хочешь съесть? 什么 стоит на месте ответа.",
+                "kk": "Етістіктің алдындағы 想 «бір нәрсе істегісі келу» дегенді білдіреді: 我想吃米饭 — мен күріш жегім келеді. Сұрақ: 你想吃什么？ — Не жегің келеді? 什么 жауаптың орнында тұрады.",
+                "en": "想 before a verb means “want to do”: 我想吃米饭 — I want to eat rice. Question: 你想吃什么？ — What do you want to eat? 什么 stands where the answer goes."
+              },
+              "hanzi": "你想吃什么？　我想吃米饭。",
+              "pinyin": "Nǐ xiǎng chī shénme?　Wǒ xiǎng chī mǐfàn.",
+              "translation": {
+                "ru": "Что ты хочешь съесть?　Я хочу поесть риса.",
+                "kk": "Не жегің келеді?　Мен күріш жегім келеді.",
+                "en": "What do you want to eat?　I want to eat rice."
+              }
+            }
+          },
+          {
+            "kind": "reading",
+            "content": {
+              "title": {
+                "ru": "Диалог",
+                "kk": "Диалог",
+                "en": "Dialogue"
+              },
+              "text": {
+                "ru": "Прочитайте по ролям и замените блюда своими.",
+                "kk": "Рөлге бөліп оқып, тағамдарды өзіңізге ұнайтынымен ауыстырыңыз.",
+                "en": "Read in roles and swap in your own food and drinks."
+              },
+              "hanzi": "A：你想吃什么？\nB：我想吃米饭。你呢？\nA：我想喝茶。\nB：我想喝水。",
+              "pinyin": "A: Nǐ xiǎng chī shénme?\nB: Wǒ xiǎng chī mǐfàn. Nǐ ne?\nA: Wǒ xiǎng hē chá.\nB: Wǒ xiǎng hē shuǐ.",
+              "translation": {
+                "ru": "A: Что ты хочешь съесть?\nB: Я хочу риса. А ты?\nA: Я хочу чаю.\nB: А я хочу воды.",
+                "kk": "A: Не жегің келеді?\nB: Мен күріш жегім келеді. Ал сен ше?\nA: Мен шай ішкім келеді.\nB: Мен су ішкім келеді.",
+                "en": "A: What do you want to eat?\nB: I want rice. And you?\nA: I want tea.\nB: I want water."
+              }
+            }
+          }
+        ],
+        "quiz": {
+          "kind": "lesson",
+          "passPercent": 80,
+          "questions": [
+            {
+              "id": "food-match",
+              "topic": "food",
+              "skill": "vocabulary",
+              "prompt": {
+                "ru": "Сопоставьте слова и переводы.",
+                "kk": "Сөздер мен аудармаларды сәйкестендіріңіз.",
+                "en": "Match the words and translations."
+              },
+              "explanation": {
+                "ru": "茶 — чай, 水 — вода, 米饭 — рис, 菜 — блюдо.",
+                "kk": "茶 — шай, 水 — су, 米饭 — күріш, 菜 — тағам.",
+                "en": "茶 is tea, 水 is water, 米饭 is rice, 菜 is a dish."
+              },
+              "kind": "match",
+              "left": [
+                {
+                  "id": "l0",
+                  "text": {
+                    "ru": "茶",
+                    "kk": "茶",
+                    "en": "茶"
+                  }
+                },
+                {
+                  "id": "l1",
+                  "text": {
+                    "ru": "水",
+                    "kk": "水",
+                    "en": "水"
+                  }
+                },
+                {
+                  "id": "l2",
+                  "text": {
+                    "ru": "米饭",
+                    "kk": "米饭",
+                    "en": "米饭"
+                  }
+                },
+                {
+                  "id": "l3",
+                  "text": {
+                    "ru": "菜",
+                    "kk": "菜",
+                    "en": "菜"
+                  }
+                }
+              ],
+              "right": [
+                {
+                  "id": "r1",
+                  "text": {
+                    "ru": "вода",
+                    "kk": "су",
+                    "en": "water"
+                  }
+                },
+                {
+                  "id": "r2",
+                  "text": {
+                    "ru": "рис",
+                    "kk": "күріш",
+                    "en": "rice"
+                  }
+                },
+                {
+                  "id": "r3",
+                  "text": {
+                    "ru": "блюдо",
+                    "kk": "тағам",
+                    "en": "dish"
+                  }
+                },
+                {
+                  "id": "r0",
+                  "text": {
+                    "ru": "чай",
+                    "kk": "шай",
+                    "en": "tea"
+                  }
+                }
+              ],
+              "correct": [
+                "r0",
+                "r1",
+                "r2",
+                "r3"
+              ]
+            },
+            {
+              "id": "drink-choice",
+              "topic": "food",
+              "skill": "vocabulary",
+              "prompt": {
+                "ru": "Какой глагол нужен в 我想___茶?",
+                "kk": "我想___茶 ішіне қай етістік керек?",
+                "en": "Which verb fits 我想___茶?"
+              },
+              "explanation": {
+                "ru": "Чай пьют: 喝茶. 吃 — есть твёрдую еду.",
+                "kk": "Шайды ішеді: 喝茶. 吃 — қатты тағамды жеу.",
+                "en": "Tea is drunk: 喝茶. 吃 is for eating food."
+              },
+              "kind": "choice",
+              "options": [
+                {
+                  "id": "he",
+                  "text": {
+                    "ru": "喝",
+                    "kk": "喝",
+                    "en": "喝"
+                  }
+                },
+                {
+                  "id": "chi",
+                  "text": {
+                    "ru": "吃",
+                    "kk": "吃",
+                    "en": "吃"
+                  }
+                },
+                {
+                  "id": "you",
+                  "text": {
+                    "ru": "有",
+                    "kk": "有",
+                    "en": "有"
+                  }
+                }
+              ],
+              "correct": "he"
+            },
+            {
+              "id": "xiang-gap",
+              "topic": "food",
+              "skill": "grammar",
+              "prompt": {
+                "ru": "Вставьте «хотеть»: 我___吃米饭。",
+                "kk": "«Қалау» сөзін қойыңыз: 我___吃米饭。",
+                "en": "Insert “want”: 我___吃米饭。"
+              },
+              "explanation": {
+                "ru": "想 + глагол = хотеть сделать: 我想吃米饭.",
+                "kk": "想 + етістік = бір нәрсе істегісі келу: 我想吃米饭.",
+                "en": "想 + verb = want to do: 我想吃米饭."
+              },
+              "kind": "gap",
+              "accepted": [
+                "想"
+              ]
+            },
+            {
+              "id": "what-order",
+              "topic": "food",
+              "skill": "grammar",
+              "prompt": {
+                "ru": "Соберите вопрос «Что ты хочешь выпить?»",
+                "kk": "«Не ішкің келеді?» сұрағын құрастырыңыз.",
+                "en": "Build the question “What do you want to drink?”"
+              },
+              "explanation": {
+                "ru": "什么 стоит на месте ответа, в конце: 你想喝什么？",
+                "kk": "什么 жауаптың орнында, соңында тұрады: 你想喝什么？",
+                "en": "什么 takes the place of the answer, at the end: 你想喝什么？"
+              },
+              "kind": "order",
+              "options": [
+                {
+                  "id": "w3",
+                  "text": {
+                    "ru": "什么",
+                    "kk": "什么",
+                    "en": "什么"
+                  }
+                },
+                {
+                  "id": "w2",
+                  "text": {
+                    "ru": "喝",
+                    "kk": "喝",
+                    "en": "喝"
+                  }
+                },
+                {
+                  "id": "w1",
+                  "text": {
+                    "ru": "想",
+                    "kk": "想",
+                    "en": "想"
+                  }
+                },
+                {
+                  "id": "w0",
+                  "text": {
+                    "ru": "你",
+                    "kk": "你",
+                    "en": "你"
+                  }
+                }
+              ],
+              "correct": [
+                "w0",
+                "w1",
+                "w2",
+                "w3"
+              ]
+            },
+            {
+              "id": "water-input",
+              "topic": "food",
+              "skill": "writing",
+              "prompt": {
+                "ru": "Напишите иероглиф «вода».",
+                "kk": "«Су» иероглифін жазыңыз.",
+                "en": "Write the character for “water”."
+              },
+              "explanation": {
+                "ru": "水 (shuǐ) — вода. 喝水 — пить воду.",
+                "kk": "水 (shuǐ) — су. 喝水 — су ішу.",
+                "en": "水 (shuǐ) means water. 喝水 — drink water."
+              },
+              "kind": "input",
+              "accepted": [
+                "水"
+              ]
+            },
+            {
+              "id": "food-reading",
+              "topic": "food",
+              "skill": "reading",
+              "prompt": {
+                "ru": "A: 你想吃什么？ B: 我想吃米饭。 Что хочет B?",
+                "kk": "A: 你想吃什么？ B: 我想吃米饭。 B не қалайды?",
+                "en": "A: 你想吃什么？ B: 我想吃米饭。 What does B want?"
+              },
+              "explanation": {
+                "ru": "我想吃米饭 — я хочу поесть риса.",
+                "kk": "我想吃米饭 — мен күріш жегім келеді.",
+                "en": "我想吃米饭 — I want to eat rice."
+              },
+              "kind": "choice",
+              "options": [
+                {
+                  "id": "rice",
+                  "text": {
+                    "ru": "Рис",
+                    "kk": "Күріш",
+                    "en": "Rice"
+                  }
+                },
+                {
+                  "id": "tea",
+                  "text": {
+                    "ru": "Чай",
+                    "kk": "Шай",
+                    "en": "Tea"
+                  }
+                },
+                {
+                  "id": "water",
+                  "text": {
+                    "ru": "Воду",
+                    "kk": "Су",
+                    "en": "Water"
+                  }
+                }
+              ],
+              "correct": "rice"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "slug": "hsk1-shopping",
+      "draft": {
+        "title": {
+          "ru": "Сколько стоит?",
+          "kk": "Қанша тұрады?",
+          "en": "How much is it?"
+        },
+        "minutes": 15,
+        "blocks": [
+          {
+            "kind": "reading",
+            "content": {
+              "title": {
+                "ru": "Цель и порядок работы",
+                "kk": "Мақсат және жұмыс реті",
+                "en": "Goal and sequence"
+              },
+              "text": {
+                "ru": "Цель: спросить цену и купить несколько вещей. Нужны числа, 个 и 想.",
+                "kk": "Мақсат: бағасын сұрау және бірнеше зат сатып алу. Сандар, 个 және 想 қажет.",
+                "en": "Goal: ask a price and buy a few things. You need numbers, 个 and 想."
+              },
+              "hanzi": "这个多少钱？",
+              "pinyin": "Zhège duōshao qián?",
+              "translation": {
+                "ru": "Сколько это стоит?",
+                "kk": "Мынау қанша тұрады?",
+                "en": "How much is this?"
+              }
+            }
+          },
+          {
+            "kind": "vocabulary",
+            "content": {
+              "title": {
+                "ru": "Новые слова",
+                "kk": "Жаңа сөздер",
+                "en": "New words"
+              },
+              "words": [
+                {
+                  "hanzi": "买",
+                  "pinyin": "mǎi",
+                  "translation": {
+                    "ru": "покупать",
+                    "kk": "сатып алу",
+                    "en": "to buy"
+                  }
+                },
+                {
+                  "hanzi": "这",
+                  "pinyin": "zhè",
+                  "translation": {
+                    "ru": "это, этот",
+                    "kk": "бұл, мынау",
+                    "en": "this"
+                  }
+                },
+                {
+                  "hanzi": "那",
+                  "pinyin": "nà",
+                  "translation": {
+                    "ru": "то, тот",
+                    "kk": "ол, анау",
+                    "en": "that"
+                  }
+                },
+                {
+                  "hanzi": "多少",
+                  "pinyin": "duōshao",
+                  "translation": {
+                    "ru": "сколько",
+                    "kk": "қанша",
+                    "en": "how many; how much"
+                  }
+                },
+                {
+                  "hanzi": "钱",
+                  "pinyin": "qián",
+                  "translation": {
+                    "ru": "деньги",
+                    "kk": "ақша",
+                    "en": "money"
+                  }
+                },
+                {
+                  "hanzi": "块",
+                  "pinyin": "kuài",
+                  "translation": {
+                    "ru": "юань (в разговоре)",
+                    "kk": "юань (ауызекі)",
+                    "en": "yuan (spoken)"
+                  }
+                },
+                {
+                  "hanzi": "苹果",
+                  "pinyin": "píngguǒ",
+                  "translation": {
+                    "ru": "яблоко",
+                    "kk": "алма",
+                    "en": "apple"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "kind": "reading",
+            "content": {
+              "title": {
+                "ru": "多少钱 и 这个 / 那个",
+                "kk": "多少钱 және 这个 / 那个",
+                "en": "多少钱 and 这个 / 那个"
+              },
+              "text": {
+                "ru": "Цену спрашивают 多少钱？ «Этот / тот» перед существительным: 这个苹果, 那个苹果. 多少 используют для любых количеств, 几 — для небольших. В разговоре юань называют 块: 五块 — пять юаней.",
+                "kk": "Бағасын 多少钱？ деп сұрайды. Зат есімнің алдындағы «мына / ана»: 这个苹果, 那个苹果. 多少 кез келген мөлшерге, 几 — шағын мөлшерге қолданылады. Ауызекі тілде юань 块 деп аталады: 五块 — бес юань.",
+                "en": "Ask a price with 多少钱？ “This / that” before a noun: 这个苹果, 那个苹果. 多少 works for any quantity, 几 for small ones. In speech a yuan is 块: 五块 — five yuan."
+              },
+              "hanzi": "这个苹果多少钱？　五块。",
+              "pinyin": "Zhège píngguǒ duōshao qián?　Wǔ kuài.",
+              "translation": {
+                "ru": "Сколько стоит это яблоко?　Пять юаней.",
+                "kk": "Мына алма қанша тұрады?　Бес юань.",
+                "en": "How much is this apple?　Five yuan."
+              }
+            }
+          },
+          {
+            "kind": "reading",
+            "content": {
+              "title": {
+                "ru": "Диалог в магазине",
+                "kk": "Дүкендегі диалог",
+                "en": "Dialogue in a shop"
+              },
+              "text": {
+                "ru": "Прочитайте по ролям: покупатель (A) и продавец (B).",
+                "kk": "Рөлге бөліп оқыңыз: сатып алушы (A) және сатушы (B).",
+                "en": "Read in roles: customer (A) and seller (B)."
+              },
+              "hanzi": "A：这个苹果多少钱？\nB：五块。\nA：我买三个。\nB：十五块。\nA：谢谢！",
+              "pinyin": "A: Zhège píngguǒ duōshao qián?\nB: Wǔ kuài.\nA: Wǒ mǎi sān ge.\nB: Shíwǔ kuài.\nA: Xièxie!",
+              "translation": {
+                "ru": "A: Сколько стоит это яблоко?\nB: Пять юаней.\nA: Я куплю три.\nB: Пятнадцать юаней.\nA: Спасибо!",
+                "kk": "A: Мына алма қанша тұрады?\nB: Бес юань.\nA: Мен үшеуін аламын.\nB: Он бес юань.\nA: Рақмет!",
+                "en": "A: How much is this apple?\nB: Five yuan.\nA: I will buy three.\nB: Fifteen yuan.\nA: Thank you!"
+              }
+            }
+          }
+        ],
+        "quiz": {
+          "kind": "lesson",
+          "passPercent": 80,
+          "questions": [
+            {
+              "id": "price-choice",
+              "topic": "shopping",
+              "skill": "grammar",
+              "prompt": {
+                "ru": "Как спросить «Сколько это стоит?»",
+                "kk": "«Мынау қанша тұрады?» деп қалай сұрайды?",
+                "en": "How do you ask “How much is this?”"
+              },
+              "explanation": {
+                "ru": "多少钱 — «сколько денег», то есть «сколько стоит».",
+                "kk": "多少钱 — «қанша ақша», яғни «қанша тұрады».",
+                "en": "多少钱 means “how much money”, i.e. the price."
+              },
+              "kind": "choice",
+              "options": [
+                {
+                  "id": "price",
+                  "text": {
+                    "ru": "这个多少钱？",
+                    "kk": "这个多少钱？",
+                    "en": "这个多少钱？"
+                  }
+                },
+                {
+                  "id": "age",
+                  "text": {
+                    "ru": "你多大了？",
+                    "kk": "你多大了？",
+                    "en": "你多大了？"
+                  }
+                },
+                {
+                  "id": "what",
+                  "text": {
+                    "ru": "这是什么？",
+                    "kk": "这是什么？",
+                    "en": "这是什么？"
+                  }
+                }
+              ],
+              "correct": "price"
+            },
+            {
+              "id": "shop-match",
+              "topic": "shopping",
+              "skill": "vocabulary",
+              "prompt": {
+                "ru": "Сопоставьте слова и переводы.",
+                "kk": "Сөздер мен аудармаларды сәйкестендіріңіз.",
+                "en": "Match the words and translations."
+              },
+              "explanation": {
+                "ru": "买 — покупать, 钱 — деньги, 苹果 — яблоко, 那 — тот.",
+                "kk": "买 — сатып алу, 钱 — ақша, 苹果 — алма, 那 — анау.",
+                "en": "买 is buy, 钱 is money, 苹果 is apple, 那 is that."
+              },
+              "kind": "match",
+              "left": [
+                {
+                  "id": "l0",
+                  "text": {
+                    "ru": "买",
+                    "kk": "买",
+                    "en": "买"
+                  }
+                },
+                {
+                  "id": "l1",
+                  "text": {
+                    "ru": "钱",
+                    "kk": "钱",
+                    "en": "钱"
+                  }
+                },
+                {
+                  "id": "l2",
+                  "text": {
+                    "ru": "苹果",
+                    "kk": "苹果",
+                    "en": "苹果"
+                  }
+                },
+                {
+                  "id": "l3",
+                  "text": {
+                    "ru": "那",
+                    "kk": "那",
+                    "en": "那"
+                  }
+                }
+              ],
+              "right": [
+                {
+                  "id": "r1",
+                  "text": {
+                    "ru": "деньги",
+                    "kk": "ақша",
+                    "en": "money"
+                  }
+                },
+                {
+                  "id": "r2",
+                  "text": {
+                    "ru": "яблоко",
+                    "kk": "алма",
+                    "en": "apple"
+                  }
+                },
+                {
+                  "id": "r3",
+                  "text": {
+                    "ru": "тот",
+                    "kk": "анау",
+                    "en": "that"
+                  }
+                },
+                {
+                  "id": "r0",
+                  "text": {
+                    "ru": "покупать",
+                    "kk": "сатып алу",
+                    "en": "buy"
+                  }
+                }
+              ],
+              "correct": [
+                "r0",
+                "r1",
+                "r2",
+                "r3"
+              ]
+            },
+            {
+              "id": "kuai-gap",
+              "topic": "shopping",
+              "skill": "grammar",
+              "prompt": {
+                "ru": "Ответьте «пять юаней»: 五___。",
+                "kk": "«Бес юань» деп жауап беріңіз: 五___。",
+                "en": "Answer “five yuan”: 五___。"
+              },
+              "explanation": {
+                "ru": "В разговоре юань называют 块: 五块.",
+                "kk": "Ауызекі тілде юань 块 деп аталады: 五块.",
+                "en": "In speech a yuan is 块: 五块."
+              },
+              "kind": "gap",
+              "accepted": [
+                "块"
+              ]
+            },
+            {
+              "id": "buy-order",
+              "topic": "shopping",
+              "skill": "grammar",
+              "prompt": {
+                "ru": "Соберите «Я куплю три яблока».",
+                "kk": "«Мен үш алма аламын» сөйлемін құрастырыңыз.",
+                "en": "Build “I will buy three apples”."
+              },
+              "explanation": {
+                "ru": "我 + 买 + число + 个 + 苹果.",
+                "kk": "我 + 买 + сан + 个 + 苹果.",
+                "en": "我 + 买 + number + 个 + 苹果."
+              },
+              "kind": "order",
+              "options": [
+                {
+                  "id": "w4",
+                  "text": {
+                    "ru": "苹果",
+                    "kk": "苹果",
+                    "en": "苹果"
+                  }
+                },
+                {
+                  "id": "w3",
+                  "text": {
+                    "ru": "个",
+                    "kk": "个",
+                    "en": "个"
+                  }
+                },
+                {
+                  "id": "w2",
+                  "text": {
+                    "ru": "三",
+                    "kk": "三",
+                    "en": "三"
+                  }
+                },
+                {
+                  "id": "w1",
+                  "text": {
+                    "ru": "买",
+                    "kk": "买",
+                    "en": "买"
+                  }
+                },
+                {
+                  "id": "w0",
+                  "text": {
+                    "ru": "我",
+                    "kk": "我",
+                    "en": "我"
+                  }
+                }
+              ],
+              "correct": [
+                "w0",
+                "w1",
+                "w2",
+                "w3",
+                "w4"
+              ]
+            },
+            {
+              "id": "buy-input",
+              "topic": "shopping",
+              "skill": "writing",
+              "prompt": {
+                "ru": "Напишите иероглиф «покупать».",
+                "kk": "«Сатып алу» иероглифін жазыңыз.",
+                "en": "Write the character for “buy”."
+              },
+              "explanation": {
+                "ru": "买 (mǎi) — покупать. Не путайте с 卖 (mài) — продавать.",
+                "kk": "买 (mǎi) — сатып алу. 卖 (mài) — сатумен шатастырмаңыз.",
+                "en": "买 (mǎi) means buy. Do not confuse it with 卖 (mài), sell."
+              },
+              "kind": "input",
+              "accepted": [
+                "买"
+              ]
+            },
+            {
+              "id": "shop-reading",
+              "topic": "shopping",
+              "skill": "reading",
+              "prompt": {
+                "ru": "Яблоко стоит 五块, A покупает 三个. Сколько платит A?",
+                "kk": "Алма 五块 тұрады, A 三个 алады. A қанша төлейді?",
+                "en": "An apple costs 五块 and A buys 三个. How much does A pay?"
+              },
+              "explanation": {
+                "ru": "3 × 5 = 15, то есть 十五块.",
+                "kk": "3 × 5 = 15, яғни 十五块.",
+                "en": "3 × 5 = 15, i.e. 十五块."
+              },
+              "kind": "choice",
+              "options": [
+                {
+                  "id": "15",
+                  "text": {
+                    "ru": "十五块",
+                    "kk": "十五块",
+                    "en": "十五块"
+                  }
+                },
+                {
+                  "id": "8",
+                  "text": {
+                    "ru": "八块",
+                    "kk": "八块",
+                    "en": "八块"
+                  }
+                },
+                {
+                  "id": "50",
+                  "text": {
+                    "ru": "五十块",
+                    "kk": "五十块",
+                    "en": "五十块"
+                  }
+                }
+              ],
+              "correct": "15"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "slug": "hsk1-places",
+      "draft": {
+        "title": {
+          "ru": "Куда ты идёшь?",
+          "kk": "Қайда барасың?",
+          "en": "Where are you going?"
+        },
+        "minutes": 15,
+        "blocks": [
+          {
+            "kind": "reading",
+            "content": {
+              "title": {
+                "ru": "Цель и порядок работы",
+                "kk": "Мақсат және жұмыс реті",
+                "en": "Goal and sequence"
+              },
+              "text": {
+                "ru": "Цель: сказать, где кто-то находится и куда вы идёте. Нужны слова о семье и 呢.",
+                "kk": "Мақсат: біреудің қайда екенін және өзіңіздің қайда баратыныңызды айту. Отбасы туралы сөздер мен 呢 қажет.",
+                "en": "Goal: say where someone is and where you are going. You need family words and 呢."
+              },
+              "hanzi": "我去学校。",
+              "pinyin": "Wǒ qù xuéxiào.",
+              "translation": {
+                "ru": "Я иду в школу.",
+                "kk": "Мен мектепке барамын.",
+                "en": "I am going to school."
+              }
+            }
+          },
+          {
+            "kind": "vocabulary",
+            "content": {
+              "title": {
+                "ru": "Новые слова",
+                "kk": "Жаңа сөздер",
+                "en": "New words"
+              },
+              "words": [
+                {
+                  "hanzi": "在",
+                  "pinyin": "zài",
+                  "translation": {
+                    "ru": "находиться (где-то)",
+                    "kk": "бір жерде болу",
+                    "en": "to be at (a place)"
+                  }
+                },
+                {
+                  "hanzi": "去",
+                  "pinyin": "qù",
+                  "translation": {
+                    "ru": "идти, ехать (куда-то)",
+                    "kk": "бару",
+                    "en": "to go"
+                  }
+                },
+                {
+                  "hanzi": "哪儿",
+                  "pinyin": "nǎr",
+                  "translation": {
+                    "ru": "где; куда",
+                    "kk": "қайда",
+                    "en": "where"
+                  }
+                },
+                {
+                  "hanzi": "这儿",
+                  "pinyin": "zhèr",
+                  "translation": {
+                    "ru": "здесь",
+                    "kk": "осында",
+                    "en": "here"
+                  }
+                },
+                {
+                  "hanzi": "学校",
+                  "pinyin": "xuéxiào",
+                  "translation": {
+                    "ru": "школа",
+                    "kk": "мектеп",
+                    "en": "school"
+                  }
+                },
+                {
+                  "hanzi": "医院",
+                  "pinyin": "yīyuàn",
+                  "translation": {
+                    "ru": "больница",
+                    "kk": "аурухана",
+                    "en": "hospital"
+                  }
+                },
+                {
+                  "hanzi": "商店",
+                  "pinyin": "shāngdiàn",
+                  "translation": {
+                    "ru": "магазин",
+                    "kk": "дүкен",
+                    "en": "shop"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "kind": "reading",
+            "content": {
+              "title": {
+                "ru": "在 и 去",
+                "kk": "在 және 去",
+                "en": "在 and 去"
+              },
+              "text": {
+                "ru": "在 + место — где кто-то находится: 妈妈在家. 去 + место — куда кто-то идёт: 我去学校. Вопрос с 哪儿 ставится на место ответа: 你去哪儿？ 爸爸在哪儿？",
+                "kk": "在 + орын — біреудің қайда екені: 妈妈在家. 去 + орын — біреудің қайда баратыны: 我去学校. 哪儿 сұрағы жауаптың орнына қойылады: 你去哪儿？ 爸爸在哪儿？",
+                "en": "在 + place — where someone is: 妈妈在家. 去 + place — where someone goes: 我去学校. 哪儿 takes the place of the answer: 你去哪儿？ 爸爸在哪儿？"
+              },
+              "hanzi": "你去哪儿？　我去商店。",
+              "pinyin": "Nǐ qù nǎr?　Wǒ qù shāngdiàn.",
+              "translation": {
+                "ru": "Куда ты идёшь?　Я иду в магазин.",
+                "kk": "Қайда барасың?　Мен дүкенге барамын.",
+                "en": "Where are you going?　I am going to the shop."
+              }
+            }
+          },
+          {
+            "kind": "reading",
+            "content": {
+              "title": {
+                "ru": "Диалог",
+                "kk": "Диалог",
+                "en": "Dialogue"
+              },
+              "text": {
+                "ru": "Прочитайте по ролям и замените места своими.",
+                "kk": "Рөлге бөліп оқып, орындарды өзіңізше ауыстырыңыз.",
+                "en": "Read in roles and swap in your own places."
+              },
+              "hanzi": "A：你去哪儿？\nB：我去学校。你呢？\nA：我去医院。我妈妈在医院。",
+              "pinyin": "A: Nǐ qù nǎr?\nB: Wǒ qù xuéxiào. Nǐ ne?\nA: Wǒ qù yīyuàn. Wǒ māma zài yīyuàn.",
+              "translation": {
+                "ru": "A: Куда ты идёшь?\nB: Я иду в школу. А ты?\nA: Я иду в больницу. Моя мама в больнице.",
+                "kk": "A: Қайда барасың?\nB: Мен мектепке барамын. Ал сен ше?\nA: Мен ауруханаға барамын. Менің анам ауруханада.",
+                "en": "A: Where are you going?\nB: I am going to school. And you?\nA: I am going to the hospital. My mom is in the hospital."
+              }
+            }
+          }
+        ],
+        "quiz": {
+          "kind": "lesson",
+          "passPercent": 80,
+          "questions": [
+            {
+              "id": "places-match",
+              "topic": "places",
+              "skill": "vocabulary",
+              "prompt": {
+                "ru": "Сопоставьте слова и переводы.",
+                "kk": "Сөздер мен аудармаларды сәйкестендіріңіз.",
+                "en": "Match the words and translations."
+              },
+              "explanation": {
+                "ru": "学校 — школа, 医院 — больница, 商店 — магазин.",
+                "kk": "学校 — мектеп, 医院 — аурухана, 商店 — дүкен.",
+                "en": "学校 is school, 医院 is hospital, 商店 is shop."
+              },
+              "kind": "match",
+              "left": [
+                {
+                  "id": "l0",
+                  "text": {
+                    "ru": "学校",
+                    "kk": "学校",
+                    "en": "学校"
+                  }
+                },
+                {
+                  "id": "l1",
+                  "text": {
+                    "ru": "医院",
+                    "kk": "医院",
+                    "en": "医院"
+                  }
+                },
+                {
+                  "id": "l2",
+                  "text": {
+                    "ru": "商店",
+                    "kk": "商店",
+                    "en": "商店"
+                  }
+                }
+              ],
+              "right": [
+                {
+                  "id": "r1",
+                  "text": {
+                    "ru": "больница",
+                    "kk": "аурухана",
+                    "en": "hospital"
+                  }
+                },
+                {
+                  "id": "r2",
+                  "text": {
+                    "ru": "магазин",
+                    "kk": "дүкен",
+                    "en": "shop"
+                  }
+                },
+                {
+                  "id": "r0",
+                  "text": {
+                    "ru": "школа",
+                    "kk": "мектеп",
+                    "en": "school"
+                  }
+                }
+              ],
+              "correct": [
+                "r0",
+                "r1",
+                "r2"
+              ]
+            },
+            {
+              "id": "zai-qu-choice",
+              "topic": "places",
+              "skill": "grammar",
+              "prompt": {
+                "ru": "Какое слово нужно в 妈妈___家? (мама дома)",
+                "kk": "妈妈___家 ішіне қай сөз керек? (анам үйде)",
+                "en": "Which word fits 妈妈___家? (mom is at home)"
+              },
+              "explanation": {
+                "ru": "在 — «находиться где-то»: 妈妈在家. 去 — «идти куда-то».",
+                "kk": "在 — «бір жерде болу»: 妈妈在家. 去 — «бір жерге бару».",
+                "en": "在 means to be at a place: 妈妈在家. 去 means to go somewhere."
+              },
+              "kind": "choice",
+              "options": [
+                {
+                  "id": "zai",
+                  "text": {
+                    "ru": "在",
+                    "kk": "在",
+                    "en": "在"
+                  }
+                },
+                {
+                  "id": "qu",
+                  "text": {
+                    "ru": "去",
+                    "kk": "去",
+                    "en": "去"
+                  }
+                },
+                {
+                  "id": "you",
+                  "text": {
+                    "ru": "有",
+                    "kk": "有",
+                    "en": "有"
+                  }
+                }
+              ],
+              "correct": "zai"
+            },
+            {
+              "id": "nar-gap",
+              "topic": "places",
+              "skill": "grammar",
+              "prompt": {
+                "ru": "Дополните вопрос «Куда ты идёшь?»: 你去___？",
+                "kk": "«Қайда барасың?» сұрағын толықтырыңыз: 你去___？",
+                "en": "Complete “Where are you going?”: 你去___？"
+              },
+              "explanation": {
+                "ru": "哪儿 (nǎr) — где, куда; на юге Китая говорят 哪里. 你去哪儿？",
+                "kk": "哪儿 (nǎr) — қайда; Қытайдың оңтүстігінде 哪里 дейді. 你去哪儿？",
+                "en": "哪儿 (nǎr) means where; in southern China people say 哪里. 你去哪儿？"
+              },
+              "kind": "gap",
+              "accepted": [
+                "哪儿",
+                "哪里"
+              ]
+            },
+            {
+              "id": "go-order",
+              "topic": "places",
+              "skill": "grammar",
+              "prompt": {
+                "ru": "Соберите «Я иду в магазин».",
+                "kk": "«Мен дүкенге барамын» сөйлемін құрастырыңыз.",
+                "en": "Build “I am going to the shop”."
+              },
+              "explanation": {
+                "ru": "我 + 去 + место. Предлог «в» не нужен.",
+                "kk": "我 + 去 + орын. Қосымша септік керек емес.",
+                "en": "我 + 去 + place. No word for “to” is needed."
+              },
+              "kind": "order",
+              "options": [
+                {
+                  "id": "w2",
+                  "text": {
+                    "ru": "商店",
+                    "kk": "商店",
+                    "en": "商店"
+                  }
+                },
+                {
+                  "id": "w1",
+                  "text": {
+                    "ru": "去",
+                    "kk": "去",
+                    "en": "去"
+                  }
+                },
+                {
+                  "id": "w0",
+                  "text": {
+                    "ru": "我",
+                    "kk": "我",
+                    "en": "我"
+                  }
+                }
+              ],
+              "correct": [
+                "w0",
+                "w1",
+                "w2"
+              ]
+            },
+            {
+              "id": "go-input",
+              "topic": "places",
+              "skill": "writing",
+              "prompt": {
+                "ru": "Напишите иероглиф «идти, ехать (куда-то)».",
+                "kk": "«Бару» иероглифін жазыңыз.",
+                "en": "Write the character for “go”."
+              },
+              "explanation": {
+                "ru": "去 (qù) — идти, ехать: 我去学校.",
+                "kk": "去 (qù) — бару: 我去学校.",
+                "en": "去 (qù) means go: 我去学校."
+              },
+              "kind": "input",
+              "accepted": [
+                "去"
+              ]
+            },
+            {
+              "id": "places-reading",
+              "topic": "places",
+              "skill": "reading",
+              "prompt": {
+                "ru": "A: 我去医院。我妈妈在医院。 Где мама A?",
+                "kk": "A: 我去医院。我妈妈在医院。 A-ның анасы қайда?",
+                "en": "A: 我去医院。我妈妈在医院。 Where is A’s mom?"
+              },
+              "explanation": {
+                "ru": "我妈妈在医院 — моя мама в больнице.",
+                "kk": "我妈妈在医院 — менің анам ауруханада.",
+                "en": "我妈妈在医院 — my mom is at the hospital."
+              },
+              "kind": "choice",
+              "options": [
+                {
+                  "id": "hospital",
+                  "text": {
+                    "ru": "В больнице",
+                    "kk": "Ауруханада",
+                    "en": "At the hospital"
+                  }
+                },
+                {
+                  "id": "school",
+                  "text": {
+                    "ru": "В школе",
+                    "kk": "Мектепте",
+                    "en": "At school"
+                  }
+                },
+                {
+                  "id": "home",
+                  "text": {
+                    "ru": "Дома",
+                    "kk": "Үйде",
+                    "en": "At home"
+                  }
+                }
+              ],
+              "correct": "hospital"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "slug": "hsk1-module2-test",
+      "draft": {
+        "title": {
+          "ru": "Итоговый тест: модуль 2",
+          "kk": "Қорытынды тест: 2-модуль",
+          "en": "Final quiz: module 2"
+        },
+        "minutes": 15,
+        "blocks": [
+          {
+            "kind": "reading",
+            "content": {
+              "title": {
+                "ru": "Перед тестом",
+                "kk": "Тест алдында",
+                "en": "Before the quiz"
+              },
+              "text": {
+                "ru": "В тесте 10 заданий по урокам 5–12: числа, страны, возраст, семья, даты, еда, покупки и места. Для зачёта нужно 8 верных ответов (80%). После отправки доступны объяснения и пересдача. Это тест учебного модуля, не экзамен HSK 1.",
+                "kk": "Тестте 5–12 сабақтар бойынша 10 тапсырма бар: сандар, елдер, жас, отбасы, күндер, тамақ, сатып алу және орындар. Өту үшін 8 дұрыс жауап (80%) қажет. Жібергеннен кейін түсіндірмелер мен қайта тапсыру қолжетімді. Бұл HSK 1 емтиханы емес, оқу модулінің тесті.",
+                "en": "The quiz has 10 questions on lessons 5–12: numbers, countries, age, family, dates, food, shopping and places. You need 8 correct answers (80%) to pass. Explanations and retakes are available after submission. This is a module quiz, not an HSK 1 exam."
+              },
+              "hanzi": "加油！",
+              "pinyin": "Jiāyóu!",
+              "translation": {
+                "ru": "Удачи!",
+                "kk": "Сәттілік!",
+                "en": "Good luck!"
+              }
+            }
+          }
+        ],
+        "quiz": {
+          "kind": "module",
+          "passPercent": 80,
+          "questions": [
+            {
+              "id": "eighteen-choice",
+              "topic": "numbers",
+              "skill": "reading",
+              "prompt": {
+                "ru": "Какое число записано: 十八?",
+                "kk": "十八 қандай сан?",
+                "en": "Which number is 十八?"
+              },
+              "explanation": {
+                "ru": "十 + 八 = 10 + 8 = 18. Число 80 — это 八十.",
+                "kk": "十 + 八 = 10 + 8 = 18. 80 саны — 八十.",
+                "en": "十 + 八 = 10 + 8 = 18. Eighty is 八十."
+              },
+              "kind": "choice",
+              "options": [
+                {
+                  "id": "80",
+                  "text": {
+                    "ru": "80",
+                    "kk": "80",
+                    "en": "80"
+                  }
+                },
+                {
+                  "id": "18",
+                  "text": {
+                    "ru": "18",
+                    "kk": "18",
+                    "en": "18"
+                  }
+                },
+                {
+                  "id": "8",
+                  "text": {
+                    "ru": "8",
+                    "kk": "8",
+                    "en": "8"
+                  }
+                }
+              ],
+              "correct": "18"
+            },
+            {
+              "id": "bushi-gap",
+              "topic": "countries",
+              "skill": "grammar",
+              "prompt": {
+                "ru": "Вставьте отрицание: 我___是中国人。",
+                "kk": "Болымсыздықты қойыңыз: 我___是中国人。",
+                "en": "Insert the negation: 我___是中国人。"
+              },
+              "explanation": {
+                "ru": "Глагол 是 отрицается словом 不: 我不是中国人 — я не китаец.",
+                "kk": "是 етістігі 不 арқылы болымсыз болады: 我不是中国人 — мен қытай емеспін.",
+                "en": "是 is negated with 不: 我不是中国人 means I am not Chinese."
+              },
+              "kind": "gap",
+              "accepted": [
+                "不"
+              ]
+            },
+            {
+              "id": "correct-sentence",
+              "topic": "age",
+              "skill": "grammar",
+              "prompt": {
+                "ru": "Какое предложение правильное?",
+                "kk": "Қай сөйлем дұрыс?",
+                "en": "Which sentence is correct?"
+              },
+              "explanation": {
+                "ru": "Возраст называют без 是: 我二十岁。 Слово 岁 стоит после числа.",
+                "kk": "Жас 是 сөзінсіз айтылады: 我二十岁。 岁 саннан кейін тұрады.",
+                "en": "Age is stated without 是: 我二十岁。 岁 comes after the number."
+              },
+              "kind": "choice",
+              "options": [
+                {
+                  "id": "shi",
+                  "text": {
+                    "ru": "我是二十岁。",
+                    "kk": "我是二十岁。",
+                    "en": "我是二十岁。"
+                  }
+                },
+                {
+                  "id": "ok",
+                  "text": {
+                    "ru": "我二十岁。",
+                    "kk": "我二十岁。",
+                    "en": "我二十岁。"
+                  }
+                },
+                {
+                  "id": "le",
+                  "text": {
+                    "ru": "我岁二十。",
+                    "kk": "我岁二十。",
+                    "en": "我岁二十。"
+                  }
+                }
+              ],
+              "correct": "ok"
+            },
+            {
+              "id": "meiyou-gap",
+              "topic": "family",
+              "skill": "grammar",
+              "prompt": {
+                "ru": "Вставьте отрицание: 我___有儿子。",
+                "kk": "Болымсыздықты қойыңыз: 我___有儿子。",
+                "en": "Insert the negation: 我___有儿子。"
+              },
+              "explanation": {
+                "ru": "有 отрицается только словом 没: 我没有儿子. Вариант 不有 неверен.",
+                "kk": "有 тек 没 арқылы болымсыз болады: 我没有儿子. 不有 — қате.",
+                "en": "有 is negated only with 没: 我没有儿子. 不有 is wrong."
+              },
+              "kind": "gap",
+              "accepted": [
+                "没"
+              ]
+            },
+            {
+              "id": "measure-choice",
+              "topic": "family",
+              "skill": "grammar",
+              "prompt": {
+                "ru": "Какое слово нужно в 三___儿子?",
+                "kk": "三___儿子 ішіне қай сөз керек?",
+                "en": "Which word goes in 三___儿子?"
+              },
+              "explanation": {
+                "ru": "Между числом и существительным ставится счётное слово 个: 三个儿子.",
+                "kk": "Сан мен зат есімнің арасына 个 мөлшер сөзі қойылады: 三个儿子.",
+                "en": "A measure word goes between a number and a noun: 三个儿子."
+              },
+              "kind": "choice",
+              "options": [
+                {
+                  "id": "ge",
+                  "text": {
+                    "ru": "个",
+                    "kk": "个",
+                    "en": "个"
+                  }
+                },
+                {
+                  "id": "de",
+                  "text": {
+                    "ru": "的",
+                    "kk": "的",
+                    "en": "的"
+                  }
+                },
+                {
+                  "id": "you",
+                  "text": {
+                    "ru": "有",
+                    "kk": "有",
+                    "en": "有"
+                  }
+                }
+              ],
+              "correct": "ge"
+            },
+            {
+              "id": "date-order",
+              "topic": "dates",
+              "skill": "grammar",
+              "prompt": {
+                "ru": "Соберите «Сегодня 1 октября».",
+                "kk": "«Бүгін 1 қазан» сөйлемін құрастырыңыз.",
+                "en": "Build “Today is October 1”."
+              },
+              "explanation": {
+                "ru": "Дата от большего к меньшему: 今天 + 十月 + 一号.",
+                "kk": "Күн үлкеннен кішіге қарай: 今天 + 十月 + 一号.",
+                "en": "Dates go from larger to smaller: 今天 + 十月 + 一号."
+              },
+              "kind": "order",
+              "options": [
+                {
+                  "id": "w2",
+                  "text": {
+                    "ru": "一号",
+                    "kk": "一号",
+                    "en": "一号"
+                  }
+                },
+                {
+                  "id": "w1",
+                  "text": {
+                    "ru": "十月",
+                    "kk": "十月",
+                    "en": "十月"
+                  }
+                },
+                {
+                  "id": "w0",
+                  "text": {
+                    "ru": "今天",
+                    "kk": "今天",
+                    "en": "今天"
+                  }
+                }
+              ],
+              "correct": [
+                "w0",
+                "w1",
+                "w2"
+              ]
+            },
+            {
+              "id": "drink-choice",
+              "topic": "food",
+              "skill": "vocabulary",
+              "prompt": {
+                "ru": "Какой глагол нужен в 我想___茶?",
+                "kk": "我想___茶 ішіне қай етістік керек?",
+                "en": "Which verb fits 我想___茶?"
+              },
+              "explanation": {
+                "ru": "Чай пьют: 喝茶. 吃 — есть твёрдую еду.",
+                "kk": "Шайды ішеді: 喝茶. 吃 — қатты тағамды жеу.",
+                "en": "Tea is drunk: 喝茶. 吃 is for eating food."
+              },
+              "kind": "choice",
+              "options": [
+                {
+                  "id": "he",
+                  "text": {
+                    "ru": "喝",
+                    "kk": "喝",
+                    "en": "喝"
+                  }
+                },
+                {
+                  "id": "chi",
+                  "text": {
+                    "ru": "吃",
+                    "kk": "吃",
+                    "en": "吃"
+                  }
+                },
+                {
+                  "id": "you",
+                  "text": {
+                    "ru": "有",
+                    "kk": "有",
+                    "en": "有"
+                  }
+                }
+              ],
+              "correct": "he"
+            },
+            {
+              "id": "shop-reading",
+              "topic": "shopping",
+              "skill": "reading",
+              "prompt": {
+                "ru": "Яблоко стоит 五块, A покупает 三个. Сколько платит A?",
+                "kk": "Алма 五块 тұрады, A 三个 алады. A қанша төлейді?",
+                "en": "An apple costs 五块 and A buys 三个. How much does A pay?"
+              },
+              "explanation": {
+                "ru": "3 × 5 = 15, то есть 十五块.",
+                "kk": "3 × 5 = 15, яғни 十五块.",
+                "en": "3 × 5 = 15, i.e. 十五块."
+              },
+              "kind": "choice",
+              "options": [
+                {
+                  "id": "15",
+                  "text": {
+                    "ru": "十五块",
+                    "kk": "十五块",
+                    "en": "十五块"
+                  }
+                },
+                {
+                  "id": "8",
+                  "text": {
+                    "ru": "八块",
+                    "kk": "八块",
+                    "en": "八块"
+                  }
+                },
+                {
+                  "id": "50",
+                  "text": {
+                    "ru": "五十块",
+                    "kk": "五十块",
+                    "en": "五十块"
+                  }
+                }
+              ],
+              "correct": "15"
+            },
+            {
+              "id": "zai-qu-choice",
+              "topic": "places",
+              "skill": "grammar",
+              "prompt": {
+                "ru": "Какое слово нужно в 妈妈___家? (мама дома)",
+                "kk": "妈妈___家 ішіне қай сөз керек? (анам үйде)",
+                "en": "Which word fits 妈妈___家? (mom is at home)"
+              },
+              "explanation": {
+                "ru": "在 — «находиться где-то»: 妈妈在家. 去 — «идти куда-то».",
+                "kk": "在 — «бір жерде болу»: 妈妈在家. 去 — «бір жерге бару».",
+                "en": "在 means to be at a place: 妈妈在家. 去 means to go somewhere."
+              },
+              "kind": "choice",
+              "options": [
+                {
+                  "id": "zai",
+                  "text": {
+                    "ru": "在",
+                    "kk": "在",
+                    "en": "在"
+                  }
+                },
+                {
+                  "id": "qu",
+                  "text": {
+                    "ru": "去",
+                    "kk": "去",
+                    "en": "去"
+                  }
+                },
+                {
+                  "id": "you",
+                  "text": {
+                    "ru": "有",
+                    "kk": "有",
+                    "en": "有"
+                  }
+                }
+              ],
+              "correct": "zai"
+            },
+            {
+              "id": "go-order",
+              "topic": "places",
+              "skill": "grammar",
+              "prompt": {
+                "ru": "Соберите «Я иду в магазин».",
+                "kk": "«Мен дүкенге барамын» сөйлемін құрастырыңыз.",
+                "en": "Build “I am going to the shop”."
+              },
+              "explanation": {
+                "ru": "我 + 去 + место. Предлог «в» не нужен.",
+                "kk": "我 + 去 + орын. Қосымша септік керек емес.",
+                "en": "我 + 去 + place. No word for “to” is needed."
+              },
+              "kind": "order",
+              "options": [
+                {
+                  "id": "w2",
+                  "text": {
+                    "ru": "商店",
+                    "kk": "商店",
+                    "en": "商店"
+                  }
+                },
+                {
+                  "id": "w1",
+                  "text": {
+                    "ru": "去",
+                    "kk": "去",
+                    "en": "去"
+                  }
+                },
+                {
+                  "id": "w0",
+                  "text": {
+                    "ru": "我",
+                    "kk": "我",
+                    "en": "我"
+                  }
+                }
+              ],
+              "correct": [
+                "w0",
+                "w1",
+                "w2"
+              ]
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

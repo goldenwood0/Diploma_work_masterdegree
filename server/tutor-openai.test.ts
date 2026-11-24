@@ -77,13 +77,16 @@ test('budget survives new instances, stops at $5, fails closed on corruption/loc
   }
 });
 test('live adapter cannot activate without BOTH server key and explicit switch', () => {
-  const key = process.env.OPENAI_API_KEY, enabled = process.env.ZHPATH_TUTOR_ENABLED;
+  const key = process.env.OPENAI_API_KEY, enabled = process.env.ZHPATH_TUTOR_ENABLED, choice = process.env.ZHPATH_TUTOR_PROVIDER;
   try {
+    // A local .env may select Ollama; this test is about the OpenAI default.
+    delete process.env.ZHPATH_TUTOR_PROVIDER;
     delete process.env.OPENAI_API_KEY; process.env.ZHPATH_TUTOR_ENABLED = 'true'; assert.equal(createTutorProvider().kind, 'unconfigured');
     process.env.OPENAI_API_KEY = 'TEST-NOT-A-KEY'; delete process.env.ZHPATH_TUTOR_ENABLED; assert.equal(createTutorProvider().kind, 'unconfigured');
     process.env.ZHPATH_TUTOR_ENABLED = 'true'; assert.equal(createTutorProvider().kind, 'live');
   } finally {
     if (key === undefined) delete process.env.OPENAI_API_KEY; else process.env.OPENAI_API_KEY = key;
     if (enabled === undefined) delete process.env.ZHPATH_TUTOR_ENABLED; else process.env.ZHPATH_TUTOR_ENABLED = enabled;
+    if (choice === undefined) delete process.env.ZHPATH_TUTOR_PROVIDER; else process.env.ZHPATH_TUTOR_PROVIDER = choice;
   }
 });

@@ -4,8 +4,9 @@ import { useLanguage } from "../i18n/LanguageProvider"
 
 export default function AccuracyStats({ data }: { data: LearningStats }) {
   const { t } = useLanguage()
+  // Eleven topics exist; show only those with answers so the table stays readable.
   const tables = [
-    { title: t("Точность по темам"), rows: data.topicAccuracy, labels: topicLabels as Record<string, string>, unclassified: data.unclassifiedTopics },
+    { title: t("Точность по темам"), rows: data.topicAccuracy.some(row => row.total) ? data.topicAccuracy.filter(row => row.total) : data.topicAccuracy.slice(0, 3), labels: topicLabels as Record<string, string>, unclassified: data.unclassifiedTopics },
     { title: t("Точность по навыкам"), rows: data.skillAccuracy, labels: skillLabels as Record<string, string>, unclassified: data.unclassifiedSkills },
   ]
   return <section className="bg-card border border-border rounded-2xl p-6 space-y-6" aria-labelledby="accuracy-title">

@@ -7,7 +7,7 @@ const localized = z.object({ ru: text, kk: text, en: text }).strict();
 const key = z.string().trim().min(1).max(100);
 const https = z.url().max(2000).refine(value => new URL(value).protocol === 'https:' && !new URL(value).username && !new URL(value).password);
 const option = z.object({ id: key, text: localized }).strict();
-const common = { id: key, topic: z.enum(["greetings", "introductions", "courtesy"]).optional(), skill: z.enum(["vocabulary", "grammar", "reading", "listening", "writing"]).optional(), prompt: localized, explanation: localized };
+const common = { id: key, topic: z.enum(["greetings", "introductions", "courtesy", "numbers", "countries", "age", "family", "dates", "food", "shopping", "places"]).optional(), skill: z.enum(["vocabulary", "grammar", "reading", "listening", "writing"]).optional(), prompt: localized, explanation: localized };
 const textAnswer = { accepted: z.array(z.string().trim().min(1).max(500).refine(value => value.normalize('NFKC').replace(/[\s\p{P}]/gu, '').length > 0)).min(1).max(30) };
 const question = z.discriminatedUnion('kind', [
   z.object({ ...common, kind: z.literal('choice'), options: z.array(option).min(2).max(30), correct: key }).strict(),
@@ -50,10 +50,8 @@ export function publicQuestion(q: Question) {
 // Ignore spacing, case, Unicode width and punctuation. Do not erase tone marks,
 // reorder characters or accept synonyms that the editor has not explicitly listed.
 export const normalizeAnswer = (text: string) => text.normalize('NFKC').toLowerCase().replace(/[\s\p{P}]/gu, '');
-export function grade(questions: Question[], answers: Answers, passPercent: number) {
-  if (answers.length !== questions.length || new Set(answers.map(a => a.questionId)).size !== questions.length || answers.some(a => !questions.some(q => q.id === a.questionId))) throw new BadRequestException('Ответьте на все задания.');
-  const result = questions.map(q => {
-    const value = answers.find(a => a.questionId === q.id)!.value;
+// Grade one answer exactly as a full submission would; used by grade() and instant checks.
+export function gradeOne(q: Question, value: Answers[number]['value']) {
     let correct = false;
     if (q.kind === 'match' || q.kind === 'order') {
       const allowed = (q.kind === 'match' ? q.right : q.options).map(o => o.id);
@@ -68,7 +66,10 @@ export function grade(questions: Question[], answers: Answers, passPercent: numb
     }
     const expected = q.kind === 'choice' ? q.options.find(o => o.id === q.correct)!.text : q.kind === 'order' || q.kind === 'match' ? q.correct.map(id => (q.kind === 'match' ? q.right : q.options).find(o => o.id === id)!.text) : q.accepted[0];
     return { question: publicQuestion(q), value, correct, expected, explanation: q.explanation };
-  });
+}
+export function grade(questions: Question[], answers: Answers, passPercent: number) {
+  if (answers.length !== questions.length || new Set(answers.map(a => a.questionId)).size !== questions.length || answers.some(a => !questions.some(q => q.id === a.questionId))) throw new BadRequestException('Ответьте на все задания.');
+  const result = questions.map(q => gradeOne(q, answers.find(a => a.questionId === q.id)!.value));
   const score = result.filter(r => r.correct).length;
   return { score, total: questions.length, passed: score * 100 >= passPercent * questions.length, passPercent, items: result };
 }

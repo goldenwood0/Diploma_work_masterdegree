@@ -25,8 +25,8 @@ export default function Profile({ account, onSignedOut, onSaved }: { account: Ac
       <h2 className="font-bold text-xl">{t('Безопасность аккаунта')}</h2>
       {error && <p role="alert">{t(error)}</p>}
       <div className="flex flex-wrap gap-4">
-        <button disabled={busy} className="text-primary underline disabled:opacity-50" onClick={() => void logout(false)}>{t('Выйти')}</button>
-        <button disabled={busy} className="text-primary underline disabled:opacity-50" onClick={() => void logout(true)}>{t('Выйти со всех устройств')}</button>
+        <button disabled={busy} className="min-h-11 text-primary underline disabled:opacity-50" onClick={() => void logout(false)}>{t('Выйти')}</button>
+        <button disabled={busy} className="min-h-11 text-primary underline disabled:opacity-50" onClick={() => void logout(true)}>{t('Выйти со всех устройств')}</button>
       </div>
     </section>
   </div>;

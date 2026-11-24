@@ -18,6 +18,7 @@ const statsSchema = z.object({
   unclassifiedTopics: count,
   unclassifiedSkills: count,
   studyTime: z.object({ todayMs: count, weekMs: count, totalMs: count }),
+  points: z.object({ xp: count, level: z.number().int().positive(), levelXp: count, nextLevelXp: z.number().int().positive() }),
   mistakeLessonIds: z.array(z.string()),
   weakAreas: z.array(
     z

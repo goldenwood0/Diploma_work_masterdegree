@@ -1,6 +1,6 @@
 import { z } from "zod"
 
-export const topics = ["greetings", "introductions", "courtesy"] as const
+export const topics = ["greetings", "introductions", "courtesy", "numbers", "countries", "age", "family", "dates", "food", "shopping", "places"] as const
 export const skills = ["vocabulary", "grammar", "reading", "listening", "writing"] as const
 
 export function accuracySummary(results: unknown[]) {
@@ -103,4 +103,14 @@ export function exerciseSummary(results: unknown[]) {
         a.kind.localeCompare(b.kind),
     )
   return { assessedQuestions, weakAreas }
+}
+
+// Points (XP): best score per quiz × 10, +20 once a quiz is passed, +1 per SRS review.
+// Retakes cannot farm points: only the best attempt of each quiz counts. Level every 100 XP.
+export const xpRules = { perCorrect: 10, perPassedQuiz: 20, perReview: 1, perLevel: 100 } as const
+export function xpSummary(quizzes: Array<{ best: number; passed: boolean }>, reviews: number) {
+  const xp = quizzes.reduce((sum, q) => sum + Math.max(0, q.best) * xpRules.perCorrect + (q.passed ? xpRules.perPassedQuiz : 0), 0)
+    + Math.max(0, reviews) * xpRules.perReview
+  const level = Math.floor(xp / xpRules.perLevel) + 1
+  return { xp, level, levelXp: xp % xpRules.perLevel, nextLevelXp: xpRules.perLevel }
 }

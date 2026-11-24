@@ -1,6 +1,7 @@
 import { test } from "node:test"
 import assert from "node:assert/strict"
 import { activitySummary, localDay, exerciseSummary, accuracySummary } from "./analytics.js"
+import * as analytics from "./analytics.js"
 
 test("streak handles duplicates, yesterday grace, gaps, future dates and year boundaries", () => {
   assert.equal(activitySummary([], "2026-01-01").streak, 0)
@@ -78,3 +79,11 @@ test('accuracy keeps unclassified answers separate and never infers skills from 
   assert.deepEqual(summary.skillAccuracy.find(row => row.key === 'listening'), { key: 'listening', correct: 0, total: 1 });
   assert.equal(summary.unclassifiedTopics, 2); assert.equal(summary.unclassifiedSkills, 1);
 });
+
+test("xp counts the best attempt per quiz, a pass bonus once and reviews; levels every 100", () => {
+  const { xpSummary } = analytics
+  assert.deepEqual(xpSummary([], 0), { xp: 0, level: 1, levelXp: 0, nextLevelXp: 100 })
+  // 6/6 passed (60 + 20) + 1/2 failed (10) + 15 reviews = 105 -> level 2, 5 XP into it.
+  assert.deepEqual(xpSummary([{ best: 6, passed: true }, { best: 1, passed: false }], 15), { xp: 105, level: 2, levelXp: 5, nextLevelXp: 100 })
+  assert.equal(xpSummary([{ best: -3, passed: false }], -1).xp, 0)
+})

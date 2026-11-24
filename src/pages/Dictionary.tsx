@@ -22,7 +22,7 @@ function Entry({ word, onChange }: { word: VocabularyWord; onChange: (word: Voca
     {!word.inReviews && <button disabled={busy} onClick={() => void change(false)} className="ml-2 min-h-11 rounded-xl bg-primary px-4 py-2 text-primary-foreground disabled:opacity-50">{t('Добавить в повторение')}</button>}
     {word.inReviews && !word.known && <p className="text-sm text-muted-foreground">{t('В личном повторении')}</p>}
     {error && <p role="alert">{t('Не удалось сохранить карточку.')}</p>}
-    <details onToggle={e => setOpen(e.currentTarget.open)}><summary className="cursor-pointer text-primary underline">{t('Практика письма')}</summary>{open && <div className="mt-4"><CharacterPractice text={word.content.hanzi} /></div>}</details>
+    <details onToggle={e => setOpen(e.currentTarget.open)}><summary className="cursor-pointer py-2.5 text-primary underline">{t('Практика письма')}</summary>{open && <div className="mt-4"><CharacterPractice text={word.content.hanzi} /></div>}</details>
   </article>;
 }
 export default function Dictionary() {

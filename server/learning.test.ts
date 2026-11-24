@@ -396,6 +396,28 @@ test('quiz gates completion, keeps answer keys private and persists failed and p
   await get(`lessons/${second}`).expect(200);
 });
 
+test('instant check grades one answer, keeps the first answer binding and restores it with the quiz', async () => {
+  await prepareQuiz();
+  const check = (body: object, cookie = session) => api.post(`/api/learning/lessons/${first}/quiz/check`).set('Cookie', cookie).set('Origin', process.env.APP_ORIGIN!).set('X-ZhPath-Request', '1').send(body);
+  const body = (value: string) => ({ lessonRevision: 1, quizRevision: 1, questionId: 'q1', value });
+  await check(body('谢谢')).expect(403);
+  for (const blockId of blocks) await put(first, { blockId, revision: 1 }).expect(200);
+  await check(body('谢谢'), other).expect(403);
+  const wrong = await check(body('谢谢')).expect(200);
+  assert.equal(wrong.body.correct, false); assert.equal(wrong.body.expected, '你好'); assert.deepEqual(wrong.body.explanation, title);
+  assert.deepEqual((await check(body('谢谢')).expect(200)).body, wrong.body);
+  await check(body('你好')).expect(409);
+  await check({ ...body('你好'), questionId: 'missing' }).expect(404);
+  await check({ ...body('你好'), quizRevision: 2 }).expect(409);
+  const view = (await get(`lessons/${first}/quiz`).expect(200)).body;
+  assert.deepEqual(view.checks.map((c: any) => [c.questionId, c.value, c.correct]), [['q1', '谢谢', false]]);
+  // A submission must keep the checked answer; after it the attempt starts clean.
+  await submitAttempt(attemptBody('你好')).expect(409);
+  assert.equal((await submitAttempt(attemptBody('谢谢')).expect(200)).body.result.passed, false);
+  assert.deepEqual((await get(`lessons/${first}/quiz`).expect(200)).body.checks, []);
+  assert.equal((await check(body('你好')).expect(200)).body.correct, true);
+});
+
 test('quiz requests reject a changed session before reading or submitting another account answers', async () => {
   const quiz = await prepareQuiz();
   for (const blockId of blocks) await put(first, { blockId, revision: 1 }).expect(200);

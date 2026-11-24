@@ -30,6 +30,9 @@
   --color-accent-foreground: #164934;
   --color-border: #CDD8CB;
   --color-ring: #D9F46F;
+  /* Wrong-answer feedback: 5.7:1 on danger-soft, 6.6:1 on white (WCAG AA) */
+  --color-danger: #A8331F;
+  --color-danger-soft: #FBEAE6;
   --radius-xl: 1rem;
   --radius-2xl: 1.5rem;
 }
@@ -50,6 +53,8 @@
   --color-primary-green: #A2D7AE;
   --color-cream: #121C18;
   --color-sage: #293B2F;
+  --color-danger: #F2A393;
+  --color-danger-soft: #3A221D;
 }
 
 @layer base {

@@ -17,7 +17,8 @@ import { z } from "zod"
 import { Database } from "./database.js"
 import { SessionGuard, type AuthRequest } from "./security.js"
 import { parse } from "./validation.js"
-import { grade, publicQuestion, questionsSchema, submissionSchema } from './quiz.js'
+import { answerSchema, grade, gradeOne, publicQuestion, questionsSchema, submissionSchema } from './quiz.js'
+import { QuizChecks } from './quiz-checks.js'
 import { digest } from './passwords.js'
 import { collectWords } from './review.service.js'
 import { searchableContent } from './content-search.js'
@@ -37,7 +38,7 @@ const emptyProgress = (revision: number) => ({
 @Controller("learning")
 @UseGuards(SessionGuard)
 export class LearningController {
-  constructor(private db: Database) {}
+  constructor(private db: Database, private checks: QuizChecks) {}
 
   @Get("catalog")
   async catalog(@Req() req: AuthRequest) {
@@ -208,7 +209,28 @@ export class LearningController {
     const attempts = await this.db.quizAttempt.findMany({ where: { userId, quizId: quiz.id }, orderBy: [{ createdAt: 'desc' }, { id: 'desc' }], take: 10,
       select: { id: true, createdAt: true, quizRevision: true, lessonRevision: true, result: true } });
     return { id: quiz.id, revision: quiz.revision, lessonRevision: lesson.revision, passPercent: quiz.passPercent, kind: quiz.kind,
-      questions: questionsSchema.parse(quiz.questions).map(publicQuestion), attempts };
+      questions: questionsSchema.parse(quiz.questions).map(publicQuestion), attempts, checks: this.checks.list(userId, quiz.id, quiz.revision) };
+  }
+
+  @Post('lessons/:slug/quiz/check')
+  @HttpCode(200)
+  async check(@Param('slug') slug: string, @Req() req: AuthRequest, @Body() body: unknown) {
+    const input = parse(z.object({ lessonRevision: z.number().int().positive(), quizRevision: z.number().int().positive(),
+      questionId: z.string().min(1).max(100), value: answerSchema }).strict(), body);
+    const userId = req.session!.user.id;
+    if (req.headers['x-zhpath-user'] && req.headers['x-zhpath-user'] !== userId) throw new ForbiddenException('Аккаунт изменился. Перезагрузите страницу.');
+    const lesson = await this.accessible(this.db, slug, userId);
+    const progress = await this.db.lessonProgress.findUnique({ where: { userId_lessonId: { userId, lessonId: lesson.id } } });
+    if (progress?.revision !== lesson.revision || progress.nextBlock !== lesson.blocks.length) throw new ForbiddenException('Сначала прочитайте все блоки урока.');
+    const quiz = await this.db.quiz.findUnique({ where: { lessonId: lesson.id } });
+    if (!quiz) throw new NotFoundException('Тест недоступен.');
+    if (quiz.revision !== input.quizRevision || lesson.revision !== input.lessonRevision) throw new ConflictException('Урок обновлён. Откройте его заново.');
+    const question = questionsSchema.parse(quiz.questions).find(q => q.id === input.questionId);
+    if (!question) throw new NotFoundException('Задание недоступно.');
+    const result = this.checks.record(userId, quiz.id, quiz.revision, question.id, input.value, () => gradeOne(question, input.value));
+    if (result === 'changed') throw new ConflictException('Ответ на это задание уже проверен.');
+    if (result === 'full') throw new ConflictException('Проверка временно недоступна. Ответьте на все задания и отправьте тест.');
+    return { correct: result.correct, expected: result.expected, explanation: result.explanation };
   }
 
   @Post('lessons/:slug/attempts')
@@ -220,7 +242,7 @@ export class LearningController {
     const requestHash = digest(JSON.stringify({ slug, lessonRevision: input.lessonRevision, quizRevision: input.quizRevision,
       answers: [...input.answers].sort((a, b) => a.questionId.localeCompare(b.questionId)) }));
     try {
-      return await this.db.$transaction(async db => {
+      const saved = await this.db.$transaction(async db => {
         const previous = await db.quizAttempt.findUnique({ where: { userId_requestId: { userId, requestId: input.requestId } } });
         if (previous) {
           if (previous.requestHash !== requestHash) throw new ConflictException('Этот запрос уже содержит другой ответ.');
@@ -233,6 +255,7 @@ export class LearningController {
         const where = { userId_lessonId: { userId, lessonId: lesson.id } };
         const progress = await db.lessonProgress.findUnique({ where });
         if (progress?.revision !== lesson.revision || progress.nextBlock !== lesson.blocks.length) throw new ForbiddenException('Сначала прочитайте все блоки урока.');
+        if (this.checks.conflicts(userId, quiz.id, quiz.revision, input.answers)) throw new ConflictException('Проверенные ответы нельзя менять.');
         const questions = questionsSchema.parse(quiz.questions);
         const result = grade(questions, input.answers, quiz.passPercent);
         const attempt = await db.quizAttempt.create({ data: { userId, quizId: quiz.id, requestId: input.requestId, requestHash,
@@ -242,8 +265,12 @@ export class LearningController {
           await db.lessonProgress.update({ where, data: { completedAt: new Date() } });
           await collectWords(db, userId);
         }
-        return { id: attempt.id, createdAt: attempt.createdAt, quizRevision: attempt.quizRevision, lessonRevision: attempt.lessonRevision, result: attempt.result };
+        return { id: attempt.id, createdAt: attempt.createdAt, quizRevision: attempt.quizRevision, lessonRevision: attempt.lessonRevision, result: attempt.result, quizId: quiz.id };
       }, { isolationLevel: Prisma.TransactionIsolationLevel.Serializable });
+      // Only a committed attempt releases the binding of checked answers.
+      const { quizId, ...attempt } = saved as typeof saved & { quizId?: string };
+      if (quizId) this.checks.clear(userId, quizId);
+      return attempt;
     } catch (error) {
       if (error instanceof Prisma.PrismaClientKnownRequestError && ['P2034', 'P2002'].includes(error.code)) throw new ConflictException('Прогресс изменился. Повторите сохранение.');
       throw error;

@@ -9,6 +9,7 @@ import LessonAudio from "../components/LessonAudio"
 import QuizPanel from '../components/QuizPanel'
 import CharacterPractice from "../components/CharacterPractice"
 import StudyTimeTracker from "../components/StudyTimeTracker"
+import LessonWarmup from "../components/LessonWarmup"
 
 export default function Lesson({
   slug,
@@ -19,7 +20,7 @@ export default function Lesson({
   slug: string
   userId: string
   onNavigate: (screen: Screen) => void
-  onReviewMistakes?: () => void
+  onReviewMistakes?: (questionId?: string) => void
 }) {
   const { t, language, explanationLanguage } = useLanguage()
   const [lesson, setLesson] = useState<LessonData | null>(null)
@@ -119,6 +120,7 @@ export default function Lesson({
           <h1 className="text-3xl font-bold text-dark-green">
             {lesson.title[language]}
           </h1>
+          {index === 0 && !lesson.progress.completedAt && <LessonWarmup />}
           <div>
             <div className="flex justify-between text-sm mb-2">
               <span>{t("Прогресс сохранён в аккаунте")}</span>

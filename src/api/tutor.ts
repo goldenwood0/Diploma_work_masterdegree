@@ -7,10 +7,10 @@ const response = z.object({ text: z.string().min(1).max(6000), provider });
 export async function tutorStatus(signal: AbortSignal) {
   return z.object({ provider }).parse(await request('/tutor/status', { signal }));
 }
-export async function askTutor(input: { lessonSlug: string; mode: TutorMode; text: string; history: TutorTurn[] }, signal: AbortSignal) {
+export async function askTutor(input: { lessonSlug: string; mode: TutorMode; text: string; history: TutorTurn[]; questionId?: string }, signal: AbortSignal) {
   return response.parse(await request('/tutor/ask', { method: 'POST', signal, headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(input) }));
 }
-export function tutorError(error: unknown) {
+export function tutorError(error: unknown, singleQuestion = false) {
   if (!(error instanceof ApiError)) return 'Помощник вернул некорректный ответ.';
   if (error.status === 503) return 'ИИ-провайдер пока не настроен. Ответы ИИ недоступны.';
   if (error.status === 429) return 'Лимит запросов. Подождите минуту и повторите.';
@@ -18,7 +18,7 @@ export function tutorError(error: unknown) {
   if (error.status === 504) return 'Помощник не успел ответить. Попробуйте ещё раз.';
   if (error.status === 401) return 'Сессия завершена. Войдите ещё раз.';
   if (error.status === 403 || error.status === 404) return 'Этот урок недоступен для помощника.';
-  if (error.status === 409) return 'В последней попытке теста нет ошибок для разбора.';
+  if (error.status === 409) return singleQuestion ? 'Проверьте ответ ещё раз, затем попросите объяснение.' : 'В последней попытке теста нет ошибок для разбора.';
   if (error.status === 413) return 'Слишком много текста. Сократите сообщение или начните заново.';
   return 'Не удалось получить ответ помощника. Повторите запрос.';
 }
